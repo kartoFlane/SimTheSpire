@@ -12,13 +12,11 @@ import java.util.Map;
 public class EncounterController implements StateController<EncounterState> {
 
     private final EncounterState state;
-    private final EntityController playerController;
     private final Map<EntityState, EntityController> enemyControllers = new HashMap<>();
 
 
-    public EncounterController(EncounterState state, EntityController playerController) {
+    public EncounterController(EncounterState state) {
         this.state = state;
-        this.playerController = playerController;
 
         for (EntityState entityState : state.getEnemyEntities()) {
             enemyControllers.put(
@@ -32,10 +30,6 @@ public class EncounterController implements StateController<EncounterState> {
         return this.state;
     }
 
-    public EntityController getPlayerController() {
-        return this.playerController;
-    }
-
     public List<EntityController> listEnemyControllers() {
         return new ArrayList<>(this.enemyControllers.values());
     }
@@ -44,15 +38,15 @@ public class EncounterController implements StateController<EncounterState> {
     }
 
     public void simulateEncounter(GameController gameController) {
-        while (isEncounterInProgress()) {
-            executeEntityTurn(gameController, playerController);
+        while (isEncounterInProgress(gameController)) {
+            executeEntityTurn(gameController, gameController.getPlayerController());
 
             processEnemyControllers(gameController);
         }
     }
 
-    public boolean isEncounterInProgress() {
-        return getPlayerController().isAlive() && !enemyControllers.isEmpty();
+    public boolean isEncounterInProgress(GameController gameController) {
+        return gameController.getPlayerController().isAlive() && !enemyControllers.isEmpty();
     }
 
     private void processEnemyControllers(GameController gameController) {
@@ -82,6 +76,8 @@ public class EncounterController implements StateController<EncounterState> {
     }
 
     public void onEncounterEnd(GameController gameController) {
+        EntityController playerController = gameController.getPlayerController();
+
         playerController.resetAndShuffleDecks(gameController.getState());
         if (playerController.isAlive()) {
             System.out.printf(

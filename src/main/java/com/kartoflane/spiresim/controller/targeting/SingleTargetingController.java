@@ -6,12 +6,9 @@ import com.kartoflane.spiresim.controller.ai.AIController;
 
 import java.util.Collections;
 
-public class SingleTargetingController implements TargetingController {
+class SingleTargetingController implements TargetingController {
 
-    private static SingleTargetingController INSTANCE;
-
-
-    private SingleTargetingController() {
+    SingleTargetingController() {
     }
 
     @Override
@@ -20,13 +17,5 @@ public class SingleTargetingController implements TargetingController {
                 TargetingResultType.TARGET_SINGLE,
                 Collections.singletonList(aiController.getEnemyTargetSingle(gameController, encounterController))
         );
-    }
-
-    public static SingleTargetingController getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new SingleTargetingController();
-        }
-
-        return INSTANCE;
     }
 }

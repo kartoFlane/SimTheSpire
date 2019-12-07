@@ -9,19 +9,13 @@ import java.util.List;
 public class EncounterState {
 
     private List<EntityState> enemyEntities = new ArrayList<>();
-    private EntityState playerEntity;
 
 
-    public EncounterState(EntityState playerEntity, List<EntityState> enemyEntities) {
-        this.playerEntity = playerEntity;
+    public EncounterState(List<EntityState> enemyEntities) {
         this.enemyEntities.addAll(enemyEntities);
     }
 
     public List<EntityState> getEnemyEntities() {
         return enemyEntities;
-    }
-
-    public EntityState getPlayerEntity() {
-        return playerEntity;
     }
 }

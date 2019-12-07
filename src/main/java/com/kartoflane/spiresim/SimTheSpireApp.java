@@ -8,8 +8,9 @@ public class SimTheSpireApp {
     private SimTheSpireApp() {
     }
 
-    public static void main(String[] args) {
-        SimulationController simulationController = new SimulationController(new SimulationState());
+    public static void main(String[] args) throws Exception {
+        SimulationState simulationState = new SimulationState();
+        SimulationController simulationController = new SimulationController(simulationState);
 
         simulationController.start();
     }

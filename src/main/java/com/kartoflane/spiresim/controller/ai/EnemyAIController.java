@@ -14,12 +14,12 @@ public class EnemyAIController implements AIController {
 
     @Override
     public EntityController getEnemyTargetSingle(GameController gameController, EncounterController encounterController) {
-        return encounterController.getPlayerController();
+        return gameController.getPlayerController();
     }
 
     @Override
-    public List<EntityController> getEnemyTargetsAll(GameController gameControlller, EncounterController encounterController) {
-        return Collections.singletonList(encounterController.getPlayerController());
+    public List<EntityController> getEnemyTargetsAll(GameController gameController, EncounterController encounterController) {
+        return Collections.singletonList(gameController.getPlayerController());
     }
 
     @Override

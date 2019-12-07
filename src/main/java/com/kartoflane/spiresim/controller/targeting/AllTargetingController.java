@@ -4,12 +4,9 @@ import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.controller.ai.AIController;
 
-public class AllTargetingController implements TargetingController {
+class AllTargetingController implements TargetingController {
 
-    private static AllTargetingController INSTANCE;
-
-
-    private AllTargetingController() {
+    AllTargetingController() {
     }
 
     @Override
@@ -18,13 +15,5 @@ public class AllTargetingController implements TargetingController {
                 TargetingResultType.TARGET_ALL,
                 aiController.getEnemyTargetsAll(gameController, encounterController)
         );
-    }
-
-    public static AllTargetingController getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new AllTargetingController();
-        }
-
-        return INSTANCE;
     }
 }

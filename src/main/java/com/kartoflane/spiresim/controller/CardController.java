@@ -2,21 +2,25 @@ package com.kartoflane.spiresim.controller;
 
 import com.kartoflane.spiresim.controller.targeting.TargetingController;
 import com.kartoflane.spiresim.state.CardState;
+import com.kartoflane.spiresim.template.card.CardTemplate;
 
 import java.util.List;
 
-public abstract class CardController implements StateController<CardState> {
+public class CardController<T extends CardTemplate<S>, S extends CardState> implements StateController<S> {
 
     private final TargetingController targetingController;
-    protected final CardState state;
+    private final T template;
+    private final S state;
 
 
-    public CardController(CardState state, TargetingController targetingController) {
+    @SuppressWarnings("unchecked")
+    public CardController(S state) {
         this.state = state;
-        this.targetingController = targetingController;
+        this.template = (T) state.getTemplate();
+        this.targetingController = this.template.getTargetingType().getController();
     }
 
-    public CardState getState() {
+    public S getState() {
         return this.state;
     }
 
@@ -24,33 +28,27 @@ public abstract class CardController implements StateController<CardState> {
         return this.targetingController;
     }
 
-    /**
-     * Actions to execute when the card is discarded from hand before end of turn.
-     */
-    public abstract void onDiscard(EncounterController encounterController, EntityController caster);
+    public void onDiscard(EncounterController encounterController, EntityController caster) {
+        template.onDiscard(encounterController, caster, state);
+    }
 
-    /**
-     * Actions to execute when the card is exhausted.
-     */
-    public abstract void onExhaust(EncounterController encounterController, EntityController caster);
+    public void onExhaust(EncounterController encounterController, EntityController caster) {
+        template.onExhaust(encounterController, caster, state);
+    }
 
-    /**
-     * Actions to execute when the card is retained in hand at the end of the turn.
-     */
-    public abstract void onRetain(EncounterController encounterController, EntityController caster);
+    public void onRetain(EncounterController encounterController, EntityController caster) {
+        template.onRetain(encounterController, caster, state);
+    }
 
-    /**
-     * Actions to execute when the card is played
-     */
-    public abstract void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets);
+    public void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets) {
+        template.onPlay(encounterController, caster, targets, state);
+    }
 
-    /**
-     * Actions to execute at the start of turn.
-     */
-    public abstract void onTurnStart(EncounterController encounterController, EntityController caster);
+    public void onTurnStart(EncounterController encounterController, EntityController caster) {
+        template.onTurnStart(encounterController, caster, state);
+    }
 
-    /**
-     * Actions to execute at the end of turn.
-     */
-    public abstract void onTurnEnd(EncounterController encounterController, EntityController caster);
+    public void onTurnEnd(EncounterController encounterController, EntityController caster) {
+        template.onTurnEnd(encounterController, caster, state);
+    }
 }

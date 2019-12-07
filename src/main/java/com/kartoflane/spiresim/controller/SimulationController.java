@@ -4,8 +4,9 @@ import com.kartoflane.spiresim.state.CardState;
 import com.kartoflane.spiresim.state.EntityState;
 import com.kartoflane.spiresim.state.GameState;
 import com.kartoflane.spiresim.state.SimulationState;
-import com.kartoflane.spiresim.state.card.concrete.AttackCardState;
-import com.kartoflane.spiresim.state.card.concrete.DefendCardState;
+import com.kartoflane.spiresim.state.card.CardStateFactory;
+import com.kartoflane.spiresim.template.card.concrete.DefendTemplate;
+import com.kartoflane.spiresim.template.card.concrete.StrikeTemplate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,21 +25,21 @@ public class SimulationController implements StateController<SimulationState> {
         return this.state;
     }
 
-    public void start() {
+    public void start() throws Exception {
         GameState gameState = buildNewGame(new Random());
         GameController gameController = new GameController(gameState);
 
         gameController.simulateGame();
     }
 
-    private GameState buildNewGame(Random random) {
+    private GameState buildNewGame(Random random) throws Exception {
         List<CardState> playerStartingDeck = Arrays.asList(
-                new AttackCardState(),
-                new AttackCardState(),
-                new AttackCardState(),
-                new DefendCardState(),
-                new DefendCardState(),
-                new DefendCardState()
+                CardStateFactory.build(StrikeTemplate.getInstance()),
+                CardStateFactory.build(StrikeTemplate.getInstance()),
+                CardStateFactory.build(StrikeTemplate.getInstance()),
+                CardStateFactory.build(DefendTemplate.getInstance()),
+                CardStateFactory.build(DefendTemplate.getInstance()),
+                CardStateFactory.build(DefendTemplate.getInstance())
         );
         EntityState playerEntity = new EntityState(playerStartingDeck, "Player", 70);
 

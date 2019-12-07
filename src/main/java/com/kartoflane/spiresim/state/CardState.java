@@ -1,29 +1,23 @@
 package com.kartoflane.spiresim.state;
 
-import com.kartoflane.spiresim.controller.CardController;
+import com.kartoflane.spiresim.template.card.CardTemplate;
 
-import java.util.HashMap;
-import java.util.Map;
+public abstract class CardState {
 
-public class CardState {
-
-    private final Class<? extends CardController> cardControllerType;
-    private final Map<String, Object> propertyMap = new HashMap<>();
+    private final CardTemplate<? extends CardState> template;
 
     private String name;
     private int cost;
-    private boolean retain;
 
 
-    public CardState(Class<? extends CardController> cardControllerType, String name, int cost) {
-        this.cardControllerType = cardControllerType;
-        this.setName(name);
-        this.setCost(cost);
-        this.setRetain(false);
+    protected CardState(CardTemplate<? extends CardState> template) {
+        this.template = template;
+        this.setName(template.getName());
+        this.setCost(template.getCost());
     }
 
-    public Class<? extends CardController> getCardControllerType() {
-        return cardControllerType;
+    public CardTemplate<? extends CardState> getTemplate() {
+        return template;
     }
 
     public String getName() {
@@ -46,25 +40,5 @@ public class CardState {
             throw new IllegalArgumentException("Cost must be a non-negative number: " + cost);
         }
         this.cost = cost;
-    }
-
-    public boolean isRetain() {
-        return retain;
-    }
-
-    public void setRetain(boolean retain) {
-        this.retain = retain;
-    }
-
-    public <T> T getProperty(String key) {
-        return (T) propertyMap.get(key);
-    }
-
-    public <T> T getPropertyOrDefault(String key, T defaultValue) {
-        return (T) propertyMap.getOrDefault(key, defaultValue);
-    }
-
-    public <T> void setProperty(String key, T value) {
-        propertyMap.put(key, value);
     }
 }

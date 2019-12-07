@@ -5,8 +5,9 @@ import com.kartoflane.spiresim.state.CardState;
 import com.kartoflane.spiresim.state.EncounterState;
 import com.kartoflane.spiresim.state.EntityState;
 import com.kartoflane.spiresim.state.GameState;
-import com.kartoflane.spiresim.state.card.concrete.AttackCardState;
-import com.kartoflane.spiresim.state.card.concrete.DefendCardState;
+import com.kartoflane.spiresim.state.card.CardStateFactory;
+import com.kartoflane.spiresim.template.card.concrete.DefendTemplate;
+import com.kartoflane.spiresim.template.card.concrete.StrikeTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,10 +32,14 @@ public class GameController implements StateController<GameState> {
         return this.state;
     }
 
-    public void simulateGame() {
+    public EntityController getPlayerController() {
+        return this.playerController;
+    }
+
+    public void simulateGame() throws Exception {
         while (isGameInProgress()) {
             EncounterState encounterState = buildNewEncounter();
-            EncounterController encounterController = new EncounterController(encounterState, this.playerController);
+            EncounterController encounterController = new EncounterController(encounterState);
 
             encounterController.onEncounterStart(this);
             encounterController.simulateEncounter(this);
@@ -48,16 +53,16 @@ public class GameController implements StateController<GameState> {
         return this.playerController.isAlive();
     }
 
-    private EncounterState buildNewEncounter() {
+    private EncounterState buildNewEncounter() throws Exception {
         List<EntityState> enemyEntities = new ArrayList<>();
         List<CardState> enemyStartingDeck = Arrays.asList(
-                new AttackCardState(),
-                new AttackCardState(),
-                new DefendCardState()
+                CardStateFactory.build(StrikeTemplate.getInstance()),
+                CardStateFactory.build(StrikeTemplate.getInstance()),
+                CardStateFactory.build(DefendTemplate.getInstance())
         );
         EntityState enemyEntity = new EntityState(enemyStartingDeck, "Enemy", 25);
         enemyEntities.add(enemyEntity);
 
-        return new EncounterState(playerController.getState(), enemyEntities);
+        return new EncounterState(enemyEntities);
     }
 }

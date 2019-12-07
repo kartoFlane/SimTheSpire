@@ -5,6 +5,7 @@ import com.kartoflane.spiresim.state.CardState;
 import com.kartoflane.spiresim.state.EffectState;
 import com.kartoflane.spiresim.state.EntityState;
 import com.kartoflane.spiresim.state.GameState;
+import com.kartoflane.spiresim.template.card.CardTemplate;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,7 +14,7 @@ public class EntityController implements StateController<EntityState> {
 
     private final EntityState state;
     private final AIController aiController;
-    private final Map<CardState, CardController> cardStateToControllerMap = new HashMap<>();
+    private final Map<CardState, CardController<?, ?>> cardStateToControllerMap = new HashMap<>();
 
 
     public EntityController(EntityState state, AIController aiController) {
@@ -21,20 +22,8 @@ public class EntityController implements StateController<EntityState> {
         this.aiController = aiController;
 
         for (CardState cardState : this.state.getAllCards()) {
-            cardStateToControllerMap.put(cardState, instantiateCardController(cardState));
+            cardStateToControllerMap.put(cardState, new CardController<>(cardState));
         }
-    }
-
-    private CardController instantiateCardController(CardState cardState) {
-        try {
-            return cardState.getCardControllerType()
-                    .getDeclaredConstructor(CardState.class)
-                    .newInstance(cardState);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     public EntityState getState() {
@@ -89,24 +78,29 @@ public class EntityController implements StateController<EntityState> {
         return this.state.getEnergyCurrent() >= cardState.getCost();
     }
 
-    public CardController getCardController(CardState cardState) {
-        return this.cardStateToControllerMap.get(cardState);
+    @SuppressWarnings("unchecked")
+    public <T extends CardTemplate<S>, S extends CardState> CardController<T, S> getCardController(S cardState) {
+        return (CardController<T, S>) this.cardStateToControllerMap.get(cardState);
     }
 
-    public void playCard(EncounterController encounterController, CardController cardController, List<EntityController> targets) {
+    public <T extends CardTemplate<S>, S extends CardState> void playCard(
+            EncounterController encounterController,
+            CardController<T, S> cardController,
+            List<EntityController> targets
+    ) {
         CardState cardState = cardController.getState();
+
         this.state.setEnergyCurrent(this.state.getEnergyCurrent() - cardState.getCost());
         this.state.getHandList().remove(cardState);
         this.state.getDiscardPileList().add(cardState);
+
         cardController.onPlay(encounterController, this, targets);
     }
 
     public void discardHand(EncounterController encounterController) {
         List<CardState> cardsToDiscard = new ArrayList<>();
         for (CardState card : this.state.getHandList()) {
-            if (!card.isRetain()) {
-                cardsToDiscard.add(card);
-            }
+            cardsToDiscard.add(card);
         }
 
         for (CardState card : cardsToDiscard) {
