@@ -6,7 +6,9 @@
 
     <groupId>com.kartoflane</groupId>
     <artifactId>SimTheSpire</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
     <build>
         <plugins>
             <plugin>
@@ -19,6 +21,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <modules>
+        <module>Content</module>
+        <module>Engine</module>
+        <module>Simulation</module>
+    </modules>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -27,6 +36,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-
 </project>
