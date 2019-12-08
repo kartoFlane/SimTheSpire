@@ -1,8 +1,8 @@
 package com.kartoflane.spiresim.state;
 
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.stream.IntStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * State class representing a single entity that can participate in combat - a player or an enemy.
@@ -90,69 +90,8 @@ public class EntityState {
         this.energyMax = Math.max(0, energyMax);
     }
 
-    public void applyDamage(int amount) {
-        if (amount < 0) {
-            return;
-        }
-
-        int unblockedDamage = calculateDamageAfterBlock(amount);
-
-        this.setHealthCurrent(this.getHealthCurrent() - unblockedDamage);
-    }
-
-    private int calculateDamageAfterBlock(int amount) {
-        int unblockedAmount = Math.max(0, amount - this.armorCurrent);
-        this.armorCurrent = Math.max(0, this.armorCurrent - amount);
-        return unblockedAmount;
-    }
-
-    public void applyHeal(int amount) {
-        if (amount < 0) {
-            return;
-        }
-
-        this.setHealthCurrent(this.getHealthCurrent() + amount);
-    }
-
-    public void applyArmor(int amount) {
-        this.setArmorCurrent(this.getArmorCurrent() + amount);
-    }
-
-    public void applyEffect(EncounterState encounterState, EffectState effectState) {
-        Optional<EffectState> existingEffect = this.effectsList.stream()
-                .filter(effect -> effect.getEffectIdentifier().equals(effectState.getEffectIdentifier()))
-                .findFirst();
-
-        if (existingEffect.isPresent()) {
-            existingEffect.get().onApply(encounterState, this, effectState);
-        } else {
-            this.effectsList.add(effectState);
-            effectState.onApply(encounterState, this, effectState);
-        }
-    }
-
-    public void removeEffect(EncounterState encounterState, String effectIdentifier) {
-        OptionalInt existingIndex = IntStream.range(0, this.effectsList.size())
-                .filter(index -> this.effectsList.get(index).getEffectIdentifier().equals(effectIdentifier))
-                .findFirst();
-
-        if (existingIndex.isPresent()) {
-            int index = existingIndex.getAsInt();
-            EffectState effectState = this.effectsList.remove(index);
-            effectState.onRemove(encounterState, this);
-        }
-    }
-
-    public void updateEffects(EncounterState encounterState, EffectState.UpdateEvent updateEvent) {
-        for (EffectState effectState : this.effectsList) {
-            effectState.onUpdate(encounterState, this, updateEvent);
-        }
-    }
-
-    public void iterateEffects(Consumer<EffectState> effectStateConsumer) {
-        for (int i = 0; i < effectsList.size(); ++i) {
-            effectStateConsumer.accept(effectsList.get(i));
-        }
+    public List<EffectState> getEffectsList() {
+        return this.effectsList;
     }
 
     public List<CardState> getHandList() {

@@ -1,12 +1,20 @@
 package com.kartoflane.spiresim.state;
 
+import com.kartoflane.spiresim.template.EffectIdentifier;
+import com.kartoflane.spiresim.template.EffectTemplate;
+
 /**
  * A state class representing an effect (a buff or debuff) that can be applied to an entity.
  */
-public abstract class EffectState {
+public abstract class EffectState extends TemplatableState {
 
+    private String name;
     private int stackCounter;
 
+
+    public EffectState(EffectTemplate<? extends EffectState> template) {
+        super(template);
+    }
 
     public int getStackCounter() {
         return stackCounter;
@@ -16,25 +24,5 @@ public abstract class EffectState {
         this.stackCounter = stackCounter;
     }
 
-    public abstract String getEffectIdentifier();
-
-    /**
-     * Actions to perform when the effect is first applied to an entity.
-     */
-    public abstract void onApply(EncounterState encounterState, EntityState entityState, EffectState effectState);
-
-    /**
-     * Actions to perform when the effect is removed from the entity.
-     */
-    public abstract void onRemove(EncounterState encounterState, EntityState entityState);
-
-    /**
-     * Actions to perform during update steps.
-     */
-    public abstract void onUpdate(EncounterState encounterState, EntityState entityState, UpdateEvent updateEvent);
-
-    public enum UpdateEvent {
-        TURN_START,
-        TURN_END;
-    }
+    public abstract EffectIdentifier getEffectIdentifier();
 }

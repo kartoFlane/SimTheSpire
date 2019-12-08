@@ -24,7 +24,7 @@ public class EnemyAIController implements AIController {
 
     @Override
     public void controlEntity(GameController gameController, EncounterController encounterController, EntityController entity) {
-        entity.drawHand(gameController.getState(), 3);
+        entity.drawHand(gameController.getState(), encounterController, 3);
 
         List<CardState> playableCards = entity.getPlayableCards();
         processPlayableCards(gameController, encounterController, entity, playableCards);
@@ -32,7 +32,7 @@ public class EnemyAIController implements AIController {
 
     private void processPlayableCards(GameController game, EncounterController encounter, EntityController caster, List<CardState> playableCards) {
         for (CardState playableCard : playableCards) {
-            CardController card = caster.getCardController(playableCard);
+            CardController<?, ?> card = caster.getCardController(playableCard);
             boolean wasCardPlayed = processCard(game, encounter, caster, card);
             if (wasCardPlayed) {
                 break;

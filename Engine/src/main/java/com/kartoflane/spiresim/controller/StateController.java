@@ -1,5 +1,5 @@
 package com.kartoflane.spiresim.controller;
 
-public interface StateController<T> {
-    T getState();
+public interface StateController<S> {
+    S getState();
 }

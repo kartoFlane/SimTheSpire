@@ -3,7 +3,8 @@ package com.kartoflane.spiresim.controller;
 import com.kartoflane.spiresim.controller.ai.PlayerAIController;
 import com.kartoflane.spiresim.state.EncounterState;
 import com.kartoflane.spiresim.state.GameState;
-import com.kartoflane.spiresim.util.ExceptionalSupplier;
+
+import java.util.function.Supplier;
 
 public class GameController implements StateController<GameState> {
 
@@ -28,7 +29,7 @@ public class GameController implements StateController<GameState> {
         return this.playerController;
     }
 
-    public void simulateGame(ExceptionalSupplier<EncounterState> encounterSupplier) throws Exception {
+    public void simulateGame(Supplier<EncounterState> encounterSupplier) {
         while (isGameInProgress()) {
             EncounterState encounterState = encounterSupplier.get();
             EncounterController encounterController = new EncounterController(encounterState);

@@ -7,14 +7,7 @@ import com.kartoflane.spiresim.state.CardState;
 
 import java.util.List;
 
-public interface CardTemplate<S extends CardState> {
-
-    // template     -- general, non changing, create state from this, link to controller class to instantiate
-    //              -- knows its state class, so can implement card logic
-    // state        -- live, in-game, can be upgraded / modified, will need to govern its own state to reset it after combat
-    // controller   -- updates state, calls logic from template
-
-    Class<S> getStateType();
+public interface CardTemplate<S extends CardState> extends StateTemplate<S> {
 
     TargetingType getTargetingType();
 

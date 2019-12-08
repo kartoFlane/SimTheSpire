@@ -2,22 +2,16 @@ package com.kartoflane.spiresim.state;
 
 import com.kartoflane.spiresim.template.CardTemplate;
 
-public abstract class CardState {
-
-    private final CardTemplate<? extends CardState> template;
+public abstract class CardState extends TemplatableState {
 
     private String name;
     private int cost;
 
 
     protected CardState(CardTemplate<? extends CardState> template) {
-        this.template = template;
+        super(template);
         this.setName(template.getName());
         this.setCost(template.getCost());
-    }
-
-    public CardTemplate<? extends CardState> getTemplate() {
-        return template;
     }
 
     public String getName() {

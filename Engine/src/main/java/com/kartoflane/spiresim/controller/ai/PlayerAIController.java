@@ -28,7 +28,7 @@ public class PlayerAIController implements AIController {
 
     @Override
     public void controlEntity(GameController gameController, EncounterController encounterController, EntityController entity) {
-        entity.drawHand(gameController.getState(), 5);
+        entity.drawHand(gameController.getState(), encounterController, 5);
 
         List<CardState> playableCards;
         do {
@@ -40,7 +40,7 @@ public class PlayerAIController implements AIController {
 
     private void processPlayableCards(GameController game, EncounterController encounter, EntityController caster, List<CardState> playableCards) {
         for (CardState playableCard : playableCards) {
-            CardController card = caster.getCardController(playableCard);
+            CardController<?, ?> card = caster.getCardController(playableCard);
             boolean wasCardPlayed = processCard(game, encounter, caster, card);
             if (wasCardPlayed) {
                 break;
@@ -48,7 +48,7 @@ public class PlayerAIController implements AIController {
         }
     }
 
-    private boolean processCard(GameController game, EncounterController encounter, EntityController caster, CardController card) {
+    private boolean processCard(GameController game, EncounterController encounter, EntityController caster, CardController<?, ?> card) {
         TargetingResult targetingResult = card.getTargetingController().selectTargets(game, encounter, this);
         if (targetingResult.getType().isValidTarget()) {
             caster.playCard(encounter, card, targetingResult.getTargets());

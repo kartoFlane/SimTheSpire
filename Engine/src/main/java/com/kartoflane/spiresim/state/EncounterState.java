@@ -10,7 +10,6 @@ public class EncounterState {
 
     private List<EntityState> enemyEntities = new ArrayList<>();
 
-
     public EncounterState(List<EntityState> enemyEntities) {
         this.enemyEntities.addAll(enemyEntities);
     }

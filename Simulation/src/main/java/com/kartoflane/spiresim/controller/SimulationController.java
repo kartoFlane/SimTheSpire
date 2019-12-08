@@ -22,33 +22,33 @@ public class SimulationController implements StateController<SimulationState> {
         return this.state;
     }
 
-    public void start() throws Exception {
+    public void start() {
         GameState gameState = buildNewGame(new Random());
         GameController gameController = new GameController(gameState);
 
         gameController.simulateGame(this::buildNewEncounter);
     }
 
-    private GameState buildNewGame(Random random) throws Exception {
+    private GameState buildNewGame(Random random) {
         List<CardState> playerStartingDeck = Arrays.asList(
-                CardStateFactory.build(StrikeTemplate.getInstance()),
-                CardStateFactory.build(StrikeTemplate.getInstance()),
-                CardStateFactory.build(StrikeTemplate.getInstance()),
-                CardStateFactory.build(DefendTemplate.getInstance()),
-                CardStateFactory.build(DefendTemplate.getInstance()),
-                CardStateFactory.build(DefendTemplate.getInstance())
+                StateFactory.build(StrikeTemplate.getInstance()),
+                StateFactory.build(StrikeTemplate.getInstance()),
+                StateFactory.build(StrikeTemplate.getInstance()),
+                StateFactory.build(DefendTemplate.getInstance()),
+                StateFactory.build(DefendTemplate.getInstance()),
+                StateFactory.build(DefendTemplate.getInstance())
         );
         EntityState playerEntity = new EntityState(playerStartingDeck, "Player", 70);
 
         return new GameState(random, playerEntity);
     }
 
-    private EncounterState buildNewEncounter() throws Exception {
+    private EncounterState buildNewEncounter() {
         List<EntityState> enemyEntities = new ArrayList<>();
         List<CardState> enemyStartingDeck = Arrays.asList(
-                CardStateFactory.build(StrikeTemplate.getInstance()),
-                CardStateFactory.build(StrikeTemplate.getInstance()),
-                CardStateFactory.build(DefendTemplate.getInstance())
+                StateFactory.build(StrikeTemplate.getInstance()),
+                StateFactory.build(StrikeTemplate.getInstance()),
+                StateFactory.build(DefendTemplate.getInstance())
         );
         EntityState enemyEntity = new EntityState(enemyStartingDeck, "Enemy", 25);
         enemyEntities.add(enemyEntity);
