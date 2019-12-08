@@ -10,6 +10,8 @@ public class DefendCardState extends CardState {
 
     public DefendCardState(DefendTemplate template) {
         super(template);
+
+        this.defenseValue = template.getDefenseValue();
     }
 
     @Override
