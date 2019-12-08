@@ -1,22 +1,22 @@
 package com.kartoflane.spiresim.state.card;
 
 import com.kartoflane.spiresim.state.CardState;
-import com.kartoflane.spiresim.template.card.StrikeCardTemplate;
+import com.kartoflane.spiresim.template.card.BashCardTemplate;
 
-public class StrikeCardState extends CardState {
+public class AmplifyCardState extends CardState {
 
     private int attackValue;
 
 
-    public StrikeCardState(StrikeCardTemplate template) {
+    public AmplifyCardState(BashCardTemplate template) {
         super(template);
 
         this.attackValue = template.getAttackValue();
     }
 
     @Override
-    public StrikeCardTemplate getTemplate() {
-        return (StrikeCardTemplate) super.getTemplate();
+    public BashCardTemplate getTemplate() {
+        return (BashCardTemplate) super.getTemplate();
     }
 
     public void setAttackValue(int attackValue) {

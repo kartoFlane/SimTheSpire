@@ -8,14 +8,14 @@ import com.kartoflane.spiresim.template.CardTemplate;
 
 import java.util.List;
 
-public class DefendTemplate implements CardTemplate<DefendCardState> {
+public class DefendCardTemplate implements CardTemplate<DefendCardState> {
 
-    private static DefendTemplate INSTANCE;
+    private static DefendCardTemplate INSTANCE;
 
 
-    public static DefendTemplate getInstance() {
+    public static DefendCardTemplate getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new DefendTemplate();
+            INSTANCE = new DefendCardTemplate();
         }
 
         return INSTANCE;
@@ -62,7 +62,8 @@ public class DefendTemplate implements CardTemplate<DefendCardState> {
 
     @Override
     public void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, DefendCardState cardState) {
-        caster.getState().applyArmor(cardState.getDefenseValue());
+        System.out.printf("%s uses %s!%n", caster.getState().getName(), cardState.getName());
+        caster.applyArmor(encounterController, caster.buildArmorValue(encounterController, cardState.getDefenseValue()));
     }
 
     @Override

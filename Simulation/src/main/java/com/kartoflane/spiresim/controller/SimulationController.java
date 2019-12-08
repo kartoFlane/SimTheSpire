@@ -1,8 +1,9 @@
 package com.kartoflane.spiresim.controller;
 
 import com.kartoflane.spiresim.state.*;
-import com.kartoflane.spiresim.template.card.DefendTemplate;
-import com.kartoflane.spiresim.template.card.StrikeTemplate;
+import com.kartoflane.spiresim.template.card.BashCardTemplate;
+import com.kartoflane.spiresim.template.card.DefendCardTemplate;
+import com.kartoflane.spiresim.template.card.StrikeCardTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,12 +32,13 @@ public class SimulationController implements StateController<SimulationState> {
 
     private GameState buildNewGame(Random random) {
         List<CardState> playerStartingDeck = Arrays.asList(
-                StateFactory.build(StrikeTemplate.getInstance()),
-                StateFactory.build(StrikeTemplate.getInstance()),
-                StateFactory.build(StrikeTemplate.getInstance()),
-                StateFactory.build(DefendTemplate.getInstance()),
-                StateFactory.build(DefendTemplate.getInstance()),
-                StateFactory.build(DefendTemplate.getInstance())
+                StateFactory.build(StrikeCardTemplate.getInstance()),
+                StateFactory.build(StrikeCardTemplate.getInstance()),
+                StateFactory.build(StrikeCardTemplate.getInstance()),
+                StateFactory.build(DefendCardTemplate.getInstance()),
+                StateFactory.build(DefendCardTemplate.getInstance()),
+                StateFactory.build(DefendCardTemplate.getInstance()),
+                StateFactory.build(BashCardTemplate.getInstance())
         );
         EntityState playerEntity = new EntityState(playerStartingDeck, "Player", 70);
 
@@ -46,9 +48,9 @@ public class SimulationController implements StateController<SimulationState> {
     private EncounterState buildNewEncounter() {
         List<EntityState> enemyEntities = new ArrayList<>();
         List<CardState> enemyStartingDeck = Arrays.asList(
-                StateFactory.build(StrikeTemplate.getInstance()),
-                StateFactory.build(StrikeTemplate.getInstance()),
-                StateFactory.build(DefendTemplate.getInstance())
+                StateFactory.build(StrikeCardTemplate.getInstance()),
+                StateFactory.build(StrikeCardTemplate.getInstance()),
+                StateFactory.build(DefendCardTemplate.getInstance())
         );
         EntityState enemyEntity = new EntityState(enemyStartingDeck, "Enemy", 25);
         enemyEntities.add(enemyEntity);

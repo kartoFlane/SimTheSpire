@@ -3,20 +3,19 @@ package com.kartoflane.spiresim.template.card;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
-import com.kartoflane.spiresim.state.EntityState;
 import com.kartoflane.spiresim.state.card.StrikeCardState;
 import com.kartoflane.spiresim.template.CardTemplate;
 
 import java.util.List;
 
-public class StrikeTemplate implements CardTemplate<StrikeCardState> {
+public class StrikeCardTemplate implements CardTemplate<StrikeCardState> {
 
-    private static StrikeTemplate INSTANCE;
+    private static StrikeCardTemplate INSTANCE;
 
 
-    public static StrikeTemplate getInstance() {
+    public static StrikeCardTemplate getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new StrikeTemplate();
+            INSTANCE = new StrikeCardTemplate();
         }
 
         return INSTANCE;
@@ -64,9 +63,8 @@ public class StrikeTemplate implements CardTemplate<StrikeCardState> {
     @Override
     public void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, StrikeCardState cardState) {
         EntityController target = targets.get(0);
-        EntityState targetState = target.getState();
-
-        targetState.applyDamage(cardState.getAttackValue());
+        System.out.printf("%s uses %s on %s!%n", caster.getState().getName(), cardState.getName(), target.getState().getName());
+        target.applyDamage(encounterController, caster.buildOutgoingAttackValue(encounterController, cardState.getAttackValue()));
     }
 
     @Override
