@@ -4,9 +4,6 @@ import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.MutableCombatValue;
 import com.kartoflane.spiresim.state.effect.VulnerableEffectState;
-import com.kartoflane.spiresim.template.EffectIdentifier;
-import com.kartoflane.spiresim.template.EffectTemplate;
-import com.kartoflane.spiresim.template.EffectUpdateEvent;
 
 public class VulnerableEffectTemplate implements EffectTemplate<VulnerableEffectState> {
 
@@ -24,6 +21,11 @@ public class VulnerableEffectTemplate implements EffectTemplate<VulnerableEffect
     @Override
     public EffectIdentifier getEffectIdentifier() {
         return EffectIdentifier.EffectIdentifiers.DAMAGE_RECEIVED_INCREASE;
+    }
+
+    @Override
+    public String getName() {
+        return "Vulnerable";
     }
 
     @Override

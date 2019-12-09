@@ -1,9 +1,9 @@
 package com.kartoflane.spiresim.controller;
 
 import com.kartoflane.spiresim.state.EffectState;
-import com.kartoflane.spiresim.template.EffectIdentifier;
-import com.kartoflane.spiresim.template.EffectTemplate;
-import com.kartoflane.spiresim.template.EffectUpdateEvent;
+import com.kartoflane.spiresim.template.effect.EffectIdentifier;
+import com.kartoflane.spiresim.template.effect.EffectTemplate;
+import com.kartoflane.spiresim.template.effect.EffectUpdateEvent;
 
 public class EffectController<T extends EffectTemplate<S>, S extends EffectState> implements StateController<S> {
 

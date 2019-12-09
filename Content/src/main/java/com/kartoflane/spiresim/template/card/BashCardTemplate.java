@@ -5,7 +5,6 @@ import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
 import com.kartoflane.spiresim.state.StateFactory;
 import com.kartoflane.spiresim.state.card.AmplifyCardState;
-import com.kartoflane.spiresim.template.CardTemplate;
 import com.kartoflane.spiresim.template.effect.VulnerableEffectTemplate;
 
 import java.util.List;
@@ -36,6 +35,11 @@ public class BashCardTemplate implements CardTemplate<AmplifyCardState> {
     @Override
     public String getName() {
         return "Bash";
+    }
+
+    @Override
+    public CardType getCardType() {
+        return CardType.ATTACK;
     }
 
     @Override

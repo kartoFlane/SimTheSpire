@@ -1,9 +1,10 @@
-package com.kartoflane.spiresim.template;
+package com.kartoflane.spiresim.template.card;
 
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
 import com.kartoflane.spiresim.state.CardState;
+import com.kartoflane.spiresim.template.StateTemplate;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ public interface CardTemplate<S extends CardState> extends StateTemplate<S> {
     String getName();
 
     int getCost();
+
+    CardType getCardType();
 
     /**
      * Actions to execute when the card is discarded from hand before end of turn.

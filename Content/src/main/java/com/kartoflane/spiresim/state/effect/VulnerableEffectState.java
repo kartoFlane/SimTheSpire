@@ -1,7 +1,7 @@
 package com.kartoflane.spiresim.state.effect;
 
 import com.kartoflane.spiresim.state.EffectState;
-import com.kartoflane.spiresim.template.EffectIdentifier;
+import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 import com.kartoflane.spiresim.template.effect.VulnerableEffectTemplate;
 
 public class VulnerableEffectState extends EffectState {

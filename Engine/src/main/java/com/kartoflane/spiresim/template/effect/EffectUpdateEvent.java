@@ -1,4 +1,4 @@
-package com.kartoflane.spiresim.template;
+package com.kartoflane.spiresim.template.effect;
 
 public interface EffectUpdateEvent {
     String getEventIdentifier();

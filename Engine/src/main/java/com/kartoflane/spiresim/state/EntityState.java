@@ -1,13 +1,16 @@
 package com.kartoflane.spiresim.state;
 
+import com.kartoflane.spiresim.template.entity.EntityTemplate;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * State class representing a single entity that can participate in combat - a player or an enemy.
  */
-public class EntityState {
+public class EntityState extends TemplatableState {
 
     private String name;
     private int healthMax;
@@ -24,15 +27,21 @@ public class EntityState {
     private List<CardState> exhaustPileList = new ArrayList<>();
 
 
-    public EntityState(List<CardState> startingDeck, String name, int healthMax) {
-        this.drawPileList.addAll(startingDeck);
+    public EntityState(EntityTemplate<? extends EntityState> template) {
+        super(template);
 
-        this.setName(name);
-        this.setHealthMax(healthMax);
-        this.setHealthCurrent(healthMax);
+        this.setName(template.getName());
+        this.setHealthMax(template.getHealth());
+        this.setHealthCurrent(template.getHealth());
         this.setArmorCurrent(0);
-        this.setEnergyMax(3);
-        this.setEnergyCurrent(3);
+        this.setEnergyMax(template.getEnergy());
+        this.setEnergyCurrent(template.getEnergy());
+
+        this.drawPileList.addAll(
+                template.getStartingDeck().stream()
+                        .map(StateFactory::build)
+                        .collect(Collectors.toList())
+        );
     }
 
     public String getName() {

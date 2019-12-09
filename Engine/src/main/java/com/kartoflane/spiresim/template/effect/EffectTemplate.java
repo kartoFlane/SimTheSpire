@@ -1,13 +1,16 @@
-package com.kartoflane.spiresim.template;
+package com.kartoflane.spiresim.template.effect;
 
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.MutableCombatValue;
 import com.kartoflane.spiresim.state.EffectState;
+import com.kartoflane.spiresim.template.StateTemplate;
 
 public interface EffectTemplate<S extends EffectState> extends StateTemplate<S> {
 
     EffectIdentifier getEffectIdentifier();
+
+    String getName();
 
     /**
      * Actions to perform when the effect is first applied to an entity.

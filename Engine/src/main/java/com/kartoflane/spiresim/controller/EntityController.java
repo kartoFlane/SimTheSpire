@@ -5,10 +5,10 @@ import com.kartoflane.spiresim.state.CardState;
 import com.kartoflane.spiresim.state.EffectState;
 import com.kartoflane.spiresim.state.EntityState;
 import com.kartoflane.spiresim.state.GameState;
-import com.kartoflane.spiresim.template.CardTemplate;
-import com.kartoflane.spiresim.template.EffectIdentifier;
-import com.kartoflane.spiresim.template.EffectTemplate;
-import com.kartoflane.spiresim.template.EffectUpdateEvent;
+import com.kartoflane.spiresim.template.card.CardTemplate;
+import com.kartoflane.spiresim.template.effect.EffectIdentifier;
+import com.kartoflane.spiresim.template.effect.EffectTemplate;
+import com.kartoflane.spiresim.template.effect.EffectUpdateEvent;
 
 import java.util.*;
 import java.util.function.BiConsumer;

@@ -4,7 +4,6 @@ import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
 import com.kartoflane.spiresim.state.card.DefendCardState;
-import com.kartoflane.spiresim.template.CardTemplate;
 
 import java.util.List;
 
@@ -39,6 +38,11 @@ public class DefendCardTemplate implements CardTemplate<DefendCardState> {
     @Override
     public int getCost() {
         return 1;
+    }
+
+    @Override
+    public CardType getCardType() {
+        return CardType.SKILL;
     }
 
     public int getDefenseValue() {

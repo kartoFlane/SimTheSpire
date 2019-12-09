@@ -1,6 +1,6 @@
 package com.kartoflane.spiresim.state;
 
-import com.kartoflane.spiresim.template.CardTemplate;
+import com.kartoflane.spiresim.template.card.CardTemplate;
 
 public abstract class CardState extends TemplatableState {
 

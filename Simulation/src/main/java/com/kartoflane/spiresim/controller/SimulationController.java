@@ -1,11 +1,9 @@
 package com.kartoflane.spiresim.controller;
 
 import com.kartoflane.spiresim.state.*;
-import com.kartoflane.spiresim.template.card.BashCardTemplate;
-import com.kartoflane.spiresim.template.card.DefendCardTemplate;
-import com.kartoflane.spiresim.template.card.StrikeCardTemplate;
+import com.kartoflane.spiresim.template.entity.enemy.SlaverEntityTemplate;
+import com.kartoflane.spiresim.template.entity.player.WarriorEntityTemplate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -31,29 +29,15 @@ public class SimulationController implements StateController<SimulationState> {
     }
 
     private GameState buildNewGame(Random random) {
-        List<CardState> playerStartingDeck = Arrays.asList(
-                StateFactory.build(StrikeCardTemplate.getInstance()),
-                StateFactory.build(StrikeCardTemplate.getInstance()),
-                StateFactory.build(StrikeCardTemplate.getInstance()),
-                StateFactory.build(DefendCardTemplate.getInstance()),
-                StateFactory.build(DefendCardTemplate.getInstance()),
-                StateFactory.build(DefendCardTemplate.getInstance()),
-                StateFactory.build(BashCardTemplate.getInstance())
-        );
-        EntityState playerEntity = new EntityState(playerStartingDeck, "Player", 70);
+        EntityState playerEntity = StateFactory.build(WarriorEntityTemplate.getInstance());
 
         return new GameState(random, playerEntity);
     }
 
     private EncounterState buildNewEncounter() {
-        List<EntityState> enemyEntities = new ArrayList<>();
-        List<CardState> enemyStartingDeck = Arrays.asList(
-                StateFactory.build(StrikeCardTemplate.getInstance()),
-                StateFactory.build(StrikeCardTemplate.getInstance()),
-                StateFactory.build(DefendCardTemplate.getInstance())
+        List<EntityState> enemyEntities = Arrays.asList(
+                StateFactory.build(SlaverEntityTemplate.getInstance())
         );
-        EntityState enemyEntity = new EntityState(enemyStartingDeck, "Enemy", 25);
-        enemyEntities.add(enemyEntity);
 
         return new EncounterState(enemyEntities);
     }

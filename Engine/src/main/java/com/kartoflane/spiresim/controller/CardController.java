@@ -2,7 +2,7 @@ package com.kartoflane.spiresim.controller;
 
 import com.kartoflane.spiresim.controller.targeting.TargetingController;
 import com.kartoflane.spiresim.state.CardState;
-import com.kartoflane.spiresim.template.CardTemplate;
+import com.kartoflane.spiresim.template.card.CardTemplate;
 
 import java.util.List;
 
