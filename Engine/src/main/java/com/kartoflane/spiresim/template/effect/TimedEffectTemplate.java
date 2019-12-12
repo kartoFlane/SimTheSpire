@@ -19,7 +19,7 @@ public abstract class TimedEffectTemplate<S extends TimedEffectState> implements
             effectState.setStacks(effectState.getStacks() - 1);
 
             if (effectState.getStacks() == 0) {
-                target.removeEffect(encounterController, getEffectIdentifier());
+                target.removeEffect(encounterController, effectState);
             }
         }
     }

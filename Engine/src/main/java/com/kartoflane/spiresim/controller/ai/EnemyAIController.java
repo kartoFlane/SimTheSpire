@@ -40,7 +40,7 @@ public class EnemyAIController implements AIController {
         }
     }
 
-    private boolean processCard(GameController game, EncounterController encounter, EntityController caster, CardController card) {
+    private boolean processCard(GameController game, EncounterController encounter, EntityController caster, CardController<?, ?> card) {
         TargetingResult targetingResult = card.getTargetingController().selectTargets(game, encounter, this);
         if (targetingResult.getType().isValidTarget()) {
             caster.playCard(encounter, card, targetingResult.getTargets());
