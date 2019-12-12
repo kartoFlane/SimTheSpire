@@ -67,7 +67,6 @@ public class StrikeCardTemplate implements CardTemplate<StrikeCardState> {
     @Override
     public void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, StrikeCardState cardState) {
         EntityController target = targets.get(0);
-        System.out.printf("%s uses %s on %s!%n", caster.getState().getName(), cardState.getName(), target.getState().getName());
         target.applyDamage(encounterController, caster.buildOutgoingAttackValue(encounterController, cardState.getAttackValue()));
     }
 

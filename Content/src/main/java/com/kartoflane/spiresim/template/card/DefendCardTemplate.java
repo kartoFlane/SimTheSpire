@@ -66,7 +66,6 @@ public class DefendCardTemplate implements CardTemplate<DefendCardState> {
 
     @Override
     public void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, DefendCardState cardState) {
-        System.out.printf("%s uses %s!%n", caster.getState().getName(), cardState.getName());
         caster.applyArmor(encounterController, caster.buildArmorValue(encounterController, cardState.getDefenseValue()));
     }
 
