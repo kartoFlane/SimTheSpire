@@ -41,6 +41,12 @@ public class CardController<T extends CardTemplate<S>, S extends CardState> impl
     }
 
     public void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets) {
+        if (targets.size() == 1) {
+            System.out.printf("  %s plays %s on %s!%n", caster.getState().getName(), state.getName(), targets.get(0).getState().getName());
+        } else {
+            System.out.printf("  %s plays %s!%n", caster.getState().getName(), state.getName());
+        }
+
         template.onPlay(encounterController, caster, targets, state);
     }
 
