@@ -1,6 +1,6 @@
 package com.kartoflane.spiresim.controller;
 
-import com.kartoflane.spiresim.state.EffectState;
+import com.kartoflane.spiresim.state.effect.EffectState;
 import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 import com.kartoflane.spiresim.template.effect.EffectTemplate;
 import com.kartoflane.spiresim.template.effect.EffectUpdateEvent;
@@ -22,8 +22,8 @@ public class EffectController<T extends EffectTemplate<S>, S extends EffectState
         return this.state;
     }
 
-    public void onApply(EncounterController encounterController, EntityController target) {
-        template.onApply(encounterController, target, state);
+    public void onApply(EncounterController encounterController, EntityController target, S newInstance) {
+        template.onApply(encounterController, target, state, newInstance);
     }
 
     public void onRemove(EncounterController encounterController, EntityController target) {
@@ -55,11 +55,6 @@ public class EffectController<T extends EffectTemplate<S>, S extends EffectState
 
     public void onTurnEnd(EncounterController encounterController, EntityController target) {
         template.onUpdate(encounterController, target, state, EffectUpdateEvent.StandardEffectUpdateEvents.TURN_END);
-
-        state.setStackCounter(state.getStackCounter() - 1);
-        if (state.getStackCounter() <= 0) {
-            target.removeEffect(encounterController, state.getEffectIdentifier());
-        }
     }
 
     public void onCardDraw(EncounterController encounterController, EntityController target, CardController<?, ?> drawnCard) {

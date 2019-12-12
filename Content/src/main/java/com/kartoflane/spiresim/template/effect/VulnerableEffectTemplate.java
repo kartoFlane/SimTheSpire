@@ -5,7 +5,7 @@ import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.MutableCombatValue;
 import com.kartoflane.spiresim.state.effect.VulnerableEffectState;
 
-public class VulnerableEffectTemplate implements EffectTemplate<VulnerableEffectState> {
+public class VulnerableEffectTemplate extends TimedEffectTemplate<VulnerableEffectState> {
 
     private static VulnerableEffectTemplate INSTANCE;
 
@@ -19,6 +19,11 @@ public class VulnerableEffectTemplate implements EffectTemplate<VulnerableEffect
     }
 
     @Override
+    public Class<VulnerableEffectState> getStateType() {
+        return VulnerableEffectState.class;
+    }
+
+    @Override
     public EffectIdentifier getEffectIdentifier() {
         return EffectIdentifier.EffectIdentifiers.DAMAGE_RECEIVED_INCREASE;
     }
@@ -28,13 +33,13 @@ public class VulnerableEffectTemplate implements EffectTemplate<VulnerableEffect
         return "Vulnerable";
     }
 
-    @Override
-    public Class<VulnerableEffectState> getStateType() {
-        return VulnerableEffectState.class;
+    public double getModifier() {
+        return 1.5;
     }
 
     @Override
-    public void onApply(EncounterController encounterController, EntityController target, VulnerableEffectState effectState) {
+    public void onApply(EncounterController encounterController, EntityController target, VulnerableEffectState effectState, VulnerableEffectState newInstance) {
+        super.onApply(encounterController, target, effectState, newInstance);
     }
 
     @Override
@@ -43,6 +48,7 @@ public class VulnerableEffectTemplate implements EffectTemplate<VulnerableEffect
 
     @Override
     public void onUpdate(EncounterController encounterController, EntityController target, VulnerableEffectState effectState, EffectUpdateEvent updateEvent) {
+        super.onUpdate(encounterController, target, effectState, updateEvent);
     }
 
     @Override
@@ -54,7 +60,7 @@ public class VulnerableEffectTemplate implements EffectTemplate<VulnerableEffect
             EffectUpdateEvent updateEvent
     ) {
         if (updateEvent.equals(EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_INCOMING_DAMAGE)) {
-            mutableCombatValue.setAmount((int) (mutableCombatValue.getAmount() * 1.5));
+            mutableCombatValue.setAmount_Multiply(effectState.getModifier());
         }
     }
 }

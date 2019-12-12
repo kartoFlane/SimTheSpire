@@ -6,7 +6,7 @@ public abstract class TemplatableState {
 
     private final StateTemplate<? extends TemplatableState> template;
 
-    TemplatableState(StateTemplate<? extends TemplatableState> template) {
+    protected TemplatableState(StateTemplate<? extends TemplatableState> template) {
         this.template = template;
     }
 

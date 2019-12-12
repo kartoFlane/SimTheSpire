@@ -5,6 +5,7 @@ import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
 import com.kartoflane.spiresim.state.StateFactory;
 import com.kartoflane.spiresim.state.card.AmplifyCardState;
+import com.kartoflane.spiresim.state.effect.VulnerableEffectState;
 import com.kartoflane.spiresim.template.effect.VulnerableEffectTemplate;
 
 import java.util.List;
@@ -51,6 +52,10 @@ public class BashCardTemplate implements CardTemplate<AmplifyCardState> {
         return 8;
     }
 
+    public int getStartingStacks() {
+        return 1;
+    }
+
     @Override
     public void onDiscard(EncounterController encounterController, EntityController caster, AmplifyCardState cardState) {
 
@@ -72,7 +77,10 @@ public class BashCardTemplate implements CardTemplate<AmplifyCardState> {
         System.out.printf("%s uses %s on %s!%n", caster.getState().getName(), cardState.getName(), target.getState().getName());
 
         target.applyDamage(encounterController, caster.buildOutgoingAttackValue(encounterController, cardState.getAttackValue()));
-        target.applyEffect(encounterController, StateFactory.build(VulnerableEffectTemplate.getInstance()));
+
+        VulnerableEffectState effectState = StateFactory.build(VulnerableEffectTemplate.getInstance());
+        effectState.setStacks(cardState.getStartingStacks());
+        target.applyEffect(encounterController, effectState);
     }
 
     @Override

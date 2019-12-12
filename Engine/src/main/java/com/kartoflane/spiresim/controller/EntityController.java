@@ -2,9 +2,9 @@ package com.kartoflane.spiresim.controller;
 
 import com.kartoflane.spiresim.controller.ai.AIController;
 import com.kartoflane.spiresim.state.CardState;
-import com.kartoflane.spiresim.state.EffectState;
 import com.kartoflane.spiresim.state.EntityState;
 import com.kartoflane.spiresim.state.GameState;
+import com.kartoflane.spiresim.state.effect.EffectState;
 import com.kartoflane.spiresim.template.card.CardTemplate;
 import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 import com.kartoflane.spiresim.template.effect.EffectTemplate;
@@ -160,16 +160,14 @@ public class EntityController implements StateController<EntityState> {
                 .filter(effect -> effect.getEffectIdentifier().equals(effectIdentifier))
                 .findFirst();
 
-        EffectController<?, ?> effectController = null;
         if (existingEffect.isPresent()) {
-            effectController = getEffectController(existingEffect.get());
+            EffectController<EffectTemplate<EffectState>, EffectState> existingEffectController = getEffectController(existingEffect.get());
+            existingEffectController.onApply(encounterController, this, effectState);
         } else {
             this.state.getEffectsList().add(effectState);
             updateEffectControllersMap();
-            effectController = getEffectController(effectState);
+            getEffectController(effectState).onApply(encounterController, this, null);
         }
-
-        effectController.onApply(encounterController, this);
     }
 
     public void removeEffect(EncounterController encounterController, EffectIdentifier effectIdentifier) {
@@ -267,7 +265,7 @@ public class EntityController implements StateController<EntityState> {
     public MutableCombatValue buildOutgoingAttackValue(EncounterController encounterController, int amount) {
         return buildMutableCombatValue(
                 encounterController,
-                EffectIdentifier.EffectIdentifiers.DAMAGE_DEALT_INCREASE,
+                EffectIdentifier.EffectIdentifiers.DAMAGE_DEALT_DECREASE,
                 EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_OUTGOING_DAMAGE,
                 amount
         );

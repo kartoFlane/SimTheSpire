@@ -1,13 +1,13 @@
 package com.kartoflane.spiresim.state.effect;
 
-import com.kartoflane.spiresim.template.effect.VulnerableEffectTemplate;
+import com.kartoflane.spiresim.template.effect.WeakEffectTemplate;
 
-public class VulnerableEffectState extends TimedEffectState {
+public class WeakEffectState extends TimedEffectState {
 
     private double modifier;
 
 
-    public VulnerableEffectState(VulnerableEffectTemplate template) {
+    public WeakEffectState(WeakEffectTemplate template) {
         super(template);
 
         this.setModifier(template.getModifier());

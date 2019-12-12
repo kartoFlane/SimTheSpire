@@ -1,5 +1,6 @@
 package com.kartoflane.spiresim.state;
 
+import com.kartoflane.spiresim.state.effect.EffectState;
 import com.kartoflane.spiresim.template.entity.EntityTemplate;
 
 import java.util.ArrayList;

@@ -3,7 +3,7 @@ package com.kartoflane.spiresim.template.effect;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.MutableCombatValue;
-import com.kartoflane.spiresim.state.EffectState;
+import com.kartoflane.spiresim.state.effect.EffectState;
 import com.kartoflane.spiresim.template.StateTemplate;
 
 public interface EffectTemplate<S extends EffectState> extends StateTemplate<S> {
@@ -15,7 +15,7 @@ public interface EffectTemplate<S extends EffectState> extends StateTemplate<S> 
     /**
      * Actions to perform when the effect is first applied to an entity.
      */
-    void onApply(EncounterController encounterController, EntityController target, S effectState);
+    void onApply(EncounterController encounterController, EntityController target, S effectState, S newInstance);
 
     /**
      * Actions to perform when the effect is removed from the entity.
