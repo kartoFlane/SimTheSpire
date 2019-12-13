@@ -3,13 +3,13 @@ package com.kartoflane.spiresim.state.card;
 import com.kartoflane.spiresim.state.CardState;
 import com.kartoflane.spiresim.template.card.BashCardTemplate;
 
-public class AmplifyCardState extends CardState {
+public class BashCardState extends CardState {
 
     private int attackValue;
     private int startingStacks;
 
 
-    public AmplifyCardState(BashCardTemplate template) {
+    public BashCardState(BashCardTemplate template) {
         super(template);
 
         setAttackValue(template.getAttackValue());

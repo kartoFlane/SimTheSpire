@@ -211,10 +211,6 @@ public class EntityController implements StateController<EntityState> {
     }
 
     public void applyDamage(EncounterController encounterController, MutableCombatValue mutableCombatValue) {
-        if (mutableCombatValue.getAmount() < 0) {
-            return;
-        }
-
         iterateEffectsNonModifying(effectController -> effectController.preprocessCombatValue(
                 encounterController,
                 this,
@@ -234,12 +230,21 @@ public class EntityController implements StateController<EntityState> {
         mutableCombatValue.setAmount(unblockedAmount);
     }
 
-    public void applyHeal(MutableCombatValue mutableCombatValue) {
-        if (mutableCombatValue.getAmount() < 0) {
-            return;
-        }
+    public void applyHeal(EncounterController encounterController, MutableCombatValue mutableCombatValue) {
+        iterateEffectsNonModifying(effectController -> effectController.preprocessCombatValue(
+                encounterController,
+                this,
+                mutableCombatValue,
+                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_INCOMING_HEAL
+        ));
 
         this.state.setHealthCurrent(this.state.getHealthCurrent() + mutableCombatValue.getAmount());
+
+        iterateEffectsNonModifying(effectController -> effectController.onUpdate(
+                encounterController,
+                this,
+                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_INCOMING_HEAL
+        ));
     }
 
     public void applyArmor(EncounterController encounterController, MutableCombatValue mutableCombatValue) {
@@ -247,7 +252,7 @@ public class EntityController implements StateController<EntityState> {
                 encounterController,
                 this,
                 mutableCombatValue,
-                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_ARMOR
+                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_INCOMING_ARMOR
         ));
 
         this.state.setArmorCurrent(this.state.getArmorCurrent() + mutableCombatValue.getAmount());
@@ -255,7 +260,7 @@ public class EntityController implements StateController<EntityState> {
         iterateEffectsNonModifying(effectController -> effectController.onUpdate(
                 encounterController,
                 this,
-                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_ARMOR
+                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_INCOMING_ARMOR
         ));
     }
 
@@ -267,10 +272,18 @@ public class EntityController implements StateController<EntityState> {
         );
     }
 
-    public MutableCombatValue buildArmorValue(EncounterController encounterController, int amount) {
+    public MutableCombatValue buildOutgoingHealingValue(EncounterController encounterController, int amount) {
         return buildMutableCombatValue(
                 encounterController,
-                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_ARMOR,
+                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_OUTGOING_HEAL,
+                amount
+        );
+    }
+
+    public MutableCombatValue buildOutgoingArmorValue(EncounterController encounterController, int amount) {
+        return buildMutableCombatValue(
+                encounterController,
+                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_OUTGOING_ARMOR,
                 amount
         );
     }

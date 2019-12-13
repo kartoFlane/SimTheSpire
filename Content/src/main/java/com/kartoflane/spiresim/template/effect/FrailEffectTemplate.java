@@ -25,7 +25,7 @@ public class FrailEffectTemplate extends TimedEffectTemplate<FrailEffectState> {
 
     @Override
     public EffectIdentifier getEffectIdentifier() {
-        return EffectIdentifier.EffectIdentifiers.ARMOR_RECEIVED_REDUCE;
+        return EffectIdentifier.EffectIdentifiers.ARMOR_RECEIVED_REDUCTION;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class FrailEffectTemplate extends TimedEffectTemplate<FrailEffectState> {
             MutableCombatValue mutableCombatValue,
             EffectUpdateEvent updateEvent
     ) {
-        if (updateEvent.equals(EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_ARMOR)) {
+        if (updateEvent.equals(EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_INCOMING_ARMOR)) {
             mutableCombatValue.setAmount_Multiply(effectState.getModifier());
         }
     }
