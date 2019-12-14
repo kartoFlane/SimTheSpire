@@ -38,6 +38,7 @@ public class EntityController implements StateController<EntityState> {
 
     public void onTurnStart(EncounterController encounterController) {
         iterateEffects(effectController -> notifyEvent(encounterController, effectController::onTurnStart));
+        iterateCards(cardController -> notifyEvent(encounterController, cardController::onTurnStart));
         this.state.setEnergyCurrent(this.state.getEnergyMax());
         this.state.setArmorCurrent(0); // TODO armor retention
     }
@@ -45,6 +46,7 @@ public class EntityController implements StateController<EntityState> {
     public void onTurnEnd(EncounterController encounterController) {
         discardHand(encounterController);
         iterateEffects(effectController -> notifyEvent(encounterController, effectController::onTurnEnd));
+        iterateCards(cardController -> notifyEvent(encounterController, cardController::onTurnEnd));
     }
 
     public void simulateTurn(GameController gameController, EncounterController encounterController) {
@@ -186,6 +188,12 @@ public class EntityController implements StateController<EntityState> {
 
     private void iterateEffects(Consumer<EffectController<?, ?>> consumer) {
         List<EffectController<?, ?>> modifiableView = new ArrayList<>(this.effectStateToControllerMap.values());
+        modifiableView.forEach(consumer);
+        modifiableView.clear();
+    }
+
+    private void iterateCards(Consumer<CardController<?, ?>> consumer) {
+        List<CardController<?, ?>> modifiableView = new ArrayList<>(this.cardStateToControllerMap.values());
         modifiableView.forEach(consumer);
         modifiableView.clear();
     }

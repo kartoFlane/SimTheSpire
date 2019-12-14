@@ -1,6 +1,7 @@
 package com.kartoflane.spiresim.controller;
 
 import com.kartoflane.spiresim.controller.ai.EnemyAIController;
+import com.kartoflane.spiresim.report.EncounterSummary;
 import com.kartoflane.spiresim.state.EncounterState;
 import com.kartoflane.spiresim.state.EntityState;
 
@@ -37,12 +38,17 @@ public class EncounterController implements StateController<EncounterState> {
     public void onEncounterStart(GameController gameController) {
     }
 
-    public void simulateEncounter(GameController gameController) {
+    public EncounterSummary simulateEncounter(GameController gameController) {
+        int turns = 0;
         while (isEncounterInProgress(gameController)) {
+            ++turns;
             executeEntityTurn(gameController, gameController.getPlayerController());
 
             processEnemyControllers(gameController);
         }
+
+        return new EncounterSummary()
+                .withTurns(turns);
     }
 
     public boolean isEncounterInProgress(GameController gameController) {
