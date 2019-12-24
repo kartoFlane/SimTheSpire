@@ -39,16 +39,15 @@ public class EncounterController implements StateController<EncounterState> {
     }
 
     public EncounterSummary simulateEncounter(GameController gameController) {
-        int turns = 0;
         while (isEncounterInProgress(gameController)) {
-            ++turns;
+            state.setTurnCount(state.getTurnCount() + 1);
             executeEntityTurn(gameController, gameController.getPlayerController());
 
             processEnemyControllers(gameController);
         }
 
         return new EncounterSummary()
-                .withTurns(turns);
+                .withTurns(state.getTurnCount());
     }
 
     public boolean isEncounterInProgress(GameController gameController) {
