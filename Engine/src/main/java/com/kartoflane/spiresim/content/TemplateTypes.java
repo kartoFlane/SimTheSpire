@@ -4,10 +4,11 @@ import com.kartoflane.spiresim.state.CardState;
 import com.kartoflane.spiresim.state.EntityState;
 import com.kartoflane.spiresim.state.TemplatableState;
 import com.kartoflane.spiresim.state.effect.EffectState;
-import com.kartoflane.spiresim.state.effect.TimedEffectState;
+import com.kartoflane.spiresim.state.effect.StackingEffectState;
 import com.kartoflane.spiresim.template.StateTemplate;
 import com.kartoflane.spiresim.template.card.CardTemplate;
 import com.kartoflane.spiresim.template.effect.EffectTemplate;
+import com.kartoflane.spiresim.template.effect.StackingEffectTemplate;
 import com.kartoflane.spiresim.template.effect.TimedEffectTemplate;
 import com.kartoflane.spiresim.template.entity.EntityTemplate;
 
@@ -16,7 +17,8 @@ import javax.lang.model.type.TypeMirror;
 
 enum TemplateTypes {
     CARD(CardState.class, CardTemplate.class),
-    EFFECT_TIMED(TimedEffectState.class, TimedEffectTemplate.class),
+    EFFECT_TIMED(StackingEffectState.class, TimedEffectTemplate.class),
+    EFFECT_STACKING(StackingEffectState.class, StackingEffectTemplate.class),
     EFFECT(EffectState.class, EffectTemplate.class),
     ENTITY(EntityState.class, EntityTemplate.class);
 

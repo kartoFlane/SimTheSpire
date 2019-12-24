@@ -2,9 +2,14 @@ package com.kartoflane.spiresim.template.effect;
 
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
-import com.kartoflane.spiresim.state.effect.TimedEffectState;
+import com.kartoflane.spiresim.state.effect.StackingEffectState;
 
-public abstract class TimedEffectTemplate<S extends TimedEffectState> extends EffectTemplate<S> {
+/**
+ * A template class representing a stackable effect (a buff or debuff) that can be applied to an entity.
+ * Multiple applications of the same effect wil increase the number of stacks, amplifying the effect.
+ * The effect decays each turn, and is eventually removed once the stack counter reaches zero.
+ */
+public abstract class TimedEffectTemplate<S extends StackingEffectState> extends EffectTemplate<S> {
 
     @Override
     public void onApply(EncounterController encounterController, EntityController target, S effectState, S newInstance) {
