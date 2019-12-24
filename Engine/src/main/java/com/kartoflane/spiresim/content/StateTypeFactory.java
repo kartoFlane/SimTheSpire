@@ -91,6 +91,7 @@ public class StateTypeFactory {
      * - have no annotations <br/>
      * - take no arguments <br/>
      * - return something other than void or the template object
+     * - have a name starting with 'get'
      */
     private List<ExecutableElement> getCustomAttributeMethods(TypeElement templateElement) {
         final TypeMirror voidType = typeMirrorHelper.getTypeMirror(TypeKind.VOID);
