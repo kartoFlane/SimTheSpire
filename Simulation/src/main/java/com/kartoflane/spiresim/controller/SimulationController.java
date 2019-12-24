@@ -9,6 +9,7 @@ import com.kartoflane.spiresim.template.entity.player.WarriorEntityTemplate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class SimulationController implements StateController<SimulationState> {
 
@@ -48,10 +49,12 @@ public class SimulationController implements StateController<SimulationState> {
         System.out.printf("Average encounters: %.2f%n", state.getPlaythroughSummaryList().stream()
                 .mapToInt(playthroughSummary -> playthroughSummary.getEncounterSummaries().size())
                 .average().orElse(0));
-        System.out.printf("Median encounters: %s%n", state.getPlaythroughSummaryList().stream()
-                .mapToInt(playthroughSummary -> playthroughSummary.getEncounterSummaries().size())
-                .sorted().skip(state.getPlaythroughSummaryList().size() / 2)
-                .findFirst().orElse(0));
+        System.out.printf("Median encounters: %s%n", computeMedian(
+                state.getPlaythroughSummaryList().stream()
+                        .map(playthroughSummary -> playthroughSummary.getEncounterSummaries().size())
+                        .sorted()
+                        .collect(Collectors.toList())
+        ));
 
         System.out.println();
         System.out.printf("Min turns: %s%n", state.getPlaythroughSummaryList().stream()
@@ -66,11 +69,13 @@ public class SimulationController implements StateController<SimulationState> {
                 .flatMap(playthroughSummary -> playthroughSummary.getEncounterSummaries().stream())
                 .mapToInt(EncounterSummary::getTurns)
                 .average().orElse(0));
-        System.out.printf("Median turns: %s%n", state.getPlaythroughSummaryList().stream()
-                .flatMap(playthroughSummary -> playthroughSummary.getEncounterSummaries().stream())
-                .mapToInt(EncounterSummary::getTurns)
-                .sorted().skip(encountersTotal / 2)
-                .findFirst().orElse(0));
+        System.out.printf("Median turns: %.2f%n", computeMedian(
+                state.getPlaythroughSummaryList().stream()
+                        .flatMap(playthroughSummary -> playthroughSummary.getEncounterSummaries().stream())
+                        .map(EncounterSummary::getTurns)
+                        .sorted()
+                        .collect(Collectors.toList())
+        ));
     }
 
     private GameState buildNewGame(Random random) {
@@ -85,5 +90,17 @@ public class SimulationController implements StateController<SimulationState> {
         );
 
         return new EncounterState(enemyEntities);
+    }
+
+    private double computeMedian(List<Integer> sortedSamplesList) {
+        final int halfIndex = sortedSamplesList.size() / 2;
+
+        if (sortedSamplesList.size() % 2 == 1) {
+            return sortedSamplesList.get(halfIndex);
+        } else {
+            int lower = sortedSamplesList.get(halfIndex - 1);
+            int upper = sortedSamplesList.get(halfIndex);
+            return (lower + upper) / 2.0;
+        }
     }
 }
