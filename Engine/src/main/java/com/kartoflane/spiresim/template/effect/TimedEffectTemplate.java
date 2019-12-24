@@ -4,7 +4,7 @@ import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.state.effect.TimedEffectState;
 
-public abstract class TimedEffectTemplate<S extends TimedEffectState> implements EffectTemplate<S> {
+public abstract class TimedEffectTemplate<S extends TimedEffectState> extends EffectTemplate<S> {
 
     @Override
     public void onApply(EncounterController encounterController, EntityController target, S effectState, S newInstance) {

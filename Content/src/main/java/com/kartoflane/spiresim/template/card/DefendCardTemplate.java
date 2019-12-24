@@ -7,7 +7,7 @@ import com.kartoflane.spiresim.state.card.DefendCardState;
 
 import java.util.List;
 
-public class DefendCardTemplate implements CardTemplate<DefendCardState> {
+public class DefendCardTemplate extends CardTemplate<DefendCardState> {
 
     private static DefendCardTemplate INSTANCE;
 

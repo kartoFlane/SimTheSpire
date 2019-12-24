@@ -7,7 +7,7 @@ import com.kartoflane.spiresim.state.card.StrikeCardState;
 
 import java.util.List;
 
-public class StrikeCardTemplate implements CardTemplate<StrikeCardState> {
+public class StrikeCardTemplate extends CardTemplate<StrikeCardState> {
 
     private static StrikeCardTemplate INSTANCE;
 
@@ -50,33 +50,33 @@ public class StrikeCardTemplate implements CardTemplate<StrikeCardState> {
     }
 
     @Override
-    public void onDiscard(EncounterController encounterController, EntityController caster, StrikeCardState cardState) {
+    public void onDiscard(EncounterController encounterController, EntityController caster, StrikeCardState state) {
 
     }
 
     @Override
-    public void onExhaust(EncounterController encounterController, EntityController caster, StrikeCardState cardState) {
+    public void onExhaust(EncounterController encounterController, EntityController caster, StrikeCardState state) {
 
     }
 
     @Override
-    public void onRetain(EncounterController encounterController, EntityController caster, StrikeCardState cardState) {
+    public void onRetain(EncounterController encounterController, EntityController caster, StrikeCardState state) {
 
     }
 
     @Override
-    public void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, StrikeCardState cardState) {
+    public void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, StrikeCardState state) {
         EntityController target = targets.get(0);
-        target.applyDamage(encounterController, caster.buildOutgoingAttackValue(encounterController, cardState.getAttackValue()));
+        target.applyDamage(encounterController, caster.buildOutgoingAttackValue(encounterController, state.getAttackValue()));
     }
 
     @Override
-    public void onTurnStart(EncounterController encounterController, EntityController caster, StrikeCardState cardState) {
+    public void onTurnStart(EncounterController encounterController, EntityController caster, StrikeCardState state) {
 
     }
 
     @Override
-    public void onTurnEnd(EncounterController encounterController, EntityController caster, StrikeCardState cardState) {
+    public void onTurnEnd(EncounterController encounterController, EntityController caster, StrikeCardState state) {
 
     }
 }

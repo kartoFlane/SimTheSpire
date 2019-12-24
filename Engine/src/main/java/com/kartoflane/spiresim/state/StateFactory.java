@@ -8,6 +8,9 @@ import java.util.Optional;
 
 public class StateFactory {
 
+    private StateFactory() {
+    }
+
     @SuppressWarnings("unchecked")
     public static <T extends StateTemplate<S>, S extends TemplatableState> S build(T template) {
         try {

@@ -5,6 +5,7 @@ import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.MutableCombatValue;
 import com.kartoflane.spiresim.state.effect.FrailEffectState;
 
+
 public class FrailEffectTemplate extends TimedEffectTemplate<FrailEffectState> {
 
     private static FrailEffectTemplate INSTANCE;

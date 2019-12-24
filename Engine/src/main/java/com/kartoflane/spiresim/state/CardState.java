@@ -1,6 +1,8 @@
 package com.kartoflane.spiresim.state;
 
+import com.kartoflane.spiresim.controller.targeting.TargetingType;
 import com.kartoflane.spiresim.template.card.CardTemplate;
+import com.kartoflane.spiresim.template.card.CardType;
 
 public abstract class CardState extends TemplatableState {
 
@@ -12,6 +14,19 @@ public abstract class CardState extends TemplatableState {
         super(template);
         this.setName(template.getName());
         this.setCost(template.getCost());
+    }
+
+    @Override
+    public CardTemplate<? extends CardState> getTemplate() {
+        return (CardTemplate<? extends CardState>) super.getTemplate();
+    }
+
+    public TargetingType getTargetingType() {
+        return getTemplate().getTargetingType();
+    }
+
+    public CardType getCardType() {
+        return getTemplate().getCardType();
     }
 
     public String getName() {

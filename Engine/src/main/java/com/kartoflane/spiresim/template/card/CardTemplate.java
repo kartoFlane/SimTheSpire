@@ -8,43 +8,43 @@ import com.kartoflane.spiresim.template.StateTemplate;
 
 import java.util.List;
 
-public interface CardTemplate<S extends CardState> extends StateTemplate<S> {
+public abstract class CardTemplate<S extends CardState> implements StateTemplate<S> {
 
-    TargetingType getTargetingType();
+    public abstract TargetingType getTargetingType();
 
-    String getName();
+    public abstract CardType getCardType();
 
-    int getCost();
+    public abstract String getName();
 
-    CardType getCardType();
+    public abstract int getCost();
 
     /**
      * Actions to execute when the card is discarded from hand before end of turn.
      */
-    void onDiscard(EncounterController encounterController, EntityController caster, S cardState);
+    public abstract void onDiscard(EncounterController encounterController, EntityController caster, S state);
 
     /**
      * Actions to execute when the card is exhausted.
      */
-    void onExhaust(EncounterController encounterController, EntityController caster, S cardState);
+    public abstract void onExhaust(EncounterController encounterController, EntityController caster, S state);
 
     /**
      * Actions to execute when the card is retained in hand at the end of the turn.
      */
-    void onRetain(EncounterController encounterController, EntityController caster, S cardState);
+    public abstract void onRetain(EncounterController encounterController, EntityController caster, S state);
 
     /**
      * Actions to execute when the card is played
      */
-    void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, S cardState);
+    public abstract void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, S state);
 
     /**
      * Actions to execute at the start of turn.
      */
-    void onTurnStart(EncounterController encounterController, EntityController caster, S cardState);
+    public abstract void onTurnStart(EncounterController encounterController, EntityController caster, S state);
 
     /**
      * Actions to execute at the end of turn.
      */
-    void onTurnEnd(EncounterController encounterController, EntityController caster, S cardState);
+    public abstract void onTurnEnd(EncounterController encounterController, EntityController caster, S state);
 }

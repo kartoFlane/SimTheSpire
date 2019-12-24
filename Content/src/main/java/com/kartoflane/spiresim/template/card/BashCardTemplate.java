@@ -1,5 +1,6 @@
 package com.kartoflane.spiresim.template.card;
 
+import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
@@ -10,7 +11,8 @@ import com.kartoflane.spiresim.template.effect.VulnerableEffectTemplate;
 
 import java.util.List;
 
-public class BashCardTemplate implements CardTemplate<BashCardState> {
+@DeriveState
+public class BashCardTemplate extends CardTemplate<BashCardState> {
 
     private static BashCardTemplate INSTANCE;
 

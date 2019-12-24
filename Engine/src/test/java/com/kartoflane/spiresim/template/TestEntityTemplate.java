@@ -8,7 +8,7 @@ import com.kartoflane.spiresim.template.entity.EntityTemplate;
 import java.util.Collections;
 import java.util.List;
 
-public class TestEntityTemplate implements EntityTemplate<EntityState> {
+public class TestEntityTemplate extends EntityTemplate<EntityState> {
     private static TestEntityTemplate INSTANCE;
 
 

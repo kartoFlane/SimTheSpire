@@ -7,12 +7,13 @@ import com.kartoflane.spiresim.template.card.CardTemplate;
 
 import java.util.List;
 
-public interface EntityTemplate<S extends EntityState> extends StateTemplate<S> {
-    String getName();
+public abstract class EntityTemplate<S extends EntityState> implements StateTemplate<S> {
 
-    int getHealth();
+    public abstract String getName();
 
-    int getEnergy();
+    public abstract int getHealth();
 
-    List<CardTemplate<? extends CardState>> getStartingDeck();
+    public abstract int getEnergy();
+
+    public abstract List<CardTemplate<? extends CardState>> getStartingDeck();
 }

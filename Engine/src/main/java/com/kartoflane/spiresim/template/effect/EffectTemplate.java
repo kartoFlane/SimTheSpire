@@ -6,28 +6,28 @@ import com.kartoflane.spiresim.controller.MutableCombatValue;
 import com.kartoflane.spiresim.state.effect.EffectState;
 import com.kartoflane.spiresim.template.StateTemplate;
 
-public interface EffectTemplate<S extends EffectState> extends StateTemplate<S> {
+public abstract class EffectTemplate<S extends EffectState> implements StateTemplate<S> {
 
-    EffectIdentifier getEffectIdentifier();
+    public abstract EffectIdentifier getEffectIdentifier();
 
-    String getName();
+    public abstract String getName();
 
     /**
      * Actions to perform when the effect is first applied to an entity.
      */
-    void onApply(EncounterController encounterController, EntityController target, S effectState, S newInstance);
+    public abstract void onApply(EncounterController encounterController, EntityController target, S effectState, S newInstance);
 
     /**
      * Actions to perform when the effect is removed from the entity.
      */
-    void onRemove(EncounterController encounterController, EntityController target, S effectState);
+    public abstract void onRemove(EncounterController encounterController, EntityController target, S effectState);
 
     /**
      * Actions to perform during update steps.
      */
-    void onUpdate(EncounterController encounterController, EntityController target, S effectState, EffectUpdateEvent updateEvent);
+    public abstract void onUpdate(EncounterController encounterController, EntityController target, S effectState, EffectUpdateEvent updateEvent);
 
-    void preprocessCombatValue(
+    public abstract void preprocessCombatValue(
             EncounterController encounterController,
             EntityController target,
             S effectState,
