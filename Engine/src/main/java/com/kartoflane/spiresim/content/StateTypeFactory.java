@@ -1,22 +1,16 @@
 package com.kartoflane.spiresim.content;
 
-import com.kartoflane.spiresim.state.CardState;
-import com.kartoflane.spiresim.state.EntityState;
-import com.kartoflane.spiresim.state.effect.EffectState;
-import com.kartoflane.spiresim.template.card.CardTemplate;
-import com.kartoflane.spiresim.template.effect.EffectTemplate;
-import com.kartoflane.spiresim.template.entity.EntityTemplate;
+import com.kartoflane.spiresim.template.StateTemplate;
 import com.kartoflane.spiresim.util.StringUtils;
 import com.squareup.javapoet.*;
 
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,37 +20,31 @@ public class StateTypeFactory {
 
     private static final String CONSTRUCTOR_PARAMETER_NAME = "template";
 
-
-    private final Types types;
-
-    private final TypeMirror cardTemplateElement;
-    private final TypeMirror effectTemplateElement;
-    private final TypeMirror entityTemplateElement;
+    private final TypeMirrorHelper typeMirrorHelper;
 
 
-    public StateTypeFactory(Types types, Elements elements) {
-        this.types = types;
-
-        this.cardTemplateElement = getErasure(elements, types, CardTemplate.class);
-        this.effectTemplateElement = getErasure(elements, types, EffectTemplate.class);
-        this.entityTemplateElement = getErasure(elements, types, EntityTemplate.class);
-    }
-
-    private TypeMirror getErasure(Elements elements, Types types, Class<?> clazz) {
-        return types.erasure(elements.getTypeElement(clazz.getCanonicalName()).asType());
+    public StateTypeFactory(ProcessingEnvironment processingEnvironment) {
+        this.typeMirrorHelper = new TypeMirrorHelper(processingEnvironment);
     }
 
     public JavaFile deriveState(TypeElement templateElement) {
-        TypeSpec.Builder typeSpecBuilder = setupTypeSpec(templateElement);
+        validate(templateElement);
 
+        TypeSpec.Builder typeSpecBuilder = setupTypeSpec(templateElement);
         processMethods(typeSpecBuilder, templateElement);
 
         return JavaFile.builder(getPackagePath(templateElement), typeSpecBuilder.build()).build();
     }
 
+    private void validate(TypeElement templateElement) {
+        if (!TemplateTypes.isTemplateType(typeMirrorHelper, templateElement)) {
+            throw new IllegalArgumentException("This element does not implement interface " + StateTemplate.class.getCanonicalName());
+        }
+    }
+
     private TypeSpec.Builder setupTypeSpec(TypeElement templateElement) {
         TypeSpec.Builder builder = prepareTypeSpec(templateElement);
-        return prepareTemplateTypeSpec(builder, templateElement);
+        return addDerivedSuperclass(builder, templateElement);
     }
 
     private TypeSpec.Builder prepareTypeSpec(TypeElement templateElement) {
@@ -74,28 +62,9 @@ public class StateTypeFactory {
                 );
     }
 
-    private TypeSpec.Builder prepareTemplateTypeSpec(TypeSpec.Builder builder, TypeElement templateElement) {
-        if (types.isAssignable(templateElement.asType(), cardTemplateElement)) {
-            return prepareCardTypeSpec(builder);
-        } else if (types.isAssignable(templateElement.asType(), effectTemplateElement)) {
-            return prepareEffectTypeSpec(builder);
-        } else if (types.isAssignable(templateElement.asType(), entityTemplateElement)) {
-            return prepareEntityTypeSpec(builder);
-        } else {
-            throw new IllegalArgumentException("Unknown template type: " + templateElement);
-        }
-    }
-
-    private TypeSpec.Builder prepareCardTypeSpec(TypeSpec.Builder builder) {
-        return builder.superclass(CardState.class);
-    }
-
-    private TypeSpec.Builder prepareEffectTypeSpec(TypeSpec.Builder builder) {
-        return builder.superclass(EffectState.class);
-    }
-
-    private TypeSpec.Builder prepareEntityTypeSpec(TypeSpec.Builder builder) {
-        return builder.superclass(EntityState.class);
+    private TypeSpec.Builder addDerivedSuperclass(TypeSpec.Builder builder, TypeElement templateElement) {
+        TemplateTypes templateType = TemplateTypes.valueOf(typeMirrorHelper, templateElement);
+        return builder.superclass(templateType.getStateClass());
     }
 
     private void processMethods(TypeSpec.Builder builder, TypeElement templateElement) {
@@ -124,15 +93,15 @@ public class StateTypeFactory {
      * - return something other than void or the template object
      */
     private List<ExecutableElement> getCustomAttributeMethods(TypeElement templateElement) {
-        final TypeMirror voidType = types.getNoType(TypeKind.VOID);
+        final TypeMirror voidType = typeMirrorHelper.getTypeMirror(TypeKind.VOID);
 
         return templateElement.getEnclosedElements().stream()
                 .filter(enclosedElement -> enclosedElement.getKind() == ElementKind.METHOD)
                 .map(enclosedElement -> (ExecutableElement) enclosedElement)
                 .filter(methodElement -> methodElement.getAnnotationMirrors().size() == 0)
                 .filter(methodElement -> methodElement.getParameters().size() == 0)
-                .filter(methodElement -> !types.isSameType(methodElement.getReturnType(), voidType))
-                .filter(methodElement -> !types.isAssignable(templateElement.asType(), methodElement.getReturnType()))
+                .filter(methodElement -> !typeMirrorHelper.isAssignable(methodElement.getReturnType(), voidType))
+                .filter(methodElement -> !typeMirrorHelper.isAssignable(templateElement.asType(), methodElement.getReturnType()))
                 .filter(methodElement -> methodElement.getSimpleName().toString().startsWith("get"))
                 .collect(Collectors.toList());
     }
