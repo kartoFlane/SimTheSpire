@@ -16,8 +16,8 @@ import javax.lang.model.type.TypeMirror;
 
 enum TemplateTypes {
     CARD(CardState.class, CardTemplate.class),
-    EFFECT(EffectState.class, EffectTemplate.class),
     EFFECT_TIMED(TimedEffectState.class, TimedEffectTemplate.class),
+    EFFECT(EffectState.class, EffectTemplate.class),
     ENTITY(EntityState.class, EntityTemplate.class);
 
     private Class<? extends TemplatableState> stateClass;
