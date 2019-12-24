@@ -1,12 +1,14 @@
 package com.kartoflane.spiresim.template.card;
 
+import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
-import com.kartoflane.spiresim.state.card.StrikeCardState;
+import com.kartoflane.spiresim.content.state.card.StrikeCardState;
 
 import java.util.List;
 
+@DeriveState
 public class StrikeCardTemplate extends CardTemplate<StrikeCardState> {
 
     private static StrikeCardTemplate INSTANCE;

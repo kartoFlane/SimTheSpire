@@ -1,11 +1,13 @@
 package com.kartoflane.spiresim.template.effect;
 
+import com.kartoflane.spiresim.content.annotation.DeriveState;
+import com.kartoflane.spiresim.content.state.effect.FrailEffectState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.MutableCombatValue;
-import com.kartoflane.spiresim.state.effect.FrailEffectState;
 
 
+@DeriveState
 public class FrailEffectTemplate extends TimedEffectTemplate<FrailEffectState> {
 
     private static FrailEffectTemplate INSTANCE;

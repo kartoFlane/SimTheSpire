@@ -1,10 +1,12 @@
 package com.kartoflane.spiresim.template.effect;
 
+import com.kartoflane.spiresim.content.annotation.DeriveState;
+import com.kartoflane.spiresim.content.state.effect.WeakEffectState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.MutableCombatValue;
-import com.kartoflane.spiresim.state.effect.WeakEffectState;
 
+@DeriveState
 public class WeakEffectTemplate extends TimedEffectTemplate<WeakEffectState> {
 
     private static WeakEffectTemplate INSTANCE;
