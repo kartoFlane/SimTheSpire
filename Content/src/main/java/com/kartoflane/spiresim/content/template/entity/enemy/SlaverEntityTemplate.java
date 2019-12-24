@@ -1,10 +1,10 @@
-package com.kartoflane.spiresim.template.entity.enemy;
+package com.kartoflane.spiresim.content.template.entity.enemy;
 
+import com.kartoflane.spiresim.content.template.card.StrikeCardTemplate;
 import com.kartoflane.spiresim.state.CardState;
 import com.kartoflane.spiresim.state.EntityState;
 import com.kartoflane.spiresim.template.card.CardTemplate;
-import com.kartoflane.spiresim.template.card.DefendCardTemplate;
-import com.kartoflane.spiresim.template.card.StrikeCardTemplate;
+import com.kartoflane.spiresim.content.template.card.DefendCardTemplate;
 import com.kartoflane.spiresim.template.entity.EnemyEntityTemplate;
 
 import java.util.Arrays;

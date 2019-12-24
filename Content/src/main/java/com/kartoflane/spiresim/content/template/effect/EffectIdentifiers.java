@@ -1,4 +1,6 @@
-package com.kartoflane.spiresim.template.effect;
+package com.kartoflane.spiresim.content.template.effect;
+
+import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 
 enum EffectIdentifiers implements EffectIdentifier {
     INCOMING_ARMOR_INCREASE_FLAT("INCOMING_ARMOR_INCREASE_FLAT"),

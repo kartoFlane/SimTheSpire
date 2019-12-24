@@ -3,8 +3,8 @@ package com.kartoflane.spiresim.controller;
 import com.kartoflane.spiresim.report.EncounterSummary;
 import com.kartoflane.spiresim.report.PlaythroughSummary;
 import com.kartoflane.spiresim.state.*;
-import com.kartoflane.spiresim.template.entity.enemy.SlaverEntityTemplate;
-import com.kartoflane.spiresim.template.entity.player.WarriorEntityTemplate;
+import com.kartoflane.spiresim.content.template.entity.enemy.SlaverEntityTemplate;
+import com.kartoflane.spiresim.content.template.entity.player.WarriorEntityTemplate;
 
 import java.util.Arrays;
 import java.util.List;

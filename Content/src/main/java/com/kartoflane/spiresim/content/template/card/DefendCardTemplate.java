@@ -1,10 +1,12 @@
-package com.kartoflane.spiresim.template.card;
+package com.kartoflane.spiresim.content.template.card;
 
 import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
 import com.kartoflane.spiresim.content.state.card.DefendCardState;
+import com.kartoflane.spiresim.template.card.CardTemplate;
+import com.kartoflane.spiresim.template.card.CardType;
 
 import java.util.List;
 
