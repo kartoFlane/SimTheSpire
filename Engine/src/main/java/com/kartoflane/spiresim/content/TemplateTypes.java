@@ -16,23 +16,30 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
 enum TemplateTypes {
-    CARD(CardState.class, CardTemplate.class),
-    EFFECT_TIMED(StackingEffectState.class, TimedEffectTemplate.class),
-    EFFECT_STACKING(StackingEffectState.class, StackingEffectTemplate.class),
-    EFFECT(EffectState.class, EffectTemplate.class),
-    ENTITY(EntityState.class, EntityTemplate.class);
+    CARD(CardState.class, CardTemplate.class, "card"),
+    EFFECT_TIMED(StackingEffectState.class, TimedEffectTemplate.class, "effect"),
+    EFFECT_STACKING(StackingEffectState.class, StackingEffectTemplate.class, "effect"),
+    EFFECT(EffectState.class, EffectTemplate.class, "effect"),
+    ENTITY(EntityState.class, EntityTemplate.class, "entity");
+
 
     private Class<? extends TemplatableState> stateClass;
     private Class<? extends StateTemplate> templateClass;
+    private String packageName;
 
 
-    TemplateTypes(Class<? extends TemplatableState> stateClass, Class<? extends StateTemplate> templateClass) {
+    TemplateTypes(Class<? extends TemplatableState> stateClass, Class<? extends StateTemplate> templateClass, String packageName) {
         this.stateClass = stateClass;
         this.templateClass = templateClass;
+        this.packageName = packageName;
     }
 
     public Class<? extends TemplatableState> getStateClass() {
         return this.stateClass;
+    }
+
+    public String getPackageName() {
+        return this.packageName;
     }
 
     public boolean isAssignableFrom(TypeMirrorHelper helper, TypeElement templateElement) {

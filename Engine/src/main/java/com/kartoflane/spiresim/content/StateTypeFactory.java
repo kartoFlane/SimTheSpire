@@ -134,10 +134,14 @@ public class StateTypeFactory {
     }
 
     private String getPackagePath(TypeElement templateElement) {
-        String typePackage = templateElement.getQualifiedName().toString()
-                .replaceAll("\\.[^.]+$", "")
-                .replaceAll("^.+?(?=\\.[^.]+?$)", "");
+        TemplateTypes templateType = TemplateTypes.valueOf(typeMirrorHelper, templateElement);
+        String packagePath = BASE_OUTPUT_PACKAGE + "." + templateType.getPackageName();
 
-        return BASE_OUTPUT_PACKAGE + typePackage;
+        String subPackages = templateElement.getQualifiedName().toString()
+                .replaceAll("\\.[^.]+$", "")
+                .replaceAll("^.+?\\." + templateType.getPackageName(), "");
+        packagePath += subPackages;
+
+        return packagePath;
     }
 }
