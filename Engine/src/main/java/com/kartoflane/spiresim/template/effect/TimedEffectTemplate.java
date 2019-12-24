@@ -20,7 +20,7 @@ public abstract class TimedEffectTemplate<S extends StackingEffectState> extends
 
     @Override
     public void onUpdate(EncounterController encounterController, EntityController target, S effectState, EffectUpdateEvent updateEvent) {
-        if (updateEvent == EffectUpdateEvent.StandardEffectUpdateEvents.TURN_END) {
+        if (updateEvent.isEqual(StandardEffectUpdateEvents.TURN_END)) {
             effectState.setStacks(effectState.getStacks() - 1);
 
             if (effectState.getStacks() == 0) {

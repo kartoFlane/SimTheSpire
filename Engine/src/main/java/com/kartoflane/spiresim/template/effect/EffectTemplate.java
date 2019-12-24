@@ -1,8 +1,9 @@
 package com.kartoflane.spiresim.template.effect;
 
+import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
-import com.kartoflane.spiresim.controller.MutableCombatValue;
+import com.kartoflane.spiresim.combat.MutableCombatValue;
 import com.kartoflane.spiresim.state.effect.EffectState;
 import com.kartoflane.spiresim.template.StateTemplate;
 
@@ -32,6 +33,6 @@ public abstract class EffectTemplate<S extends EffectState> implements StateTemp
             EntityController target,
             S effectState,
             MutableCombatValue mutableCombatValue,
-            EffectUpdateEvent updateEvent
+            MutableCombatValueEvent updateEvent
     );
 }

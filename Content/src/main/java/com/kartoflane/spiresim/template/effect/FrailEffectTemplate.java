@@ -1,10 +1,12 @@
 package com.kartoflane.spiresim.template.effect;
 
+import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
+import com.kartoflane.spiresim.combat.MutableCombatValueEvents;
 import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.content.state.effect.FrailEffectState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
-import com.kartoflane.spiresim.controller.MutableCombatValue;
+import com.kartoflane.spiresim.combat.MutableCombatValue;
 
 
 @DeriveState
@@ -28,7 +30,7 @@ public class FrailEffectTemplate extends TimedEffectTemplate<FrailEffectState> {
 
     @Override
     public EffectIdentifier getEffectIdentifier() {
-        return EffectIdentifier.EffectIdentifiers.ARMOR_RECEIVED_REDUCTION;
+        return EffectIdentifiers.INCOMING_ARMOR_DECREASE_PERCENT;
     }
 
     @Override
@@ -60,9 +62,9 @@ public class FrailEffectTemplate extends TimedEffectTemplate<FrailEffectState> {
             EntityController target,
             FrailEffectState effectState,
             MutableCombatValue mutableCombatValue,
-            EffectUpdateEvent updateEvent
+            MutableCombatValueEvent updateEvent
     ) {
-        if (updateEvent.equals(EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_INCOMING_ARMOR)) {
+        if (updateEvent.isEqual(MutableCombatValueEvents.ENTITY_INCOMING_ARMOR_PERCENT)) {
             mutableCombatValue.setAmount_Multiply(effectState.getModifier());
         }
     }

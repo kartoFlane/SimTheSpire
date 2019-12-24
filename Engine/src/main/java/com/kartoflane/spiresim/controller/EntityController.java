@@ -1,14 +1,15 @@
 package com.kartoflane.spiresim.controller;
 
+import com.kartoflane.spiresim.combat.MutableCombatValue;
+import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
+import com.kartoflane.spiresim.combat.MutableCombatValueEvents;
 import com.kartoflane.spiresim.controller.ai.AIController;
 import com.kartoflane.spiresim.state.CardState;
 import com.kartoflane.spiresim.state.EntityState;
 import com.kartoflane.spiresim.state.GameState;
 import com.kartoflane.spiresim.state.effect.EffectState;
 import com.kartoflane.spiresim.template.card.CardTemplate;
-import com.kartoflane.spiresim.template.effect.EffectIdentifier;
-import com.kartoflane.spiresim.template.effect.EffectTemplate;
-import com.kartoflane.spiresim.template.effect.EffectUpdateEvent;
+import com.kartoflane.spiresim.template.effect.*;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -158,7 +159,7 @@ public class EntityController implements StateController<EntityState> {
         final EffectIdentifier effectIdentifier = effectState.getEffectIdentifier();
 
         Optional<EffectState> existingEffect = this.state.getEffectsList().stream()
-                .filter(effect -> effect.getEffectIdentifier().equals(effectIdentifier))
+                .filter(effect -> effect.getEffectIdentifier().isEqual(effectIdentifier))
                 .findFirst();
 
         if (existingEffect.isPresent()) {
@@ -173,7 +174,7 @@ public class EntityController implements StateController<EntityState> {
 
     public void removeEffect(EncounterController encounterController, EffectIdentifier effectIdentifier) {
         Optional<EffectState> existingEffect = this.state.getEffectsList().stream()
-                .filter(effect -> effect.getEffectIdentifier().equals(effectIdentifier))
+                .filter(effect -> effect.getEffectIdentifier().isEqual(effectIdentifier))
                 .findFirst();
 
         existingEffect.ifPresent(effectState -> removeEffect(encounterController, effectState));
@@ -198,10 +199,6 @@ public class EntityController implements StateController<EntityState> {
         modifiableView.clear();
     }
 
-    private void iterateEffectsNonModifying(Consumer<EffectController<?, ?>> consumer) {
-        this.effectStateToControllerMap.values().forEach(consumer);
-    }
-
     private void notifyEvent(EncounterController encounterController, BiConsumer<EncounterController, EntityController> consumer) {
         consumer.accept(encounterController, this);
     }
@@ -219,17 +216,22 @@ public class EntityController implements StateController<EntityState> {
     }
 
     public void applyDamage(EncounterController encounterController, MutableCombatValue mutableCombatValue) {
-        iterateEffectsNonModifying(effectController -> effectController.preprocessCombatValue(
+        notifyEffectsForCombatValue(
                 encounterController,
                 this,
                 mutableCombatValue,
-                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_INCOMING_DAMAGE
-        ));
+                MutableCombatValueEvents.ENTITY_INCOMING_DAMAGE_FLAT,
+                MutableCombatValueEvents.ENTITY_INCOMING_DAMAGE_PERCENT
+        );
 
         calculateDamageAfterBlock(mutableCombatValue);
         this.state.setHealthCurrent(this.state.getHealthCurrent() - mutableCombatValue.getAmount());
 
-        System.out.printf("%s takes %s damage!%n", state.getName(), mutableCombatValue.getAmount());
+        iterateEffectsNonModifying(effectController -> effectController.onUpdate(
+                encounterController,
+                this,
+                StandardEffectUpdateEvents.ENTITY_INCOMING_DAMAGE
+        ));
     }
 
     private void calculateDamageAfterBlock(MutableCombatValue mutableCombatValue) {
@@ -239,74 +241,94 @@ public class EntityController implements StateController<EntityState> {
     }
 
     public void applyHeal(EncounterController encounterController, MutableCombatValue mutableCombatValue) {
-        iterateEffectsNonModifying(effectController -> effectController.preprocessCombatValue(
+        notifyEffectsForCombatValue(
                 encounterController,
                 this,
                 mutableCombatValue,
-                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_INCOMING_HEAL
-        ));
+                MutableCombatValueEvents.ENTITY_INCOMING_HEAL_FLAT,
+                MutableCombatValueEvents.ENTITY_INCOMING_HEAL_PERCENT
+        );
 
         this.state.setHealthCurrent(this.state.getHealthCurrent() + mutableCombatValue.getAmount());
 
         iterateEffectsNonModifying(effectController -> effectController.onUpdate(
                 encounterController,
                 this,
-                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_INCOMING_HEAL
+                StandardEffectUpdateEvents.ENTITY_INCOMING_HEAL
         ));
     }
 
     public void applyArmor(EncounterController encounterController, MutableCombatValue mutableCombatValue) {
-        iterateEffectsNonModifying(effectController -> effectController.preprocessCombatValue(
+        notifyEffectsForCombatValue(
                 encounterController,
                 this,
                 mutableCombatValue,
-                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_INCOMING_ARMOR
-        ));
+                MutableCombatValueEvents.ENTITY_INCOMING_ARMOR_FLAT,
+                MutableCombatValueEvents.ENTITY_INCOMING_ARMOR_PERCENT
+        );
 
         this.state.setArmorCurrent(this.state.getArmorCurrent() + mutableCombatValue.getAmount());
 
         iterateEffectsNonModifying(effectController -> effectController.onUpdate(
                 encounterController,
                 this,
-                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_INCOMING_ARMOR
+                StandardEffectUpdateEvents.ENTITY_INCOMING_ARMOR
         ));
     }
 
     public MutableCombatValue buildOutgoingAttackValue(EncounterController encounterController, int amount) {
         return buildMutableCombatValue(
                 encounterController,
-                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_OUTGOING_DAMAGE,
-                amount
+                amount,
+                MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_FLAT,
+                MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_PERCENT
         );
     }
 
     public MutableCombatValue buildOutgoingHealingValue(EncounterController encounterController, int amount) {
         return buildMutableCombatValue(
                 encounterController,
-                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_OUTGOING_HEAL,
-                amount
+                amount,
+                MutableCombatValueEvents.ENTITY_OUTGOING_HEAL_FLAT,
+                MutableCombatValueEvents.ENTITY_OUTGOING_HEAL_PERCENT
         );
     }
 
     public MutableCombatValue buildOutgoingArmorValue(EncounterController encounterController, int amount) {
         return buildMutableCombatValue(
                 encounterController,
-                EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_OUTGOING_ARMOR,
-                amount
+                amount,
+                MutableCombatValueEvents.ENTITY_OUTGOING_ARMOR_FLAT,
+                MutableCombatValueEvents.ENTITY_OUTGOING_ARMOR_PERCENT
         );
     }
 
-    public MutableCombatValue buildMutableCombatValue(EncounterController encounterController, EffectUpdateEvent updateEvent, int amount) {
+    public MutableCombatValue buildMutableCombatValue(EncounterController encounterController, int amount, MutableCombatValueEvent... updateEvents) {
         MutableCombatValue mutableCombatValue = new MutableCombatValue();
         mutableCombatValue.setAmount(amount);
 
-        iterateEffectsNonModifying(effectController -> effectController.preprocessCombatValue(
-                encounterController,
-                this,
-                mutableCombatValue,
-                updateEvent
-        ));
+        notifyEffectsForCombatValue(encounterController, this, mutableCombatValue, updateEvents);
 
         return mutableCombatValue;
+    }
+
+    private void notifyEffectsForCombatValue(
+            EncounterController encounterController,
+            EntityController target,
+            MutableCombatValue mutableCombatValue,
+            MutableCombatValueEvent... updateEvents
+    ) {
+        for (MutableCombatValueEvent updateEvent : updateEvents) {
+            iterateEffectsNonModifying(effectController -> effectController.preprocessCombatValue(
+                    encounterController,
+                    target,
+                    mutableCombatValue,
+                    updateEvent
+            ));
+        }
+    }
+
+    private void iterateEffectsNonModifying(Consumer<EffectController<?, ?>> consumer) {
+        this.effectStateToControllerMap.values().forEach(consumer);
     }
 }

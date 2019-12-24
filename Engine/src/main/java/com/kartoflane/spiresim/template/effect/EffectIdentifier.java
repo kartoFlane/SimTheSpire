@@ -1,30 +1,12 @@
 package com.kartoflane.spiresim.template.effect;
 
 public interface EffectIdentifier {
-    String getEffectIdentifier();
+    String getIdentifier();
 
-
-    enum EffectIdentifiers implements EffectIdentifier {
-        ARMOR_RECEIVED_REDUCTION("ARMOR_RECEIVED_REDUCTION"),
-        ARMOR_GRANTED_REDUCTION("ARMOR_GRANTED_REDUCTION"),
-        DAMAGE_RECEIVED_INCREASE("DAMAGE_RECEIVED_INCREASE"),
-        DAMAGE_DEALT_DECREASE("DAMAGE_DEALT_DECREASE");
-
-
-        private String identifier;
-
-
-        EffectIdentifiers(String identifier) {
-            this.identifier = identifier;
-        }
-
-        @Override
-        public String getEffectIdentifier() {
-            return this.identifier;
-        }
-
-        public static EffectIdentifiers identifierFor(String identifier) {
-            return EffectIdentifiers.valueOf(identifier);
-        }
+    default boolean isEqual(Object o) {
+        if (o == null) return false;
+        if (!(o instanceof EffectIdentifier)) return false;
+        EffectIdentifier other = (EffectIdentifier) o;
+        return this.getIdentifier().equals(other.getIdentifier());
     }
 }

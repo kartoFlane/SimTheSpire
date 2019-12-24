@@ -1,5 +1,6 @@
 package com.kartoflane.spiresim.controller;
 
+import com.kartoflane.spiresim.combat.MutableCombatValue;
 import com.kartoflane.spiresim.controller.ai.EnemyAIController;
 import com.kartoflane.spiresim.state.EncounterState;
 import com.kartoflane.spiresim.state.EntityState;

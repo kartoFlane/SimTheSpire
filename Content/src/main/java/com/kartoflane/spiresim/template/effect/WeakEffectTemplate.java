@@ -1,10 +1,12 @@
 package com.kartoflane.spiresim.template.effect;
 
+import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
+import com.kartoflane.spiresim.combat.MutableCombatValueEvents;
 import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.content.state.effect.WeakEffectState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
-import com.kartoflane.spiresim.controller.MutableCombatValue;
+import com.kartoflane.spiresim.combat.MutableCombatValue;
 
 @DeriveState
 public class WeakEffectTemplate extends TimedEffectTemplate<WeakEffectState> {
@@ -27,7 +29,7 @@ public class WeakEffectTemplate extends TimedEffectTemplate<WeakEffectState> {
 
     @Override
     public EffectIdentifier getEffectIdentifier() {
-        return EffectIdentifier.EffectIdentifiers.DAMAGE_DEALT_DECREASE;
+        return EffectIdentifiers.OUTGOING_DAMAGE_DECREASE_PERCENT;
     }
 
     @Override
@@ -59,9 +61,9 @@ public class WeakEffectTemplate extends TimedEffectTemplate<WeakEffectState> {
             EntityController target,
             WeakEffectState effectState,
             MutableCombatValue mutableCombatValue,
-            EffectUpdateEvent updateEvent
+            MutableCombatValueEvent updateEvent
     ) {
-        if (updateEvent.equals(EffectUpdateEvent.StandardEffectUpdateEvents.ENTITY_OUTGOING_DAMAGE)) {
+        if (updateEvent.isEqual(MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_PERCENT)) {
             mutableCombatValue.setAmount_Multiply(effectState.getModifier());
         }
     }

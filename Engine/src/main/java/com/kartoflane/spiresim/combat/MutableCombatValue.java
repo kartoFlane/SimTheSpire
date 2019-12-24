@@ -1,4 +1,4 @@
-package com.kartoflane.spiresim.controller;
+package com.kartoflane.spiresim.combat;
 
 public class MutableCombatValue {
     private int amount;
