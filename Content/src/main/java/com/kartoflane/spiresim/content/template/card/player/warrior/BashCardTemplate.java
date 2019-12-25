@@ -3,19 +3,14 @@ package com.kartoflane.spiresim.content.template.card.player.warrior;
 import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.content.state.card.player.warrior.BashCardState;
 import com.kartoflane.spiresim.content.state.effect.common.VulnerableEffectState;
+import com.kartoflane.spiresim.content.template.card.base.SimpleAttackCardTemplate;
 import com.kartoflane.spiresim.content.template.effect.common.VulnerableEffectTemplate;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
-import com.kartoflane.spiresim.controller.targeting.TargetingType;
 import com.kartoflane.spiresim.state.StateFactory;
-import com.kartoflane.spiresim.state.entity.CardPileType;
-import com.kartoflane.spiresim.template.card.CardTemplate;
-import com.kartoflane.spiresim.template.card.CardType;
-
-import java.util.List;
 
 @DeriveState
-public class BashCardTemplate extends CardTemplate<BashCardState> {
+public class BashCardTemplate extends SimpleAttackCardTemplate<BashCardState> {
 
     private static BashCardTemplate INSTANCE;
 
@@ -34,18 +29,8 @@ public class BashCardTemplate extends CardTemplate<BashCardState> {
     }
 
     @Override
-    public TargetingType getTargetingType() {
-        return TargetingType.SINGLE;
-    }
-
-    @Override
     public String getName() {
         return "Bash";
-    }
-
-    @Override
-    public CardType getCardType() {
-        return CardType.ATTACK;
     }
 
     @Override
@@ -53,6 +38,7 @@ public class BashCardTemplate extends CardTemplate<BashCardState> {
         return 2;
     }
 
+    @Override
     public int getAttackValue() {
         return 8;
     }
@@ -62,40 +48,9 @@ public class BashCardTemplate extends CardTemplate<BashCardState> {
     }
 
     @Override
-    public void onDiscard(EncounterController encounterController, EntityController caster, BashCardState cardState) {
-
-    }
-
-    @Override
-    public void onExhaust(EncounterController encounterController, EntityController caster, BashCardState cardState) {
-
-    }
-
-    @Override
-    public void onRetain(EncounterController encounterController, EntityController caster, BashCardState cardState) {
-
-    }
-
-    @Override
-    public CardPileType onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, BashCardState cardState) {
-        EntityController target = targets.get(0);
-
-        target.applyDamage(encounterController, caster.buildOutgoingAttackValue(encounterController, cardState.getAttackValue()));
-
+    public void onPlay(EncounterController encounterController, EntityController caster, EntityController target, BashCardState cardState) {
         VulnerableEffectState effectState = StateFactory.build(VulnerableEffectTemplate.getInstance());
         effectState.setStacks(cardState.getStartingStacks());
         target.applyEffect(encounterController, effectState);
-
-        return CardPileType.DISCARD;
-    }
-
-    @Override
-    public void onTurnStart(EncounterController encounterController, EntityController caster, BashCardState cardState) {
-
-    }
-
-    @Override
-    public void onTurnEnd(EncounterController encounterController, EntityController caster, BashCardState cardState) {
-
     }
 }
