@@ -15,6 +15,7 @@ import com.kartoflane.spiresim.template.effect.EffectTemplate;
 import com.kartoflane.spiresim.template.effect.StandardEffectUpdateEvents;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -23,8 +24,8 @@ public class EntityController implements StateController<EntityState> {
 
     private final EntityState state;
     private final AIController aiController;
-    private final Map<CardState, CardController<?, ?>> cardStateToControllerMap = new HashMap<>();
-    private final Map<EffectState, EffectController<?, ?>> effectStateToControllerMap = new HashMap<>();
+    private final Map<CardState, CardController<?, ?>> cardStateToControllerMap = new ConcurrentHashMap<>();
+    private final Map<EffectState, EffectController<?, ?>> effectStateToControllerMap = new ConcurrentHashMap<>();
 
 
     public EntityController(EntityState state, AIController aiController) {
@@ -200,15 +201,11 @@ public class EntityController implements StateController<EntityState> {
     }
 
     private void iterateEffects(Consumer<EffectController<?, ?>> consumer) {
-        List<EffectController<?, ?>> modifiableView = new ArrayList<>(this.effectStateToControllerMap.values());
-        modifiableView.forEach(consumer);
-        modifiableView.clear();
+        this.effectStateToControllerMap.values().forEach(consumer);
     }
 
     private void iterateCards(Consumer<CardController<?, ?>> consumer) {
-        List<CardController<?, ?>> modifiableView = new ArrayList<>(this.cardStateToControllerMap.values());
-        modifiableView.forEach(consumer);
-        modifiableView.clear();
+        this.cardStateToControllerMap.values().forEach(consumer);
     }
 
     private void notifyEvent(EncounterController encounterController, BiConsumer<EncounterController, EntityController> consumer) {
@@ -239,7 +236,7 @@ public class EntityController implements StateController<EntityState> {
         calculateDamageAfterBlock(mutableCombatValue);
         this.state.setHealthCurrent(this.state.getHealthCurrent() - mutableCombatValue.getAmount());
 
-        iterateEffectsNonModifying(effectController -> effectController.onUpdate(
+        iterateEffects(effectController -> effectController.onUpdate(
                 encounterController,
                 this,
                 StandardEffectUpdateEvents.ENTITY_INCOMING_DAMAGE
@@ -263,7 +260,7 @@ public class EntityController implements StateController<EntityState> {
 
         this.state.setHealthCurrent(this.state.getHealthCurrent() + mutableCombatValue.getAmount());
 
-        iterateEffectsNonModifying(effectController -> effectController.onUpdate(
+        iterateEffects(effectController -> effectController.onUpdate(
                 encounterController,
                 this,
                 StandardEffectUpdateEvents.ENTITY_INCOMING_HEAL
@@ -281,7 +278,7 @@ public class EntityController implements StateController<EntityState> {
 
         this.state.setArmorCurrent(this.state.getArmorCurrent() + mutableCombatValue.getAmount());
 
-        iterateEffectsNonModifying(effectController -> effectController.onUpdate(
+        iterateEffects(effectController -> effectController.onUpdate(
                 encounterController,
                 this,
                 StandardEffectUpdateEvents.ENTITY_INCOMING_ARMOR
@@ -331,16 +328,12 @@ public class EntityController implements StateController<EntityState> {
             MutableCombatValueEvent... updateEvents
     ) {
         for (MutableCombatValueEvent updateEvent : updateEvents) {
-            iterateEffectsNonModifying(effectController -> effectController.preprocessCombatValue(
+            iterateEffects(effectController -> effectController.preprocessCombatValue(
                     encounterController,
                     target,
                     mutableCombatValue,
                     updateEvent
             ));
         }
-    }
-
-    private void iterateEffectsNonModifying(Consumer<EffectController<?, ?>> consumer) {
-        this.effectStateToControllerMap.values().forEach(consumer);
     }
 }
