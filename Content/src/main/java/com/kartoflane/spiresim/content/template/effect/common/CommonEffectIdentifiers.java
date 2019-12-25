@@ -1,8 +1,8 @@
-package com.kartoflane.spiresim.content.template.effect;
+package com.kartoflane.spiresim.content.template.effect.common;
 
 import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 
-enum EffectIdentifiers implements EffectIdentifier {
+enum CommonEffectIdentifiers implements EffectIdentifier {
     INCOMING_ARMOR_INCREASE_FLAT("INCOMING_ARMOR_INCREASE_FLAT"),
     INCOMING_ARMOR_INCREASE_PERCENT("INCOMING_ARMOR_INCREASE_PERCENT"),
     INCOMING_ARMOR_DECREASE_FLAT("INCOMING_ARMOR_DECREASE_FLAT"),
@@ -19,7 +19,7 @@ enum EffectIdentifiers implements EffectIdentifier {
     private String identifier;
 
 
-    EffectIdentifiers(String identifier) {
+    CommonEffectIdentifiers(String identifier) {
         this.identifier = identifier;
     }
 
@@ -28,7 +28,7 @@ enum EffectIdentifiers implements EffectIdentifier {
         return this.identifier;
     }
 
-    public static EffectIdentifiers identifierFor(String identifier) {
-        return EffectIdentifiers.valueOf(identifier);
+    public static CommonEffectIdentifiers identifierFor(String identifier) {
+        return CommonEffectIdentifiers.valueOf(identifier);
     }
 }

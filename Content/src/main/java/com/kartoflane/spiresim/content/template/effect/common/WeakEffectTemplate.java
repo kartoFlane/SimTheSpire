@@ -1,9 +1,9 @@
-package com.kartoflane.spiresim.content.template.effect;
+package com.kartoflane.spiresim.content.template.effect.common;
 
 import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
 import com.kartoflane.spiresim.combat.MutableCombatValueEvents;
 import com.kartoflane.spiresim.content.annotation.DeriveState;
-import com.kartoflane.spiresim.content.state.effect.WeakEffectState;
+import com.kartoflane.spiresim.content.state.effect.common.WeakEffectState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.combat.MutableCombatValue;
@@ -32,7 +32,7 @@ public class WeakEffectTemplate extends TimedEffectTemplate<WeakEffectState> {
 
     @Override
     public EffectIdentifier getEffectIdentifier() {
-        return EffectIdentifiers.OUTGOING_DAMAGE_DECREASE_PERCENT;
+        return CommonEffectIdentifiers.OUTGOING_DAMAGE_DECREASE_PERCENT;
     }
 
     @Override

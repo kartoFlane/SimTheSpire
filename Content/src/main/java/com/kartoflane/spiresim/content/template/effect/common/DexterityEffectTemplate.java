@@ -1,9 +1,9 @@
-package com.kartoflane.spiresim.content.template.effect;
+package com.kartoflane.spiresim.content.template.effect.common;
 
 import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
 import com.kartoflane.spiresim.combat.MutableCombatValueEvents;
 import com.kartoflane.spiresim.content.annotation.DeriveState;
-import com.kartoflane.spiresim.content.state.effect.DexterityEffectState;
+import com.kartoflane.spiresim.content.state.effect.common.DexterityEffectState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.combat.MutableCombatValue;
@@ -31,7 +31,7 @@ public class DexterityEffectTemplate extends StackingEffectTemplate<DexterityEff
 
     @Override
     public EffectIdentifier getEffectIdentifier() {
-        return EffectIdentifiers.INCOMING_ARMOR_INCREASE_FLAT;
+        return CommonEffectIdentifiers.INCOMING_ARMOR_INCREASE_FLAT;
     }
 
     @Override

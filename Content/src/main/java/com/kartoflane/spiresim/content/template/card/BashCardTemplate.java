@@ -2,14 +2,14 @@ package com.kartoflane.spiresim.content.template.card;
 
 import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.content.state.card.BashCardState;
-import com.kartoflane.spiresim.content.state.effect.VulnerableEffectState;
+import com.kartoflane.spiresim.content.state.effect.common.VulnerableEffectState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
 import com.kartoflane.spiresim.state.StateFactory;
 import com.kartoflane.spiresim.template.card.CardTemplate;
 import com.kartoflane.spiresim.template.card.CardType;
-import com.kartoflane.spiresim.content.template.effect.VulnerableEffectTemplate;
+import com.kartoflane.spiresim.content.template.effect.common.VulnerableEffectTemplate;
 
 import java.util.List;
 

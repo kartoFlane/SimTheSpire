@@ -1,60 +1,61 @@
-package com.kartoflane.spiresim.content.template.effect;
+package com.kartoflane.spiresim.content.template.effect.common;
 
 import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
+import com.kartoflane.spiresim.combat.MutableCombatValueEvents;
 import com.kartoflane.spiresim.content.annotation.DeriveState;
-import com.kartoflane.spiresim.content.state.effect.VulnerableEffectState;
+import com.kartoflane.spiresim.content.state.effect.common.FrailEffectState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.combat.MutableCombatValue;
 import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 import com.kartoflane.spiresim.template.effect.EffectUpdateEvent;
-import com.kartoflane.spiresim.template.effect.StandardEffectUpdateEvents;
 import com.kartoflane.spiresim.template.effect.TimedEffectTemplate;
 
+
 @DeriveState
-public class VulnerableEffectTemplate extends TimedEffectTemplate<VulnerableEffectState> {
+public class FrailEffectTemplate extends TimedEffectTemplate<FrailEffectState> {
 
-    private static VulnerableEffectTemplate INSTANCE;
+    private static FrailEffectTemplate INSTANCE;
 
 
-    public static VulnerableEffectTemplate getInstance() {
+    public static FrailEffectTemplate getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new VulnerableEffectTemplate();
+            INSTANCE = new FrailEffectTemplate();
         }
 
         return INSTANCE;
     }
 
     @Override
-    public Class<VulnerableEffectState> getStateType() {
-        return VulnerableEffectState.class;
+    public Class<FrailEffectState> getStateType() {
+        return FrailEffectState.class;
     }
 
     @Override
     public EffectIdentifier getEffectIdentifier() {
-        return EffectIdentifiers.INCOMING_DAMAGE_INCREASE_PERCENT;
+        return CommonEffectIdentifiers.INCOMING_ARMOR_DECREASE_PERCENT;
     }
 
     @Override
     public String getName() {
-        return "Vulnerable";
+        return "Frail";
     }
 
     public double getModifier() {
-        return 1.5;
+        return 0.5;
     }
 
     @Override
-    public void onApply(EncounterController encounterController, EntityController target, VulnerableEffectState effectState, VulnerableEffectState newInstance) {
+    public void onApply(EncounterController encounterController, EntityController target, FrailEffectState effectState, FrailEffectState newInstance) {
         super.onApply(encounterController, target, effectState, newInstance);
     }
 
     @Override
-    public void onRemove(EncounterController encounterController, EntityController target, VulnerableEffectState effectState) {
+    public void onRemove(EncounterController encounterController, EntityController target, FrailEffectState effectState) {
     }
 
     @Override
-    public void onUpdate(EncounterController encounterController, EntityController target, VulnerableEffectState effectState, EffectUpdateEvent updateEvent) {
+    public void onUpdate(EncounterController encounterController, EntityController target, FrailEffectState effectState, EffectUpdateEvent updateEvent) {
         super.onUpdate(encounterController, target, effectState, updateEvent);
     }
 
@@ -62,11 +63,11 @@ public class VulnerableEffectTemplate extends TimedEffectTemplate<VulnerableEffe
     public void preprocessCombatValue(
             EncounterController encounterController,
             EntityController target,
-            VulnerableEffectState effectState,
+            FrailEffectState effectState,
             MutableCombatValue mutableCombatValue,
             MutableCombatValueEvent updateEvent
     ) {
-        if (updateEvent.isEqual(StandardEffectUpdateEvents.ENTITY_INCOMING_DAMAGE)) {
+        if (updateEvent.isEqual(MutableCombatValueEvents.ENTITY_INCOMING_ARMOR_PERCENT)) {
             mutableCombatValue.setAmount_Multiply(effectState.getModifier());
         }
     }
