@@ -32,8 +32,7 @@ public class StateFactory {
 
             return constructor$.get().newInstance(template);
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
