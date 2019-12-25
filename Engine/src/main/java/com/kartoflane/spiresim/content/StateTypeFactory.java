@@ -1,14 +1,12 @@
 package com.kartoflane.spiresim.content;
 
+import com.kartoflane.spiresim.state.TemplatableState;
 import com.kartoflane.spiresim.template.StateTemplate;
 import com.kartoflane.spiresim.util.StringUtils;
 import com.squareup.javapoet.*;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.util.List;
@@ -63,8 +61,30 @@ public class StateTypeFactory {
     }
 
     private TypeSpec.Builder addDerivedSuperclass(TypeSpec.Builder builder, TypeElement templateElement) {
-        TemplateTypes templateType = TemplateTypes.valueOf(typeMirrorHelper, templateElement);
-        return builder.superclass(templateType.getStateClass());
+        TypeName superTypeName = deriveSuperclass(typeMirrorHelper, templateElement);
+        return builder.superclass(superTypeName);
+    }
+
+    private TypeName deriveSuperclass(TypeMirrorHelper helper, TypeElement templateElement) {
+        TypeElement superTypeElement = (TypeElement) helper.asElement(templateElement.getSuperclass());
+        List<? extends TypeParameterElement> typeParameters = superTypeElement.getTypeParameters();
+
+        TypeMirror templatableStateMirror = helper.getTypeMirror(TemplatableState.class);
+        for (TypeParameterElement typeParameter : typeParameters) {
+            for (TypeMirror boundsType : typeParameter.getBounds()) {
+                if (helper.isAssignable(boundsType, templatableStateMirror)) {
+                    if (boundsType.getKind() != TypeKind.DECLARED) {
+                        // Generated state class, need to provide path manually
+                        return ClassName.get(getPackagePath(superTypeElement), boundsType.toString());
+                    } else {
+                        // Predefined state class, resolved automatically
+                        return ClassName.get(boundsType);
+                    }
+                }
+            }
+        }
+
+        throw new IllegalArgumentException("This template's type parameters do not match the expected bounds.");
     }
 
     private void processMethods(TypeSpec.Builder builder, TypeElement templateElement) {

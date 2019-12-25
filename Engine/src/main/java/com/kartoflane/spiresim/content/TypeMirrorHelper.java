@@ -1,6 +1,7 @@
 package com.kartoflane.spiresim.content;
 
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
@@ -19,6 +20,10 @@ class TypeMirrorHelper {
         this.types = processingEnvironment.getTypeUtils();
         this.elements = processingEnvironment.getElementUtils();
         this.typeMirrorMap = new HashMap<>();
+    }
+
+    public Element asElement(TypeMirror typeMirror) {
+        return this.types.asElement(typeMirror);
     }
 
     public TypeMirror getErasure(Class<?> clazz) {
@@ -69,9 +74,5 @@ class TypeMirrorHelper {
 
     public boolean isAssignable(TypeMirror from, TypeMirror to) {
         return types.isAssignable(from, to);
-    }
-
-    public boolean isAssignable(TypeMirror from, Class<?> to) {
-        return types.isAssignable(from, getTypeMirror(to));
     }
 }

@@ -1,10 +1,5 @@
 package com.kartoflane.spiresim.content;
 
-import com.kartoflane.spiresim.state.CardState;
-import com.kartoflane.spiresim.state.entity.EntityState;
-import com.kartoflane.spiresim.state.TemplatableState;
-import com.kartoflane.spiresim.state.effect.EffectState;
-import com.kartoflane.spiresim.state.effect.StackingEffectState;
 import com.kartoflane.spiresim.template.StateTemplate;
 import com.kartoflane.spiresim.template.card.CardTemplate;
 import com.kartoflane.spiresim.template.effect.EffectTemplate;
@@ -16,26 +11,20 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 
 enum TemplateTypes {
-    CARD(CardState.class, CardTemplate.class, "card"),
-    EFFECT_TIMED(StackingEffectState.class, TimedEffectTemplate.class, "effect"),
-    EFFECT_STACKING(StackingEffectState.class, StackingEffectTemplate.class, "effect"),
-    EFFECT(EffectState.class, EffectTemplate.class, "effect"),
-    ENTITY(EntityState.class, EntityTemplate.class, "entity");
+    CARD(CardTemplate.class, "card"),
+    EFFECT_TIMED(TimedEffectTemplate.class, "effect"),
+    EFFECT_STACKING(StackingEffectTemplate.class, "effect"),
+    EFFECT(EffectTemplate.class, "effect"),
+    ENTITY(EntityTemplate.class, "entity");
 
 
-    private Class<? extends TemplatableState> stateClass;
     private Class<? extends StateTemplate> templateClass;
     private String packageName;
 
 
-    TemplateTypes(Class<? extends TemplatableState> stateClass, Class<? extends StateTemplate> templateClass, String packageName) {
-        this.stateClass = stateClass;
+    TemplateTypes(Class<? extends StateTemplate> templateClass, String packageName) {
         this.templateClass = templateClass;
         this.packageName = packageName;
-    }
-
-    public Class<? extends TemplatableState> getStateClass() {
-        return this.stateClass;
     }
 
     public String getPackageName() {
