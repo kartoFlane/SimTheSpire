@@ -1,7 +1,7 @@
-package com.kartoflane.spiresim.content.template.card;
+package com.kartoflane.spiresim.content.template.card.player.warrior;
 
 import com.kartoflane.spiresim.content.annotation.DeriveState;
-import com.kartoflane.spiresim.content.state.card.BashCardState;
+import com.kartoflane.spiresim.content.state.card.player.warrior.BashCardState;
 import com.kartoflane.spiresim.content.state.effect.common.VulnerableEffectState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;

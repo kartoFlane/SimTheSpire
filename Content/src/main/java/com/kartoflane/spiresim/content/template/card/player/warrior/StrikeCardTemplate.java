@@ -1,10 +1,10 @@
-package com.kartoflane.spiresim.content.template.card;
+package com.kartoflane.spiresim.content.template.card.player.warrior;
 
 import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
-import com.kartoflane.spiresim.content.state.card.StrikeCardState;
+import com.kartoflane.spiresim.content.state.card.player.warrior.StrikeCardState;
 import com.kartoflane.spiresim.template.card.CardTemplate;
 import com.kartoflane.spiresim.template.card.CardType;
 
