@@ -9,7 +9,6 @@ import com.kartoflane.spiresim.content.template.effect.base.StackingEffectTempla
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.template.effect.EffectIdentifier;
-import com.kartoflane.spiresim.template.effect.EffectUpdateEvent;
 
 @DeriveState
 public class StrengthEffectTemplate extends StackingEffectTemplate<StrengthEffectState> {
@@ -37,18 +36,6 @@ public class StrengthEffectTemplate extends StackingEffectTemplate<StrengthEffec
     @Override
     public String getName() {
         return "Strength";
-    }
-
-    @Override
-    public void onApply(EncounterController encounterController, EntityController target, StrengthEffectState effectState, StrengthEffectState newInstance) {
-    }
-
-    @Override
-    public void onRemove(EncounterController encounterController, EntityController target, StrengthEffectState effectState) {
-    }
-
-    @Override
-    public void onUpdate(EncounterController encounterController, EntityController target, StrengthEffectState effectState, EffectUpdateEvent updateEvent) {
     }
 
     @Override

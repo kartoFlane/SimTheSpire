@@ -1,7 +1,5 @@
 package com.kartoflane.spiresim.content.template.effect.enemy;
 
-import com.kartoflane.spiresim.combat.MutableCombatValue;
-import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
 import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.content.state.effect.common.StrengthEffectState;
 import com.kartoflane.spiresim.content.state.effect.enemy.RitualEffectState;
@@ -43,29 +41,11 @@ public class RitualEffectTemplate extends StackingEffectTemplate<RitualEffectSta
     }
 
     @Override
-    public void onApply(EncounterController encounterController, EntityController target, RitualEffectState effectState, RitualEffectState newInstance) {
-    }
-
-    @Override
-    public void onRemove(EncounterController encounterController, EntityController target, RitualEffectState effectState) {
-    }
-
-    @Override
     public void onUpdate(EncounterController encounterController, EntityController target, RitualEffectState effectState, EffectUpdateEvent updateEvent) {
         if (updateEvent.isEqual(StandardEffectUpdateEvents.TURN_START)) {
             StrengthEffectState state = StateFactory.build(StrengthEffectTemplate.getInstance());
             state.setStacks(effectState.getStacks());
             target.applyEffect(encounterController, state);
         }
-    }
-
-    @Override
-    public void preprocessCombatValue(
-            EncounterController encounterController,
-            EntityController target,
-            RitualEffectState effectState,
-            MutableCombatValue mutableCombatValue,
-            MutableCombatValueEvent updateEvent
-    ) {
     }
 }

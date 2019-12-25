@@ -14,13 +14,6 @@ import com.kartoflane.spiresim.template.effect.StandardEffectUpdateEvents;
 public abstract class TimedEffectTemplate<S extends StackingEffectState> extends StackingEffectTemplate<S> {
 
     @Override
-    public void onApply(EncounterController encounterController, EntityController target, S effectState, S newInstance) {
-        if (newInstance != null) {
-            effectState.setStacks(effectState.getStacks() + newInstance.getStacks());
-        }
-    }
-
-    @Override
     public void onUpdate(EncounterController encounterController, EntityController target, S effectState, EffectUpdateEvent updateEvent) {
         if (updateEvent.isEqual(StandardEffectUpdateEvents.TURN_END)) {
             effectState.setStacks(effectState.getStacks() - 1);

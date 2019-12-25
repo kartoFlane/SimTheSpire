@@ -9,7 +9,6 @@ import com.kartoflane.spiresim.content.template.effect.base.StackingEffectTempla
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.template.effect.EffectIdentifier;
-import com.kartoflane.spiresim.template.effect.EffectUpdateEvent;
 
 @DeriveState
 public class DexterityEffectTemplate extends StackingEffectTemplate<DexterityEffectState> {
@@ -37,18 +36,6 @@ public class DexterityEffectTemplate extends StackingEffectTemplate<DexterityEff
     @Override
     public String getName() {
         return "Dexterity";
-    }
-
-    @Override
-    public void onApply(EncounterController encounterController, EntityController target, DexterityEffectState effectState, DexterityEffectState newInstance) {
-    }
-
-    @Override
-    public void onRemove(EncounterController encounterController, EntityController target, DexterityEffectState effectState) {
-    }
-
-    @Override
-    public void onUpdate(EncounterController encounterController, EntityController target, DexterityEffectState effectState, EffectUpdateEvent updateEvent) {
     }
 
     @Override

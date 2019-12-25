@@ -56,17 +56,14 @@ public class DefendCardTemplate extends CardTemplate<DefendCardState> {
 
     @Override
     public void onDiscard(EncounterController encounterController, EntityController caster, DefendCardState cardState) {
-
     }
 
     @Override
     public void onExhaust(EncounterController encounterController, EntityController caster, DefendCardState cardState) {
-
     }
 
     @Override
     public void onRetain(EncounterController encounterController, EntityController caster, DefendCardState cardState) {
-
     }
 
     @Override
@@ -78,11 +75,9 @@ public class DefendCardTemplate extends CardTemplate<DefendCardState> {
 
     @Override
     public void onTurnStart(EncounterController encounterController, EntityController caster, DefendCardState cardState) {
-
     }
 
     @Override
     public void onTurnEnd(EncounterController encounterController, EntityController caster, DefendCardState cardState) {
-
     }
 }

@@ -9,7 +9,6 @@ import com.kartoflane.spiresim.content.template.effect.base.TimedEffectTemplate;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.template.effect.EffectIdentifier;
-import com.kartoflane.spiresim.template.effect.EffectUpdateEvent;
 
 @DeriveState
 public class VulnerableEffectTemplate extends TimedEffectTemplate<VulnerableEffectState> {
@@ -42,20 +41,6 @@ public class VulnerableEffectTemplate extends TimedEffectTemplate<VulnerableEffe
 
     public double getModifier() {
         return 1.5;
-    }
-
-    @Override
-    public void onApply(EncounterController encounterController, EntityController target, VulnerableEffectState effectState, VulnerableEffectState newInstance) {
-        super.onApply(encounterController, target, effectState, newInstance);
-    }
-
-    @Override
-    public void onRemove(EncounterController encounterController, EntityController target, VulnerableEffectState effectState) {
-    }
-
-    @Override
-    public void onUpdate(EncounterController encounterController, EntityController target, VulnerableEffectState effectState, EffectUpdateEvent updateEvent) {
-        super.onUpdate(encounterController, target, effectState, updateEvent);
     }
 
     @Override
