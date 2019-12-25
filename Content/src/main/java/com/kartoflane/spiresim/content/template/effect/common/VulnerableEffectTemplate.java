@@ -1,14 +1,14 @@
 package com.kartoflane.spiresim.content.template.effect.common;
 
+import com.kartoflane.spiresim.combat.MutableCombatValue;
 import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
+import com.kartoflane.spiresim.combat.MutableCombatValueEvents;
 import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.content.state.effect.common.VulnerableEffectState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
-import com.kartoflane.spiresim.combat.MutableCombatValue;
 import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 import com.kartoflane.spiresim.template.effect.EffectUpdateEvent;
-import com.kartoflane.spiresim.template.effect.StandardEffectUpdateEvents;
 import com.kartoflane.spiresim.template.effect.TimedEffectTemplate;
 
 @DeriveState
@@ -66,7 +66,7 @@ public class VulnerableEffectTemplate extends TimedEffectTemplate<VulnerableEffe
             MutableCombatValue mutableCombatValue,
             MutableCombatValueEvent updateEvent
     ) {
-        if (updateEvent.isEqual(StandardEffectUpdateEvents.ENTITY_INCOMING_DAMAGE)) {
+        if (updateEvent.isEqual(MutableCombatValueEvents.ENTITY_INCOMING_DAMAGE_PERCENT)) {
             mutableCombatValue.setAmount_Multiply(effectState.getModifier());
         }
     }

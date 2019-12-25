@@ -4,10 +4,8 @@ public interface MutableCombatValueEvent {
 
     String getIdentifier();
 
-    default boolean isEqual(Object o) {
+    default boolean isEqual(MutableCombatValueEvent o) {
         if (o == null) return false;
-        if (!(o instanceof MutableCombatValueEvent)) return false;
-        MutableCombatValueEvent other = (MutableCombatValueEvent) o;
-        return this.getIdentifier().equals(other.getIdentifier());
+        return this.getIdentifier().equals(o.getIdentifier());
     }
 }

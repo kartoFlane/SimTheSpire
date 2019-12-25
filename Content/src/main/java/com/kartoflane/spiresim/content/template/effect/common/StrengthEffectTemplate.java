@@ -1,15 +1,15 @@
 package com.kartoflane.spiresim.content.template.effect.common;
 
+import com.kartoflane.spiresim.combat.MutableCombatValue;
 import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
+import com.kartoflane.spiresim.combat.MutableCombatValueEvents;
 import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.content.state.effect.common.StrengthEffectState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
-import com.kartoflane.spiresim.combat.MutableCombatValue;
 import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 import com.kartoflane.spiresim.template.effect.EffectUpdateEvent;
 import com.kartoflane.spiresim.template.effect.StackingEffectTemplate;
-import com.kartoflane.spiresim.template.effect.StandardEffectUpdateEvents;
 
 @DeriveState
 public class StrengthEffectTemplate extends StackingEffectTemplate<StrengthEffectState> {
@@ -59,7 +59,7 @@ public class StrengthEffectTemplate extends StackingEffectTemplate<StrengthEffec
             MutableCombatValue mutableCombatValue,
             MutableCombatValueEvent updateEvent
     ) {
-        if (updateEvent.isEqual(StandardEffectUpdateEvents.ENTITY_OUTGOING_DAMAGE)) {
+        if (updateEvent.isEqual(MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_FLAT)) {
             mutableCombatValue.setAmount_Add(effectState.getStacks());
         }
     }
