@@ -1,10 +1,11 @@
 package com.kartoflane.spiresim.content.template.card.player.warrior;
 
 import com.kartoflane.spiresim.content.annotation.DeriveState;
+import com.kartoflane.spiresim.content.state.card.player.warrior.StrikeCardState;
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
-import com.kartoflane.spiresim.content.state.card.player.warrior.StrikeCardState;
+import com.kartoflane.spiresim.state.entity.CardPileType;
 import com.kartoflane.spiresim.template.card.CardTemplate;
 import com.kartoflane.spiresim.template.card.CardType;
 
@@ -69,9 +70,11 @@ public class StrikeCardTemplate extends CardTemplate<StrikeCardState> {
     }
 
     @Override
-    public void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, StrikeCardState state) {
+    public CardPileType onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, StrikeCardState state) {
         EntityController target = targets.get(0);
         target.applyDamage(encounterController, caster.buildOutgoingAttackValue(encounterController, state.getAttackValue()));
+
+        return CardPileType.DISCARD;
     }
 
     @Override

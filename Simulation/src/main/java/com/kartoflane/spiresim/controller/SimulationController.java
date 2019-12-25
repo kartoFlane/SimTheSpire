@@ -5,6 +5,7 @@ import com.kartoflane.spiresim.report.PlaythroughSummary;
 import com.kartoflane.spiresim.state.*;
 import com.kartoflane.spiresim.content.template.entity.enemy.SlaverEntityTemplate;
 import com.kartoflane.spiresim.content.template.entity.player.WarriorEntityTemplate;
+import com.kartoflane.spiresim.state.entity.EntityState;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.kartoflane.spiresim.content;
 
 import com.kartoflane.spiresim.state.CardState;
-import com.kartoflane.spiresim.state.EntityState;
+import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.state.TemplatableState;
 import com.kartoflane.spiresim.state.effect.EffectState;
 import com.kartoflane.spiresim.state.effect.StackingEffectState;

@@ -1,7 +1,7 @@
 package com.kartoflane.spiresim.template.entity;
 
 import com.kartoflane.spiresim.state.CardState;
-import com.kartoflane.spiresim.state.EntityState;
+import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.template.StateTemplate;
 import com.kartoflane.spiresim.template.card.CardTemplate;
 

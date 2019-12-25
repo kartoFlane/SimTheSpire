@@ -4,6 +4,7 @@ import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
 import com.kartoflane.spiresim.state.CardState;
+import com.kartoflane.spiresim.state.entity.CardPileType;
 import com.kartoflane.spiresim.template.StateTemplate;
 
 import java.util.List;
@@ -35,8 +36,10 @@ public abstract class CardTemplate<S extends CardState> implements StateTemplate
 
     /**
      * Actions to execute when the card is played
+     *
+     * @return the pile in which the played card should be placed
      */
-    public abstract void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, S state);
+    public abstract CardPileType onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, S state);
 
     /**
      * Actions to execute at the start of turn.

@@ -2,6 +2,7 @@ package com.kartoflane.spiresim.controller;
 
 import com.kartoflane.spiresim.controller.targeting.TargetingController;
 import com.kartoflane.spiresim.state.CardState;
+import com.kartoflane.spiresim.state.entity.CardPileType;
 import com.kartoflane.spiresim.template.card.CardTemplate;
 
 import java.util.List;
@@ -40,14 +41,14 @@ public class CardController<T extends CardTemplate<S>, S extends CardState> impl
         template.onRetain(encounterController, caster, state);
     }
 
-    public void onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets) {
+    public CardPileType onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets) {
         if (targets.size() == 1) {
             System.out.printf("  %s plays %s on %s!%n", caster.getState().getName(), state.getName(), targets.get(0).getState().getName());
         } else {
             System.out.printf("  %s plays %s!%n", caster.getState().getName(), state.getName());
         }
 
-        template.onPlay(encounterController, caster, targets, state);
+        return template.onPlay(encounterController, caster, targets, state);
     }
 
     public void onTurnStart(EncounterController encounterController, EntityController caster) {

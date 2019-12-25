@@ -1,11 +1,12 @@
-package com.kartoflane.spiresim.state;
+package com.kartoflane.spiresim.state.entity;
 
+import com.kartoflane.spiresim.state.CardState;
+import com.kartoflane.spiresim.state.StateFactory;
+import com.kartoflane.spiresim.state.TemplatableState;
 import com.kartoflane.spiresim.state.effect.EffectState;
 import com.kartoflane.spiresim.template.entity.EntityTemplate;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -21,15 +22,15 @@ public class EntityState extends TemplatableState {
     private int energyMax;
 
     private List<EffectState> effectsList = new ArrayList<>();
-
-    private List<CardState> handList = new ArrayList<>();
-    private List<CardState> drawPileList = new ArrayList<>();
-    private List<CardState> discardPileList = new ArrayList<>();
-    private List<CardState> exhaustPileList = new ArrayList<>();
+    private Map<CardPileType, List<CardState>> cardPiles = new HashMap<>();
 
 
     public EntityState(EntityTemplate<? extends EntityState> template) {
         super(template);
+
+        for (CardPileType cardPileType : CardPileType.values()) {
+            this.cardPiles.put(cardPileType, new ArrayList<>());
+        }
 
         this.setName(template.getName());
         this.setHealthMax(template.getHealth());
@@ -38,7 +39,7 @@ public class EntityState extends TemplatableState {
         this.setEnergyMax(template.getEnergy());
         this.setEnergyCurrent(template.getEnergy());
 
-        this.drawPileList.addAll(
+        this.cardPiles.get(CardPileType.DRAW).addAll(
                 template.getStartingDeck().stream()
                         .map(StateFactory::build)
                         .collect(Collectors.toList())
@@ -104,31 +105,38 @@ public class EntityState extends TemplatableState {
         return this.effectsList;
     }
 
+    public List<CardState> getCardPile(CardPileType cardPileType) {
+        return this.cardPiles.get(cardPileType);
+    }
+
     public List<CardState> getHandList() {
-        return handList;
+        return getCardPile(CardPileType.HAND);
     }
 
     public List<CardState> getDrawPileList() {
-        return drawPileList;
+        return getCardPile(CardPileType.DRAW);
     }
 
     public List<CardState> getDiscardPileList() {
-        return discardPileList;
+        return getCardPile(CardPileType.DISCARD);
     }
 
     public List<CardState> getExhaustPileList() {
-        return exhaustPileList;
+        return getCardPile(CardPileType.EXHAUST);
+    }
+
+    public List<CardState> getUsedPowersList() {
+        return getCardPile(CardPileType.USED_POWER);
     }
 
     public List<CardState> getAllCards() {
-        List<CardState> temporaryList = new ArrayList<>(
-                this.handList.size() + this.drawPileList.size() + this.discardPileList.size() + this.exhaustPileList.size()
-        );
+        final int totalDeckSize = this.cardPiles.values().stream().mapToInt(List::size).sum();
 
-        temporaryList.addAll(this.handList);
-        temporaryList.addAll(this.drawPileList);
-        temporaryList.addAll(this.discardPileList);
-        temporaryList.addAll(this.exhaustPileList);
+        List<CardState> temporaryList = new ArrayList<>(totalDeckSize);
+
+        for (CardPileType cardPileType : CardPileType.values()) {
+            temporaryList.addAll(this.cardPiles.get(cardPileType));
+        }
 
         return Collections.unmodifiableList(temporaryList);
     }

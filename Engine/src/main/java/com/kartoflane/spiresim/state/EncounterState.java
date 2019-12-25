@@ -1,5 +1,7 @@
 package com.kartoflane.spiresim.state;
 
+import com.kartoflane.spiresim.state.entity.EntityState;
+
 import java.util.ArrayList;
 import java.util.List;
 

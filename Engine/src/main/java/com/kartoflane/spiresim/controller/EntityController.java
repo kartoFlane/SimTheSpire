@@ -5,11 +5,14 @@ import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
 import com.kartoflane.spiresim.combat.MutableCombatValueEvents;
 import com.kartoflane.spiresim.controller.ai.AIController;
 import com.kartoflane.spiresim.state.CardState;
-import com.kartoflane.spiresim.state.EntityState;
 import com.kartoflane.spiresim.state.GameState;
 import com.kartoflane.spiresim.state.effect.EffectState;
+import com.kartoflane.spiresim.state.entity.CardPileType;
+import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.template.card.CardTemplate;
-import com.kartoflane.spiresim.template.effect.*;
+import com.kartoflane.spiresim.template.effect.EffectIdentifier;
+import com.kartoflane.spiresim.template.effect.EffectTemplate;
+import com.kartoflane.spiresim.template.effect.StandardEffectUpdateEvents;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -52,6 +55,10 @@ public class EntityController implements StateController<EntityState> {
 
     public void simulateTurn(GameController gameController, EncounterController encounterController) {
         aiController.controlEntity(gameController, encounterController, this);
+    }
+
+    public boolean isAlive() {
+        return this.state.getHealthCurrent() > 0;
     }
 
     public void drawHand(GameState gameState, EncounterController encounterController, int cardsToDraw) {
@@ -109,9 +116,10 @@ public class EntityController implements StateController<EntityState> {
 
         this.state.setEnergyCurrent(this.state.getEnergyCurrent() - cardState.getCost());
         this.state.getHandList().remove(cardState);
-        this.state.getDiscardPileList().add(cardState);
 
-        cardController.onPlay(encounterController, this, targets);
+        CardPileType destinationPile = cardController.onPlay(encounterController, this, targets);
+
+        this.state.getCardPile(destinationPile).add(cardState);
 
         iterateEffects(effectController -> effectController.onCardPlay(encounterController, this, cardController));
     }
@@ -139,18 +147,16 @@ public class EntityController implements StateController<EntityState> {
         }
     }
 
-    public boolean isAlive() {
-        return this.state.getHealthCurrent() > 0;
-    }
-
     public void resetAndShuffleDecks(GameState gameState) {
         List<CardState> drawPile = this.state.getDrawPileList();
         drawPile.addAll(this.state.getHandList());
         drawPile.addAll(this.state.getDiscardPileList());
         drawPile.addAll(this.state.getExhaustPileList());
+        drawPile.addAll(this.state.getUsedPowersList());
         this.state.getHandList().clear();
         this.state.getDiscardPileList().clear();
         this.state.getExhaustPileList().clear();
+        this.state.getUsedPowersList().clear();
 
         Collections.shuffle(drawPile, gameState.getRandom());
     }
