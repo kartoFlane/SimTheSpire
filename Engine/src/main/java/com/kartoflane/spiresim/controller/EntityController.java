@@ -236,6 +236,8 @@ public class EntityController implements StateController<EntityState> {
         calculateDamageAfterBlock(mutableCombatValue);
         this.state.setHealthCurrent(this.state.getHealthCurrent() - mutableCombatValue.getAmount());
 
+        System.out.printf("    %s takes %s damage!%n", this.state.getName(), mutableCombatValue.getAmount());
+
         iterateEffects(effectController -> effectController.onUpdate(
                 encounterController,
                 this,

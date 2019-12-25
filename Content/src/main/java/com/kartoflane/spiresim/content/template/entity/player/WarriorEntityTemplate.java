@@ -36,7 +36,7 @@ public class WarriorEntityTemplate extends PlayerEntityTemplate<EntityState> {
 
     @Override
     public int getHealth() {
-        return 60;
+        return 80;
     }
 
     @Override
@@ -45,6 +45,9 @@ public class WarriorEntityTemplate extends PlayerEntityTemplate<EntityState> {
                 StrikeCardTemplate.getInstance(),
                 StrikeCardTemplate.getInstance(),
                 StrikeCardTemplate.getInstance(),
+                StrikeCardTemplate.getInstance(),
+                StrikeCardTemplate.getInstance(),
+                DefendCardTemplate.getInstance(),
                 DefendCardTemplate.getInstance(),
                 DefendCardTemplate.getInstance(),
                 DefendCardTemplate.getInstance(),

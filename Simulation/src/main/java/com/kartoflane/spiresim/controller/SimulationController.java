@@ -1,10 +1,13 @@
 package com.kartoflane.spiresim.controller;
 
+import com.kartoflane.spiresim.content.template.entity.enemy.CultistEntityTemplate;
+import com.kartoflane.spiresim.content.template.entity.player.WarriorEntityTemplate;
 import com.kartoflane.spiresim.report.EncounterSummary;
 import com.kartoflane.spiresim.report.PlaythroughSummary;
-import com.kartoflane.spiresim.state.*;
-import com.kartoflane.spiresim.content.template.entity.enemy.SlaverEntityTemplate;
-import com.kartoflane.spiresim.content.template.entity.player.WarriorEntityTemplate;
+import com.kartoflane.spiresim.state.EncounterState;
+import com.kartoflane.spiresim.state.GameState;
+import com.kartoflane.spiresim.state.SimulationState;
+import com.kartoflane.spiresim.state.StateFactory;
 import com.kartoflane.spiresim.state.entity.EntityState;
 
 import java.util.Arrays;
@@ -87,7 +90,7 @@ public class SimulationController implements StateController<SimulationState> {
 
     private EncounterState buildNewEncounter() {
         List<EntityState> enemyEntities = Arrays.asList(
-                StateFactory.build(SlaverEntityTemplate.getInstance())
+                StateFactory.build(CultistEntityTemplate.getInstance())
         );
 
         return new EncounterState(enemyEntities);
