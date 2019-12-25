@@ -3,8 +3,6 @@ package com.kartoflane.spiresim.content;
 import com.kartoflane.spiresim.template.StateTemplate;
 import com.kartoflane.spiresim.template.card.CardTemplate;
 import com.kartoflane.spiresim.template.effect.EffectTemplate;
-import com.kartoflane.spiresim.template.effect.StackingEffectTemplate;
-import com.kartoflane.spiresim.template.effect.TimedEffectTemplate;
 import com.kartoflane.spiresim.template.entity.EntityTemplate;
 
 import javax.lang.model.element.TypeElement;
@@ -12,8 +10,6 @@ import javax.lang.model.type.TypeMirror;
 
 enum TemplateTypes {
     CARD(CardTemplate.class, "card"),
-    EFFECT_TIMED(TimedEffectTemplate.class, "effect"),
-    EFFECT_STACKING(StackingEffectTemplate.class, "effect"),
     EFFECT(EffectTemplate.class, "effect"),
     ENTITY(EntityTemplate.class, "entity");
 
