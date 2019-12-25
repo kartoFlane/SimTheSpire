@@ -24,7 +24,7 @@ public class EnemyAIController implements AIController {
 
     @Override
     public void controlEntity(GameController gameController, EncounterController encounterController, EntityController entity) {
-        entity.drawHand(gameController.getState(), encounterController, 3);
+        entity.drawHand(gameController.getState(), encounterController, 1);
 
         List<CardState> playableCards = entity.getPlayableCards();
         processPlayableCards(gameController, encounterController, entity, playableCards);

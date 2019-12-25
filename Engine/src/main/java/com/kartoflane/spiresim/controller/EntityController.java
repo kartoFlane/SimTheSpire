@@ -64,13 +64,19 @@ public class EntityController implements StateController<EntityState> {
     public void drawHand(GameState gameState, EncounterController encounterController, int cardsToDraw) {
         for (int drawnCards = 0; drawnCards < cardsToDraw; ++drawnCards) {
             CardState cardState = drawCard(gameState, encounterController);
-            this.state.getHandList().add(cardState);
+            if (cardState != null) {
+                this.state.getHandList().add(cardState);
+            }
         }
     }
 
     public CardState drawCard(GameState gameState, EncounterController encounterController) {
         if (this.state.getDrawPileList().isEmpty()) {
-            shuffleDiscardPileIntoDrawPile(gameState);
+            if (this.state.getDiscardPileList().isEmpty()) {
+                return null;
+            } else {
+                shuffleDiscardPileIntoDrawPile(gameState);
+            }
         }
 
         CardState drawnCard = this.state.getDrawPileList().remove(0);
