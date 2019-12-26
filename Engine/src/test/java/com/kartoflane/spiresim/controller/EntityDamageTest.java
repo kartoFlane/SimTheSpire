@@ -1,34 +1,27 @@
 package com.kartoflane.spiresim.controller;
 
 import com.kartoflane.spiresim.combat.MutableCombatValue;
-import com.kartoflane.spiresim.controller.ai.EnemyAIController;
-import com.kartoflane.spiresim.state.EncounterState;
-import com.kartoflane.spiresim.state.GameState;
-import com.kartoflane.spiresim.state.StateFactory;
 import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.test.controller.TestGameController;
 import com.kartoflane.spiresim.test.template.TestEntityTemplate;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class EntityDamageTest {
     private GameController gameController;
-    private EntityState state;
     private EntityController controller;
+    private EntityState state;
 
 
     @Before
     public void prepareMockEntities() {
-        gameController = new TestGameController(new GameState());
-        state = StateFactory.build(gameController, TestEntityTemplate.getInstance());
-        gameController.getState().initialize(state);
-        controller = new EntityController(state, new EnemyAIController());
-        gameController.setCurrentEncounter(new EncounterController(new EncounterState(Collections.emptyList())));
+        gameController = TestGameController.setupTestEnvironment(TestEntityTemplate.getInstance());
+
+        controller = gameController.getPlayerController();
+        state = gameController.getPlayerController().getState();
     }
 
     @Test
