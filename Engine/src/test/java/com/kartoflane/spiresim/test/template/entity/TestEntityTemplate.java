@@ -32,7 +32,7 @@ public class TestEntityTemplate extends EntityTemplate<TestEntityState> {
 
     @Override
     public int getEnergy(GameController gameController) {
-        return 0;
+        return 3;
     }
 
     @Override

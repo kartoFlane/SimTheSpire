@@ -38,7 +38,7 @@ public class TestCardTemplate extends CardTemplate<TestCardState> {
 
     @Override
     public int getCost(GameController gameController) {
-        return 0;
+        return 1;
     }
 
     @Override

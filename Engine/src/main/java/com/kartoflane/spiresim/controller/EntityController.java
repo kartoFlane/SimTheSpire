@@ -73,6 +73,7 @@ public class EntityController implements StateController<EntityState> {
     public CardState drawCard(GameController gameController) {
         if (this.state.getDrawPileList().isEmpty()) {
             if (this.state.getDiscardPileList().isEmpty()) {
+                // No cards left in the deck
                 return null;
             } else {
                 shuffleDiscardPileIntoDrawPile(gameController);
@@ -173,7 +174,11 @@ public class EntityController implements StateController<EntityState> {
     }
 
     private void removeTemporaryCardsFromDrawPile() {
-        this.state.getDrawPileList().removeAll(this.state.getTemporaryCardPile());
+        for (CardState temporaryCardState : this.state.getTemporaryCardPile()) {
+            this.state.getDrawPileList().remove(temporaryCardState);
+            this.cardStateToControllerMap.remove(temporaryCardState);
+        }
+
         this.state.getTemporaryCardPile().clear();
     }
 
