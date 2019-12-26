@@ -83,7 +83,7 @@ public class EncounterController implements StateController<EncounterState> {
     public void onEncounterEnd(GameController gameController) {
         EntityController playerController = gameController.getPlayerController();
 
-        playerController.resetAndShuffleDecks(gameController.getState());
+        playerController.resetAndShuffleDecks(gameController);
         if (playerController.isAlive()) {
             System.out.printf(
                     "Player won! HP: %s/%s%n",

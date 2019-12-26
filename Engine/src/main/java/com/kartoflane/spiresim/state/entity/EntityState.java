@@ -24,6 +24,7 @@ public abstract class EntityState extends TemplatableState {
 
     private List<EffectState> effectsList = new ArrayList<>();
     private Map<CardPileType, List<CardState>> cardPiles = new HashMap<>();
+    private Set<CardState> temporaryCardPile = new HashSet<>();
 
 
     protected EntityState(GameController gameController, EntityTemplate<? extends EntityState> template) {
@@ -140,5 +141,9 @@ public abstract class EntityState extends TemplatableState {
         }
 
         return Collections.unmodifiableList(temporaryList);
+    }
+
+    public Set<CardState> getTemporaryCardPile() {
+        return temporaryCardPile;
     }
 }

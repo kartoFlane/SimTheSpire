@@ -4,7 +4,6 @@ import com.kartoflane.spiresim.combat.MutableCombatValue;
 import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
 import com.kartoflane.spiresim.combat.MutableCombatValueEvents;
 import com.kartoflane.spiresim.controller.ai.AIController;
-import com.kartoflane.spiresim.state.GameState;
 import com.kartoflane.spiresim.state.card.CardState;
 import com.kartoflane.spiresim.state.effect.EffectState;
 import com.kartoflane.spiresim.state.entity.CardPileType;
@@ -154,7 +153,14 @@ public class EntityController implements StateController<EntityState> {
         }
     }
 
-    public void resetAndShuffleDecks(GameState gameState) {
+    public void resetAndShuffleDecks(GameController gameController) {
+        resetDecksToDrawPile();
+        removeTemporaryCardsFromDrawPile();
+
+        Collections.shuffle(this.state.getDrawPileList(), gameController.getState().getRandom());
+    }
+
+    private void resetDecksToDrawPile() {
         List<CardState> drawPile = this.state.getDrawPileList();
         drawPile.addAll(this.state.getHandList());
         drawPile.addAll(this.state.getDiscardPileList());
@@ -164,34 +170,51 @@ public class EntityController implements StateController<EntityState> {
         this.state.getDiscardPileList().clear();
         this.state.getExhaustPileList().clear();
         this.state.getUsedPowersList().clear();
-
-        Collections.shuffle(drawPile, gameState.getRandom());
     }
 
-    public void addCardToDeck(CardState cardState) {
-        addCardToPileBottom(cardState, CardPileType.DRAW);
+    private void removeTemporaryCardsFromDrawPile() {
+        this.state.getDrawPileList().removeAll(this.state.getTemporaryCardPile());
+        this.state.getTemporaryCardPile().clear();
     }
 
-    public void addCardToPileTop(CardState cardState, CardPileType pileType) {
+    public void addPermanentCardToDeck(CardState cardState) {
+        addPermanentCardToPileBottom(cardState, CardPileType.DRAW);
+    }
+
+    public void addTemporaryCardToPileTop(CardState cardState, CardPileType pileType) {
+        addPermanentCardToPileTop(cardState, pileType);
+        this.state.getTemporaryCardPile().add(cardState);
+    }
+
+    public void addTemporaryCardToPileShuffle(GameController gameController, CardState cardState, CardPileType pileType) {
+        addPermanentCardToPileShuffle(gameController, cardState, pileType);
+        this.state.getTemporaryCardPile().add(cardState);
+    }
+
+    public void addTemporaryCardToPileBottom(CardState cardState, CardPileType pileType) {
+        addPermanentCardToPileBottom(cardState, pileType);
+        this.state.getTemporaryCardPile().add(cardState);
+    }
+
+    public void addPermanentCardToPileTop(CardState cardState, CardPileType pileType) {
+        List<CardState> cardPile = this.state.getCardPile(pileType);
+        addCardToPile(cardState, cardPile, 0);
+    }
+
+    public void addPermanentCardToPileShuffle(GameController gameController, CardState cardState, CardPileType pileType) {
+        List<CardState> cardPile = this.state.getCardPile(pileType);
+        addCardToPile(cardState, cardPile, gameController.getState().getRandom().randomIndex(cardPile));
+    }
+
+    public void addPermanentCardToPileBottom(CardState cardState, CardPileType pileType) {
+        List<CardState> cardPile = this.state.getCardPile(pileType);
+        addCardToPile(cardState, cardPile, cardPile.size());
+    }
+
+    private void addCardToPile(CardState cardState, List<CardState> cardPile, int index) {
         checkValidCardAddition(cardState);
 
-        this.state.getCardPile(pileType).add(0, cardState);
-        cardStateToControllerMap.put(cardState, new CardController<>(cardState));
-    }
-
-    public void addCardToPileShuffle(GameController gameController, CardState cardState, CardPileType pileType) {
-        checkValidCardAddition(cardState);
-
-        List<CardState> pile = this.state.getCardPile(pileType);
-        int index = gameController.getState().getRandom().randomIndex(pile);
-        pile.add(index, cardState);
-        cardStateToControllerMap.put(cardState, new CardController<>(cardState));
-    }
-
-    public void addCardToPileBottom(CardState cardState, CardPileType pileType) {
-        checkValidCardAddition(cardState);
-
-        this.state.getCardPile(pileType).add(cardState);
+        cardPile.add(index, cardState);
         cardStateToControllerMap.put(cardState, new CardController<>(cardState));
     }
 
