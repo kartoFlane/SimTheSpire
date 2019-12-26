@@ -29,33 +29,33 @@ public class CardController<T extends CardTemplate<S>, S extends CardState> impl
         return this.targetingController;
     }
 
-    public void onDiscard(EncounterController encounterController, EntityController caster) {
-        template.onDiscard(encounterController, caster, state);
+    public void onDiscard(GameController gameController, EntityController caster) {
+        template.onDiscard(gameController, caster, state);
     }
 
-    public void onExhaust(EncounterController encounterController, EntityController caster) {
-        template.onExhaust(encounterController, caster, state);
+    public void onExhaust(GameController gameController, EntityController caster) {
+        template.onExhaust(gameController, caster, state);
     }
 
-    public void onRetain(EncounterController encounterController, EntityController caster) {
-        template.onRetain(encounterController, caster, state);
+    public void onRetain(GameController gameController, EntityController caster) {
+        template.onRetain(gameController, caster, state);
     }
 
-    public CardPileType onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets) {
+    public CardPileType onPlay(GameController gameController, EntityController caster, List<EntityController> targets) {
         if (targets.size() == 1) {
             System.out.printf("  %s plays %s on %s!%n", caster.getState().getName(), state.getName(), targets.get(0).getState().getName());
         } else {
             System.out.printf("  %s plays %s!%n", caster.getState().getName(), state.getName());
         }
 
-        return template.onPlay(encounterController, caster, targets, state);
+        return template.onPlay(gameController, caster, targets, state);
     }
 
-    public void onTurnStart(EncounterController encounterController, EntityController caster) {
-        template.onTurnStart(encounterController, caster, state);
+    public void onTurnStart(GameController gameController, EntityController caster) {
+        template.onTurnStart(gameController, caster, state);
     }
 
-    public void onTurnEnd(EncounterController encounterController, EntityController caster) {
-        template.onTurnEnd(encounterController, caster, state);
+    public void onTurnEnd(GameController gameController, EntityController caster) {
+        template.onTurnEnd(gameController, caster, state);
     }
 }

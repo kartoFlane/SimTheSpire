@@ -5,5 +5,5 @@ import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.controller.ai.AIController;
 
 public interface TargetingController {
-    TargetingResult selectTargets(GameController gameController, EncounterController encounterController, AIController aiController);
+    TargetingResult selectTargets(GameController gameController, AIController aiController);
 }

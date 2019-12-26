@@ -25,26 +25,26 @@ public class EffectController<T extends EffectTemplate<S>, S extends EffectState
         return this.state;
     }
 
-    public void onApply(EncounterController encounterController, EntityController target, S newInstance) {
-        template.onApply(encounterController, target, state, newInstance);
+    public void onApply(GameController gameController, EntityController target, S newInstance) {
+        template.onApply(gameController, target, state, newInstance);
     }
 
-    public void onRemove(EncounterController encounterController, EntityController target) {
-        template.onRemove(encounterController, target, state);
+    public void onRemove(GameController gameController, EntityController target) {
+        template.onRemove(gameController, target, state);
     }
 
-    public void onUpdate(EncounterController encounterController, EntityController target, EffectUpdateEvent updateEvent) {
-        template.onUpdate(encounterController, target, state, updateEvent);
+    public void onUpdate(GameController gameController, EntityController target, EffectUpdateEvent updateEvent) {
+        template.onUpdate(gameController, target, state, updateEvent);
     }
 
     public void preprocessCombatValue(
-            EncounterController encounterController,
+            GameController gameController,
             EntityController target,
             MutableCombatValue mutableCombatValue,
             MutableCombatValueEvent updateEvent
     ) {
         template.preprocessCombatValue(
-                encounterController,
+                gameController,
                 target,
                 state,
                 mutableCombatValue,
@@ -52,28 +52,28 @@ public class EffectController<T extends EffectTemplate<S>, S extends EffectState
         );
     }
 
-    public void onTurnStart(EncounterController encounterController, EntityController target) {
-        template.onUpdate(encounterController, target, state, StandardEffectUpdateEvents.TURN_START);
+    public void onTurnStart(GameController gameController, EntityController target) {
+        template.onUpdate(gameController, target, state, StandardEffectUpdateEvents.TURN_START);
     }
 
-    public void onTurnEnd(EncounterController encounterController, EntityController target) {
-        template.onUpdate(encounterController, target, state, StandardEffectUpdateEvents.TURN_END);
+    public void onTurnEnd(GameController gameController, EntityController target) {
+        template.onUpdate(gameController, target, state, StandardEffectUpdateEvents.TURN_END);
     }
 
-    public void onCardDraw(EncounterController encounterController, EntityController target, CardController<?, ?> drawnCard) {
-        template.onUpdate(encounterController, target, state, StandardEffectUpdateEvents.CARD_DRAW);
+    public void onCardDraw(GameController gameController, EntityController target, CardController<?, ?> drawnCard) {
+        template.onUpdate(gameController, target, state, StandardEffectUpdateEvents.CARD_DRAW);
     }
 
-    public void onCardDiscard(EncounterController encounterController, EntityController target, CardController<?, ?> discardedCard) {
-        template.onUpdate(encounterController, target, state, StandardEffectUpdateEvents.CARD_DISCARD);
+    public void onCardDiscard(GameController gameController, EntityController target, CardController<?, ?> discardedCard) {
+        template.onUpdate(gameController, target, state, StandardEffectUpdateEvents.CARD_DISCARD);
     }
 
-    public void onCardRetain(EncounterController encounterController, EntityController target, CardController<?, ?> drawnCard) {
-        template.onUpdate(encounterController, target, state, StandardEffectUpdateEvents.CARD_DRAW);
+    public void onCardRetain(GameController gameController, EntityController target, CardController<?, ?> drawnCard) {
+        template.onUpdate(gameController, target, state, StandardEffectUpdateEvents.CARD_DRAW);
     }
 
-    public void onCardPlay(EncounterController encounterController, EntityController target, CardController<?, ?> playedCard) {
-        template.onUpdate(encounterController, target, state, StandardEffectUpdateEvents.CARD_PLAY);
+    public void onCardPlay(GameController gameController, EntityController target, CardController<?, ?> playedCard) {
+        template.onUpdate(gameController, target, state, StandardEffectUpdateEvents.CARD_PLAY);
     }
 
     public boolean isEffectType(EffectIdentifier identifier) {

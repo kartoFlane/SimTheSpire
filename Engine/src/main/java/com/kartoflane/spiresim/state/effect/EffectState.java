@@ -1,5 +1,6 @@
 package com.kartoflane.spiresim.state.effect;
 
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.TemplatableState;
 import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 import com.kartoflane.spiresim.template.effect.EffectTemplate;
@@ -12,7 +13,7 @@ public abstract class EffectState extends TemplatableState {
     private String name;
 
 
-    public EffectState(EffectTemplate<? extends EffectState> template) {
+    public EffectState(GameController gameController, EffectTemplate<? extends EffectState> template) {
         super(template);
 
         this.setName(template.getName());

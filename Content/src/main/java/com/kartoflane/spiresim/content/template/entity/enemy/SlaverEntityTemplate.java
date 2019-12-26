@@ -1,6 +1,7 @@
 package com.kartoflane.spiresim.content.template.entity.enemy;
 
 import com.kartoflane.spiresim.content.template.card.player.warrior.StrikeCardTemplate;
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.CardState;
 import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.template.card.CardTemplate;
@@ -34,7 +35,7 @@ public class SlaverEntityTemplate extends EnemyEntityTemplate<EntityState> {
     }
 
     @Override
-    public int getHealth() {
+    public int getHealth(GameController gameController) {
         return 26;
     }
 

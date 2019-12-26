@@ -5,23 +5,36 @@ import com.kartoflane.spiresim.report.EncounterSummary;
 import com.kartoflane.spiresim.report.PlaythroughSummary;
 import com.kartoflane.spiresim.state.EncounterState;
 import com.kartoflane.spiresim.state.GameState;
+import com.kartoflane.spiresim.state.entity.EntityState;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public class GameController implements StateController<GameState> {
 
     private final GameState state;
-    private final EntityController playerController;
+    private EntityController playerController;
+    private EncounterController currentEncounter;
 
 
     public GameController(GameState state) {
         this.state = state;
-        this.playerController = new EntityController(
-                this.state.getPlayerState(),
-                new PlayerAIController()
-        );
+    }
+
+    public void initialize(EntityState playerEntity) {
+        this.state.initialize(playerEntity);
+        this.playerController = new EntityController(playerEntity, new PlayerAIController());
+    }
+
+    public boolean isInitialized() {
+        return this.playerController != null;
+    }
+
+    private void checkInitialized() {
+        if (!isInitialized()) {
+            throw new IllegalStateException("GameController has not been initialized yet!");
+        }
     }
 
     @Override
@@ -33,15 +46,24 @@ public class GameController implements StateController<GameState> {
         return this.playerController;
     }
 
-    public PlaythroughSummary simulateGame(Supplier<EncounterState> encounterSupplier) {
+    public EncounterController getCurrentEncounter() {
+        return currentEncounter;
+    }
+
+    public PlaythroughSummary simulateGame(Function<GameController, EncounterState> encounterSupplier) {
+        checkInitialized();
+
         List<EncounterSummary> encounterSummaryList = new ArrayList<>();
         while (isGameInProgress()) {
-            EncounterState encounterState = encounterSupplier.get();
-            EncounterController encounterController = new EncounterController(encounterState);
+            state.setCurrentEncounter(encounterSupplier.apply(this));
+            currentEncounter = new EncounterController(state.getCurrentEncounter());
 
-            encounterController.onEncounterStart(this);
-            EncounterSummary encounterSummary = encounterController.simulateEncounter(this);
-            encounterController.onEncounterEnd(this);
+            currentEncounter.onEncounterStart(this);
+            EncounterSummary encounterSummary = currentEncounter.simulateEncounter(this);
+            currentEncounter.onEncounterEnd(this);
+
+            state.setCurrentEncounter(null);
+            currentEncounter = null;
 
             encounterSummaryList.add(encounterSummary);
         }

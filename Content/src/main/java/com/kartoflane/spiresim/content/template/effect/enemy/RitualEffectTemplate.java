@@ -5,8 +5,8 @@ import com.kartoflane.spiresim.content.state.effect.common.StrengthEffectState;
 import com.kartoflane.spiresim.content.state.effect.enemy.RitualEffectState;
 import com.kartoflane.spiresim.content.template.effect.base.StackingEffectTemplate;
 import com.kartoflane.spiresim.content.template.effect.common.StrengthEffectTemplate;
-import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.StateFactory;
 import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 import com.kartoflane.spiresim.template.effect.EffectUpdateEvent;
@@ -41,11 +41,11 @@ public class RitualEffectTemplate extends StackingEffectTemplate<RitualEffectSta
     }
 
     @Override
-    public void onUpdate(EncounterController encounterController, EntityController target, RitualEffectState effectState, EffectUpdateEvent updateEvent) {
+    public void onUpdate(GameController gameController, EntityController target, RitualEffectState effectState, EffectUpdateEvent updateEvent) {
         if (updateEvent.isEqual(StandardEffectUpdateEvents.TURN_START)) {
-            StrengthEffectState state = StateFactory.build(StrengthEffectTemplate.getInstance());
+            StrengthEffectState state = StateFactory.build(gameController, StrengthEffectTemplate.getInstance());
             state.setStacks(effectState.getStacks());
-            target.applyEffect(encounterController, state);
+            target.applyEffect(gameController, state);
         }
     }
 }

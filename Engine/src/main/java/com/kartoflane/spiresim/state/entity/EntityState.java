@@ -1,5 +1,6 @@
 package com.kartoflane.spiresim.state.entity;
 
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.CardState;
 import com.kartoflane.spiresim.state.StateFactory;
 import com.kartoflane.spiresim.state.TemplatableState;
@@ -25,7 +26,7 @@ public class EntityState extends TemplatableState {
     private Map<CardPileType, List<CardState>> cardPiles = new HashMap<>();
 
 
-    public EntityState(EntityTemplate<? extends EntityState> template) {
+    public EntityState(GameController gameController, EntityTemplate<? extends EntityState> template) {
         super(template);
 
         for (CardPileType cardPileType : CardPileType.values()) {
@@ -33,15 +34,15 @@ public class EntityState extends TemplatableState {
         }
 
         this.setName(template.getName());
-        this.setHealthMax(template.getHealth());
-        this.setHealthCurrent(template.getHealth());
+        this.setHealthMax(template.getHealth(gameController));
+        this.setHealthCurrent(this.getHealthMax());
         this.setArmorCurrent(0);
-        this.setEnergyMax(template.getEnergy());
-        this.setEnergyCurrent(template.getEnergy());
+        this.setEnergyMax(template.getEnergy(gameController));
+        this.setEnergyCurrent(this.getEnergyMax());
 
         this.cardPiles.get(CardPileType.DRAW).addAll(
                 template.getStartingDeck().stream()
-                        .map(StateFactory::build)
+                        .map(cardTemplate -> StateFactory.build(gameController, cardTemplate))
                         .collect(Collectors.toList())
         );
     }

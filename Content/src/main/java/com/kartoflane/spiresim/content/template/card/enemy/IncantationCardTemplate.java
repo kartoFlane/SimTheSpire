@@ -5,8 +5,8 @@ import com.kartoflane.spiresim.content.state.card.enemy.IncantationCardState;
 import com.kartoflane.spiresim.content.state.effect.enemy.RitualEffectState;
 import com.kartoflane.spiresim.content.template.card.base.PowerCardTemplate;
 import com.kartoflane.spiresim.content.template.effect.enemy.RitualEffectTemplate;
-import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.StateFactory;
 
 @DeriveState
@@ -34,18 +34,18 @@ public class IncantationCardTemplate extends PowerCardTemplate<IncantationCardSt
     }
 
     @Override
-    public int getCost() {
+    public int getCost(GameController gameController) {
         return 1;
     }
 
-    public int getStartingStacks() {
+    public int getStartingStacks(GameController gameController) {
         return 3;
     }
 
     @Override
-    public void onPlay(EncounterController encounterController, EntityController caster, IncantationCardState cardState) {
-        RitualEffectState effectState = StateFactory.build(RitualEffectTemplate.getInstance());
+    public void onPlay(GameController gameController, EntityController caster, IncantationCardState cardState) {
+        RitualEffectState effectState = StateFactory.build(gameController, RitualEffectTemplate.getInstance());
         effectState.setStacks(cardState.getStartingStacks());
-        caster.applyEffect(encounterController, effectState);
+        caster.applyEffect(gameController, effectState);
     }
 }

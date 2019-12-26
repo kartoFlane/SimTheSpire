@@ -2,6 +2,7 @@ package com.kartoflane.spiresim.content.template.entity.enemy;
 
 import com.kartoflane.spiresim.content.template.card.enemy.DarkStrikeCardTemplate;
 import com.kartoflane.spiresim.content.template.card.enemy.IncantationCardTemplate;
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.CardState;
 import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.template.card.CardTemplate;
@@ -33,10 +34,9 @@ public class CultistEntityTemplate extends EnemyEntityTemplate<EntityState> {
         return "Cultist";
     }
 
-    // TODO: Add randomized health, 48-54 range
     @Override
-    public int getHealth() {
-        return 51;
+    public int getHealth(GameController gameController) {
+        return gameController.getState().getRandom().nextInt(48, 54);
     }
 
     @Override

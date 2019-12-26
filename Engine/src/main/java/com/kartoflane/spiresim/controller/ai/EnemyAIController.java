@@ -1,7 +1,6 @@
 package com.kartoflane.spiresim.controller.ai;
 
 import com.kartoflane.spiresim.controller.CardController;
-import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.controller.targeting.TargetingResult;
@@ -13,37 +12,37 @@ import java.util.List;
 public class EnemyAIController implements AIController {
 
     @Override
-    public EntityController getEnemyTargetSingle(GameController gameController, EncounterController encounterController) {
+    public EntityController getEnemyTargetSingle(GameController gameController) {
         return gameController.getPlayerController();
     }
 
     @Override
-    public List<EntityController> getEnemyTargetsAll(GameController gameController, EncounterController encounterController) {
+    public List<EntityController> getEnemyTargetsAll(GameController gameController) {
         return Collections.singletonList(gameController.getPlayerController());
     }
 
     @Override
-    public void controlEntity(GameController gameController, EncounterController encounterController, EntityController entity) {
-        entity.drawHand(gameController.getState(), encounterController, 1);
+    public void controlEntity(GameController gameController, EntityController entity) {
+        entity.drawHand(gameController, 1);
 
         List<CardState> playableCards = entity.getPlayableCards();
-        processPlayableCards(gameController, encounterController, entity, playableCards);
+        processPlayableCards(gameController, entity, playableCards);
     }
 
-    private void processPlayableCards(GameController game, EncounterController encounter, EntityController caster, List<CardState> playableCards) {
+    private void processPlayableCards(GameController game, EntityController caster, List<CardState> playableCards) {
         for (CardState playableCard : playableCards) {
             CardController<?, ?> card = caster.getCardController(playableCard);
-            boolean wasCardPlayed = processCard(game, encounter, caster, card);
+            boolean wasCardPlayed = processCard(game, caster, card);
             if (wasCardPlayed) {
                 break;
             }
         }
     }
 
-    private boolean processCard(GameController game, EncounterController encounter, EntityController caster, CardController<?, ?> card) {
-        TargetingResult targetingResult = card.getTargetingController().selectTargets(game, encounter, this);
+    private boolean processCard(GameController gameController, EntityController caster, CardController<?, ?> card) {
+        TargetingResult targetingResult = card.getTargetingController().selectTargets(gameController, this);
         if (targetingResult.getType().isValidTarget()) {
-            caster.playCard(encounter, card, targetingResult.getTargets());
+            caster.playCard(gameController, card, targetingResult.getTargets());
             return true;
         }
 

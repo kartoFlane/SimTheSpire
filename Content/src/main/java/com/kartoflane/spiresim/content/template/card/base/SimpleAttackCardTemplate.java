@@ -2,8 +2,8 @@ package com.kartoflane.spiresim.content.template.card.base;
 
 import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.content.state.card.base.SimpleAttackCardState;
-import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
 import com.kartoflane.spiresim.state.entity.CardPileType;
 import com.kartoflane.spiresim.template.card.CardTemplate;
@@ -25,37 +25,37 @@ public abstract class SimpleAttackCardTemplate<S extends SimpleAttackCardState> 
     }
 
     @Override
-    public void onDiscard(EncounterController encounterController, EntityController caster, S state) {
+    public void onDiscard(GameController gameController, EntityController caster, S state) {
     }
 
     @Override
-    public void onExhaust(EncounterController encounterController, EntityController caster, S state) {
+    public void onExhaust(GameController gameController, EntityController caster, S state) {
     }
 
     @Override
-    public void onRetain(EncounterController encounterController, EntityController caster, S state) {
+    public void onRetain(GameController gameController, EntityController caster, S state) {
     }
 
     @Override
-    public final CardPileType onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, S state) {
+    public final CardPileType onPlay(GameController gameController, EntityController caster, List<EntityController> targets, S state) {
         EntityController target = targets.get(0);
-        target.applyDamage(encounterController, caster.buildOutgoingAttackValue(encounterController, state.getAttackValue()));
+        target.applyDamage(gameController, caster.buildOutgoingAttackValue(gameController, state.getAttackValue()));
 
-        onPlay(encounterController, caster, target, state);
+        onPlay(gameController, caster, target, state);
 
         return CardPileType.DISCARD;
     }
 
-    public void onPlay(EncounterController encounterController, EntityController caster, EntityController target, S state) {
+    public void onPlay(GameController gameController, EntityController caster, EntityController target, S state) {
     }
 
     @Override
-    public void onTurnStart(EncounterController encounterController, EntityController caster, S state) {
+    public void onTurnStart(GameController gameController, EntityController caster, S state) {
     }
 
     @Override
-    public void onTurnEnd(EncounterController encounterController, EntityController caster, S state) {
+    public void onTurnEnd(GameController gameController, EntityController caster, S state) {
     }
 
-    public abstract int getAttackValue();
+    public abstract int getAttackValue(GameController gameController);
 }

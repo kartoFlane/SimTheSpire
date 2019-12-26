@@ -1,5 +1,6 @@
 package com.kartoflane.spiresim.state;
 
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
 import com.kartoflane.spiresim.template.card.CardTemplate;
 import com.kartoflane.spiresim.template.card.CardType;
@@ -10,10 +11,10 @@ public abstract class CardState extends TemplatableState {
     private int cost;
 
 
-    protected CardState(CardTemplate<? extends CardState> template) {
+    protected CardState(GameController gameController, CardTemplate<? extends CardState> template) {
         super(template);
         this.setName(template.getName());
-        this.setCost(template.getCost());
+        this.setCost(template.getCost(gameController));
     }
 
     @Override

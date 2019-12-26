@@ -1,5 +1,6 @@
 package com.kartoflane.spiresim.template.entity;
 
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.CardState;
 import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.template.StateTemplate;
@@ -11,9 +12,9 @@ public abstract class EntityTemplate<S extends EntityState> implements StateTemp
 
     public abstract String getName();
 
-    public abstract int getHealth();
+    public abstract int getHealth(GameController gameController);
 
-    public abstract int getEnergy();
+    public abstract int getEnergy(GameController gameController);
 
     public abstract List<CardTemplate<? extends CardState>> getStartingDeck();
 }

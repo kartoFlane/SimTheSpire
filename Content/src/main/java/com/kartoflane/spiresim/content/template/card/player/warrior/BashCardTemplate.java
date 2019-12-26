@@ -5,8 +5,8 @@ import com.kartoflane.spiresim.content.state.card.player.warrior.BashCardState;
 import com.kartoflane.spiresim.content.state.effect.common.VulnerableEffectState;
 import com.kartoflane.spiresim.content.template.card.base.SimpleAttackCardTemplate;
 import com.kartoflane.spiresim.content.template.effect.common.VulnerableEffectTemplate;
-import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.StateFactory;
 
 @DeriveState
@@ -34,23 +34,23 @@ public class BashCardTemplate extends SimpleAttackCardTemplate<BashCardState> {
     }
 
     @Override
-    public int getCost() {
+    public int getCost(GameController gameController) {
         return 2;
     }
 
     @Override
-    public int getAttackValue() {
+    public int getAttackValue(GameController gameController) {
         return 8;
     }
 
-    public int getStartingStacks() {
+    public int getStartingStacks(GameController gameController) {
         return 1;
     }
 
     @Override
-    public void onPlay(EncounterController encounterController, EntityController caster, EntityController target, BashCardState cardState) {
-        VulnerableEffectState effectState = StateFactory.build(VulnerableEffectTemplate.getInstance());
+    public void onPlay(GameController gameController, EntityController caster, EntityController target, BashCardState cardState) {
+        VulnerableEffectState effectState = StateFactory.build(gameController, VulnerableEffectTemplate.getInstance());
         effectState.setStacks(cardState.getStartingStacks());
-        target.applyEffect(encounterController, effectState);
+        target.applyEffect(gameController, effectState);
     }
 }

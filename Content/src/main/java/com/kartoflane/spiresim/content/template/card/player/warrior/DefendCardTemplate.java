@@ -2,8 +2,8 @@ package com.kartoflane.spiresim.content.template.card.player.warrior;
 
 import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.content.state.card.player.warrior.DefendCardState;
-import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
 import com.kartoflane.spiresim.state.entity.CardPileType;
 import com.kartoflane.spiresim.template.card.CardTemplate;
@@ -41,7 +41,7 @@ public class DefendCardTemplate extends CardTemplate<DefendCardState> {
     }
 
     @Override
-    public int getCost() {
+    public int getCost(GameController gameController) {
         return 1;
     }
 
@@ -50,34 +50,34 @@ public class DefendCardTemplate extends CardTemplate<DefendCardState> {
         return CardType.SKILL;
     }
 
-    public int getDefenseValue() {
+    public int getDefenseValue(GameController gameController) {
         return 6;
     }
 
     @Override
-    public void onDiscard(EncounterController encounterController, EntityController caster, DefendCardState cardState) {
+    public void onDiscard(GameController gameController, EntityController caster, DefendCardState cardState) {
     }
 
     @Override
-    public void onExhaust(EncounterController encounterController, EntityController caster, DefendCardState cardState) {
+    public void onExhaust(GameController gameController, EntityController caster, DefendCardState cardState) {
     }
 
     @Override
-    public void onRetain(EncounterController encounterController, EntityController caster, DefendCardState cardState) {
+    public void onRetain(GameController gameController, EntityController caster, DefendCardState cardState) {
     }
 
     @Override
-    public CardPileType onPlay(EncounterController encounterController, EntityController caster, List<EntityController> targets, DefendCardState cardState) {
-        caster.applyArmor(encounterController, caster.buildOutgoingArmorValue(encounterController, cardState.getDefenseValue()));
+    public CardPileType onPlay(GameController gameController, EntityController caster, List<EntityController> targets, DefendCardState cardState) {
+        caster.applyArmor(gameController, caster.buildOutgoingArmorValue(gameController, cardState.getDefenseValue()));
 
         return CardPileType.DISCARD;
     }
 
     @Override
-    public void onTurnStart(EncounterController encounterController, EntityController caster, DefendCardState cardState) {
+    public void onTurnStart(GameController gameController, EntityController caster, DefendCardState cardState) {
     }
 
     @Override
-    public void onTurnEnd(EncounterController encounterController, EntityController caster, DefendCardState cardState) {
+    public void onTurnEnd(GameController gameController, EntityController caster, DefendCardState cardState) {
     }
 }

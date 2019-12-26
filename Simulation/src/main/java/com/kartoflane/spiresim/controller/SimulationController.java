@@ -9,10 +9,10 @@ import com.kartoflane.spiresim.state.GameState;
 import com.kartoflane.spiresim.state.SimulationState;
 import com.kartoflane.spiresim.state.StateFactory;
 import com.kartoflane.spiresim.state.entity.EntityState;
+import com.kartoflane.spiresim.util.RandomExt;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class SimulationController implements StateController<SimulationState> {
@@ -29,9 +29,10 @@ public class SimulationController implements StateController<SimulationState> {
     }
 
     public void start() {
+        RandomExt random = new RandomExt();
+
         for (int i = 0; i < 100; ++i) {
-            GameState gameState = buildNewGame(new Random());
-            GameController gameController = new GameController(gameState);
+            GameController gameController = buildNewGame(random);
 
             PlaythroughSummary summary = gameController.simulateGame(this::buildNewEncounter);
 
@@ -82,15 +83,17 @@ public class SimulationController implements StateController<SimulationState> {
         ));
     }
 
-    private GameState buildNewGame(Random random) {
-        EntityState playerEntity = StateFactory.build(WarriorEntityTemplate.getInstance());
+    private GameController buildNewGame(RandomExt random) {
+        GameController gameController = new GameController(new GameState(random));
+        EntityState playerEntity = StateFactory.build(gameController, WarriorEntityTemplate.getInstance());
+        gameController.initialize(playerEntity);
 
-        return new GameState(random, playerEntity);
+        return gameController;
     }
 
-    private EncounterState buildNewEncounter() {
+    private EncounterState buildNewEncounter(GameController gameController) {
         List<EntityState> enemyEntities = Arrays.asList(
-                StateFactory.build(CultistEntityTemplate.getInstance())
+                StateFactory.build(gameController, CultistEntityTemplate.getInstance())
         );
 
         return new EncounterState(enemyEntities);

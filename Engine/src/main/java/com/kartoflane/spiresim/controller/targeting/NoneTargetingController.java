@@ -16,7 +16,7 @@ class NoneTargetingController implements TargetingController {
     }
 
     @Override
-    public TargetingResult selectTargets(GameController gameController, EncounterController encounterController, AIController aiController) {
+    public TargetingResult selectTargets(GameController gameController, AIController aiController) {
         return new TargetingResult(TargetingResultType.TARGET_NONE, Collections.emptyList());
     }
 }

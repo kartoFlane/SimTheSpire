@@ -6,8 +6,8 @@ import com.kartoflane.spiresim.combat.MutableCombatValueEvents;
 import com.kartoflane.spiresim.content.annotation.DeriveState;
 import com.kartoflane.spiresim.content.state.effect.common.VulnerableEffectState;
 import com.kartoflane.spiresim.content.template.effect.base.TimedEffectTemplate;
-import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.EntityController;
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 
 @DeriveState
@@ -45,7 +45,7 @@ public class VulnerableEffectTemplate extends TimedEffectTemplate<VulnerableEffe
 
     @Override
     public void preprocessCombatValue(
-            EncounterController encounterController,
+            GameController gameController,
             EntityController target,
             VulnerableEffectState effectState,
             MutableCombatValue mutableCombatValue,

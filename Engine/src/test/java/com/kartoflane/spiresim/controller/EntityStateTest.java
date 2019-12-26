@@ -3,6 +3,7 @@ package com.kartoflane.spiresim.controller;
 import com.kartoflane.spiresim.combat.MutableCombatValue;
 import com.kartoflane.spiresim.controller.ai.EnemyAIController;
 import com.kartoflane.spiresim.state.EncounterState;
+import com.kartoflane.spiresim.state.GameState;
 import com.kartoflane.spiresim.state.StateFactory;
 import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.template.TestEntityTemplate;
@@ -15,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class EntityStateTest {
+    private GameController gameController;
     private EntityState state;
     private EntityController controller;
     private EncounterController encounterController;
@@ -22,7 +24,9 @@ public class EntityStateTest {
 
     @Before
     public void prepareMockEntities() {
-        state = StateFactory.build(TestEntityTemplate.getInstance());
+        gameController = new GameController(new GameState());
+        state = StateFactory.build(gameController, TestEntityTemplate.getInstance());
+        gameController.getState().initialize(state);
         controller = new EntityController(state, new EnemyAIController());
         encounterController = new EncounterController(new EncounterState(Collections.emptyList()));
     }
@@ -33,7 +37,7 @@ public class EntityStateTest {
         final int expectedDamage = 3;
 
         // Execute
-        controller.applyDamage(encounterController, new MutableCombatValue().withAmount(expectedDamage));
+        controller.applyDamage(gameController, new MutableCombatValue().withAmount(expectedDamage));
 
         // Check
         assertEquals(state.getHealthMax() - expectedDamage, state.getHealthCurrent());
@@ -49,7 +53,7 @@ public class EntityStateTest {
         assertTrue(startArmor > dealtDamage);
 
         // Execute
-        controller.applyDamage(encounterController, new MutableCombatValue().withAmount(dealtDamage));
+        controller.applyDamage(gameController, new MutableCombatValue().withAmount(dealtDamage));
 
         // Check
         assertEquals(state.getHealthMax(), state.getHealthCurrent());
@@ -66,7 +70,7 @@ public class EntityStateTest {
         assertEquals(startArmor, dealtDamage);
 
         // Execute
-        controller.applyDamage(encounterController, new MutableCombatValue().withAmount(dealtDamage));
+        controller.applyDamage(gameController, new MutableCombatValue().withAmount(dealtDamage));
 
         // Check
         assertEquals(state.getHealthMax(), state.getHealthCurrent());
@@ -84,7 +88,7 @@ public class EntityStateTest {
         assertTrue(startArmor < dealtDamage);
 
         // Execute
-        controller.applyDamage(encounterController, new MutableCombatValue().withAmount(dealtDamage));
+        controller.applyDamage(gameController, new MutableCombatValue().withAmount(dealtDamage));
 
         // Check
         assertEquals(state.getHealthMax() - expectedDamage, state.getHealthCurrent());

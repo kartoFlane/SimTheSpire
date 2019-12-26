@@ -1,11 +1,12 @@
 package com.kartoflane.spiresim.content.template.entity.player;
 
 import com.kartoflane.spiresim.content.template.card.player.warrior.BashCardTemplate;
+import com.kartoflane.spiresim.content.template.card.player.warrior.DefendCardTemplate;
 import com.kartoflane.spiresim.content.template.card.player.warrior.StrikeCardTemplate;
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.CardState;
 import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.template.card.CardTemplate;
-import com.kartoflane.spiresim.content.template.card.player.warrior.DefendCardTemplate;
 import com.kartoflane.spiresim.template.entity.PlayerEntityTemplate;
 
 import java.util.Arrays;
@@ -35,7 +36,7 @@ public class WarriorEntityTemplate extends PlayerEntityTemplate<EntityState> {
     }
 
     @Override
-    public int getHealth() {
+    public int getHealth(GameController gameController) {
         return 80;
     }
 

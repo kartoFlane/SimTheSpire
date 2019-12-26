@@ -75,9 +75,9 @@ public class EncounterController implements StateController<EncounterState> {
     }
 
     private void executeEntityTurn(GameController gameController, EntityController entityController) {
-        entityController.onTurnStart(this);
-        entityController.simulateTurn(gameController, this);
-        entityController.onTurnEnd(this);
+        entityController.onTurnStart(gameController);
+        entityController.simulateTurn(gameController);
+        entityController.onTurnEnd(gameController);
     }
 
     public void onEncounterEnd(GameController gameController) {

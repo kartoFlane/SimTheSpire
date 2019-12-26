@@ -1,5 +1,6 @@
 package com.kartoflane.spiresim.content;
 
+import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.TemplatableState;
 import com.kartoflane.spiresim.template.StateTemplate;
 import com.kartoflane.spiresim.util.StringUtils;
@@ -16,7 +17,8 @@ public class StateTypeFactory {
     public static final String BASE_OUTPUT_PACKAGE = "com.kartoflane.spiresim.content.state";
     public static final String STATE_CLASS_NAME_SUFFIX = "State";
 
-    private static final String CONSTRUCTOR_PARAMETER_NAME = "template";
+    private static final String CONSTRUCTOR_GAME_PARAMETER_NAME = "gameController";
+    private static final String CONSTRUCTOR_TEMPLATE_PARAMETER_NAME = "template";
 
     private final TypeMirrorHelper typeMirrorHelper;
 
@@ -61,18 +63,18 @@ public class StateTypeFactory {
     }
 
     private TypeSpec.Builder addDerivedSuperclass(TypeSpec.Builder builder, TypeElement templateElement) {
-        TypeName superTypeName = deriveSuperclass(typeMirrorHelper, templateElement);
+        TypeName superTypeName = deriveSuperclass(templateElement);
         return builder.superclass(superTypeName);
     }
 
-    private TypeName deriveSuperclass(TypeMirrorHelper helper, TypeElement templateElement) {
-        TypeElement superTypeElement = (TypeElement) helper.asElement(templateElement.getSuperclass());
+    private TypeName deriveSuperclass(TypeElement templateElement) {
+        TypeElement superTypeElement = (TypeElement) typeMirrorHelper.asElement(templateElement.getSuperclass());
         List<? extends TypeParameterElement> typeParameters = superTypeElement.getTypeParameters();
 
-        TypeMirror templatableStateMirror = helper.getTypeMirror(TemplatableState.class);
+        TypeMirror templatableStateMirror = typeMirrorHelper.getTypeMirror(TemplatableState.class);
         for (TypeParameterElement typeParameter : typeParameters) {
             for (TypeMirror boundsType : typeParameter.getBounds()) {
-                if (helper.isAssignable(boundsType, templatableStateMirror)) {
+                if (typeMirrorHelper.isAssignable(boundsType, templatableStateMirror)) {
                     if (boundsType.getKind() != TypeKind.DECLARED) {
                         // Generated state class, need to provide path manually
                         return ClassName.get(getPackagePath(superTypeElement), boundsType.toString());
@@ -102,29 +104,52 @@ public class StateTypeFactory {
     private MethodSpec.Builder setupConstructor(TypeName templateTypeName) {
         return MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(templateTypeName, CONSTRUCTOR_PARAMETER_NAME)
-                .addStatement("super($L)", CONSTRUCTOR_PARAMETER_NAME);
+                .addParameter(GameController.class, CONSTRUCTOR_GAME_PARAMETER_NAME)
+                .addParameter(templateTypeName, CONSTRUCTOR_TEMPLATE_PARAMETER_NAME)
+                .addStatement("super($L, $L)", CONSTRUCTOR_GAME_PARAMETER_NAME, CONSTRUCTOR_TEMPLATE_PARAMETER_NAME);
     }
 
     /**
      * @return a list of methods from the specified element that: <br/>
      * - have no annotations <br/>
-     * - take no arguments <br/>
+     * - take no arguments or take a single GameController argument <br/>
      * - return something other than void or the template object
      * - have a name starting with 'get'
      */
     private List<ExecutableElement> getCustomAttributeMethods(TypeElement templateElement) {
-        final TypeMirror voidType = typeMirrorHelper.getTypeMirror(TypeKind.VOID);
-
         return templateElement.getEnclosedElements().stream()
                 .filter(enclosedElement -> enclosedElement.getKind() == ElementKind.METHOD)
                 .map(enclosedElement -> (ExecutableElement) enclosedElement)
-                .filter(methodElement -> methodElement.getAnnotationMirrors().size() == 0)
-                .filter(methodElement -> methodElement.getParameters().size() == 0)
-                .filter(methodElement -> !typeMirrorHelper.isAssignable(methodElement.getReturnType(), voidType))
-                .filter(methodElement -> !typeMirrorHelper.isAssignable(templateElement.asType(), methodElement.getReturnType()))
-                .filter(methodElement -> methodElement.getSimpleName().toString().startsWith("get"))
+                .filter(methodElement -> isValidCustomAttributeMethod(templateElement, methodElement))
                 .collect(Collectors.toList());
+    }
+
+    private boolean isValidCustomAttributeMethod(TypeElement templateElement, ExecutableElement methodElement) {
+        if (methodElement.getAnnotationMirrors().size() > 0) {
+            return false;
+        }
+        if (!methodElement.getSimpleName().toString().startsWith("get")) {
+            return false;
+        }
+        if (!hasNoParametersOrGameControllerParameter(methodElement)) {
+            return false;
+        }
+
+        final TypeMirror voidType = typeMirrorHelper.getTypeMirror(TypeKind.VOID);
+        if (typeMirrorHelper.isAssignable(methodElement.getReturnType(), voidType)) {
+            return false;
+        }
+        if (typeMirrorHelper.isAssignable(templateElement.asType(), methodElement.getReturnType())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean hasNoParametersOrGameControllerParameter(ExecutableElement methodElement) {
+        List<? extends VariableElement> parameters = methodElement.getParameters();
+        return parameters.size() == 0 ||
+                (parameters.size() == 1 && typeMirrorHelper.isAssignable(parameters.get(0).asType(), typeMirrorHelper.getTypeMirror(GameController.class)));
     }
 
     private void processCustomAttributeMethod(TypeSpec.Builder typeBuilder, MethodSpec.Builder constructorBuilder, ExecutableElement methodElement) {
@@ -150,7 +175,11 @@ public class StateTypeFactory {
                 .build();
         typeBuilder.addMethod(setter);
 
-        constructorBuilder.addStatement("$N($L.$N())", setter, CONSTRUCTOR_PARAMETER_NAME, getter);
+        if (methodElement.getParameters().size() == 0) {
+            constructorBuilder.addStatement("$N($L.$N())", setter, CONSTRUCTOR_TEMPLATE_PARAMETER_NAME, getter);
+        } else {
+            constructorBuilder.addStatement("$N($L.$N($L))", setter, CONSTRUCTOR_TEMPLATE_PARAMETER_NAME, getter, CONSTRUCTOR_GAME_PARAMETER_NAME);
+        }
     }
 
     private String getPackagePath(TypeElement templateElement) {

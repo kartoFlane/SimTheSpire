@@ -41,57 +41,57 @@ public class EntityController implements StateController<EntityState> {
         return state;
     }
 
-    public void onTurnStart(EncounterController encounterController) {
-        iterateEffects(effectController -> notifyEvent(encounterController, effectController::onTurnStart));
-        iterateCards(cardController -> notifyEvent(encounterController, cardController::onTurnStart));
+    public void onTurnStart(GameController gameController) {
+        iterateEffects(effectController -> notifyEvent(gameController, effectController::onTurnStart));
+        iterateCards(cardController -> notifyEvent(gameController, cardController::onTurnStart));
         this.state.setEnergyCurrent(this.state.getEnergyMax());
         this.state.setArmorCurrent(0); // TODO armor retention
     }
 
-    public void onTurnEnd(EncounterController encounterController) {
-        discardHand(encounterController);
-        iterateEffects(effectController -> notifyEvent(encounterController, effectController::onTurnEnd));
-        iterateCards(cardController -> notifyEvent(encounterController, cardController::onTurnEnd));
+    public void onTurnEnd(GameController gameController) {
+        discardHand(gameController);
+        iterateEffects(effectController -> notifyEvent(gameController, effectController::onTurnEnd));
+        iterateCards(cardController -> notifyEvent(gameController, cardController::onTurnEnd));
     }
 
-    public void simulateTurn(GameController gameController, EncounterController encounterController) {
-        aiController.controlEntity(gameController, encounterController, this);
+    public void simulateTurn(GameController gameController) {
+        aiController.controlEntity(gameController, this);
     }
 
     public boolean isAlive() {
         return this.state.getHealthCurrent() > 0;
     }
 
-    public void drawHand(GameState gameState, EncounterController encounterController, int cardsToDraw) {
+    public void drawHand(GameController gameController, int cardsToDraw) {
         for (int drawnCards = 0; drawnCards < cardsToDraw; ++drawnCards) {
-            CardState cardState = drawCard(gameState, encounterController);
+            CardState cardState = drawCard(gameController);
             if (cardState != null) {
                 this.state.getHandList().add(cardState);
             }
         }
     }
 
-    public CardState drawCard(GameState gameState, EncounterController encounterController) {
+    public CardState drawCard(GameController gameController) {
         if (this.state.getDrawPileList().isEmpty()) {
             if (this.state.getDiscardPileList().isEmpty()) {
                 return null;
             } else {
-                shuffleDiscardPileIntoDrawPile(gameState);
+                shuffleDiscardPileIntoDrawPile(gameController);
             }
         }
 
         CardState drawnCard = this.state.getDrawPileList().remove(0);
         CardController<?, ?> cardController = getCardController(drawnCard);
 
-        iterateEffects(effectController -> effectController.onCardDraw(encounterController, this, cardController));
+        iterateEffects(effectController -> effectController.onCardDraw(gameController, this, cardController));
 
         return drawnCard;
     }
 
-    public void shuffleDiscardPileIntoDrawPile(GameState gameState) {
+    public void shuffleDiscardPileIntoDrawPile(GameController gameController) {
         this.state.getDrawPileList().addAll(this.state.getDiscardPileList());
         this.state.getDiscardPileList().clear();
-        Collections.shuffle(this.state.getDrawPileList(), gameState.getRandom());
+        Collections.shuffle(this.state.getDrawPileList(), gameController.getState().getRandom());
     }
 
     public List<CardState> getPlayableCards() {
@@ -115,7 +115,7 @@ public class EntityController implements StateController<EntityState> {
     }
 
     public <T extends CardTemplate<S>, S extends CardState> void playCard(
-            EncounterController encounterController,
+            GameController gameController,
             CardController<T, S> cardController,
             List<EntityController> targets
     ) {
@@ -124,14 +124,14 @@ public class EntityController implements StateController<EntityState> {
         this.state.setEnergyCurrent(this.state.getEnergyCurrent() - cardState.getCost());
         this.state.getHandList().remove(cardState);
 
-        CardPileType destinationPile = cardController.onPlay(encounterController, this, targets);
+        CardPileType destinationPile = cardController.onPlay(gameController, this, targets);
 
         this.state.getCardPile(destinationPile).add(cardState);
 
-        iterateEffects(effectController -> effectController.onCardPlay(encounterController, this, cardController));
+        iterateEffects(effectController -> effectController.onCardPlay(gameController, this, cardController));
     }
 
-    public void discardHand(EncounterController encounterController) {
+    public void discardHand(GameController gameController) {
         List<CardState> cardsToDiscard = new ArrayList<>();
         for (CardState card : this.state.getHandList()) {
             // TODO Card retention
@@ -143,14 +143,14 @@ public class EntityController implements StateController<EntityState> {
             this.state.getDiscardPileList().add(card);
 
             CardController<?, ?> cardController = getCardController(card);
-            cardController.onDiscard(encounterController, this);
-            iterateEffects(effectController -> effectController.onCardDiscard(encounterController, this, cardController));
+            cardController.onDiscard(gameController, this);
+            iterateEffects(effectController -> effectController.onCardDiscard(gameController, this, cardController));
         }
 
         for (CardState card : this.state.getHandList()) {
             CardController<?, ?> cardController = getCardController(card);
-            cardController.onRetain(encounterController, this);
-            iterateEffects(effectController -> effectController.onCardRetain(encounterController, this, cardController));
+            cardController.onRetain(gameController, this);
+            iterateEffects(effectController -> effectController.onCardRetain(gameController, this, cardController));
         }
     }
 
@@ -168,34 +168,34 @@ public class EntityController implements StateController<EntityState> {
         Collections.shuffle(drawPile, gameState.getRandom());
     }
 
-    public void applyEffect(EncounterController encounterController, EffectState effectState) {
+    public void applyEffect(GameController gameController, EffectState effectState) {
         final EffectIdentifier effectIdentifier = effectState.getEffectIdentifier();
 
-        Optional<EffectState> existingEffect = this.state.getEffectsList().stream()
+        Optional<EffectState> existingEffect$ = this.state.getEffectsList().stream()
                 .filter(effect -> effect.getEffectIdentifier().isEqual(effectIdentifier))
                 .findFirst();
 
-        if (existingEffect.isPresent()) {
-            EffectController<EffectTemplate<EffectState>, EffectState> existingEffectController = getEffectController(existingEffect.get());
-            existingEffectController.onApply(encounterController, this, effectState);
+        if (existingEffect$.isPresent()) {
+            EffectController<EffectTemplate<EffectState>, EffectState> existingEffectController = getEffectController(existingEffect$.get());
+            existingEffectController.onApply(gameController, this, effectState);
         } else {
             this.state.getEffectsList().add(effectState);
             updateEffectControllersMap();
-            getEffectController(effectState).onApply(encounterController, this, null);
+            getEffectController(effectState).onApply(gameController, this, null);
         }
     }
 
-    public void removeEffect(EncounterController encounterController, EffectIdentifier effectIdentifier) {
-        Optional<EffectState> existingEffect = this.state.getEffectsList().stream()
+    public void removeEffect(GameController gameController, EffectIdentifier effectIdentifier) {
+        Optional<EffectState> existingEffect$ = this.state.getEffectsList().stream()
                 .filter(effect -> effect.getEffectIdentifier().isEqual(effectIdentifier))
                 .findFirst();
 
-        existingEffect.ifPresent(effectState -> removeEffect(encounterController, effectState));
+        existingEffect$.ifPresent(effectState -> removeEffect(gameController, effectState));
     }
 
-    public void removeEffect(EncounterController encounterController, EffectState effectState) {
+    public void removeEffect(GameController gameController, EffectState effectState) {
         this.state.getEffectsList().remove(effectState);
-        getEffectController(effectState).onRemove(encounterController, this);
+        getEffectController(effectState).onRemove(gameController, this);
 
         updateEffectControllersMap();
     }
@@ -208,8 +208,8 @@ public class EntityController implements StateController<EntityState> {
         this.cardStateToControllerMap.values().forEach(consumer);
     }
 
-    private void notifyEvent(EncounterController encounterController, BiConsumer<EncounterController, EntityController> consumer) {
-        consumer.accept(encounterController, this);
+    private void notifyEvent(GameController gameController, BiConsumer<GameController, EntityController> consumer) {
+        consumer.accept(gameController, this);
     }
 
     private void updateEffectControllersMap() {
@@ -224,9 +224,9 @@ public class EntityController implements StateController<EntityState> {
         }
     }
 
-    public void applyDamage(EncounterController encounterController, MutableCombatValue mutableCombatValue) {
+    public void applyDamage(GameController gameController, MutableCombatValue mutableCombatValue) {
         notifyEffectsForCombatValue(
-                encounterController,
+                gameController,
                 this,
                 mutableCombatValue,
                 MutableCombatValueEvents.ENTITY_INCOMING_DAMAGE_FLAT,
@@ -239,7 +239,7 @@ public class EntityController implements StateController<EntityState> {
         System.out.printf("    %s takes %s damage!%n", this.state.getName(), mutableCombatValue.getAmount());
 
         iterateEffects(effectController -> effectController.onUpdate(
-                encounterController,
+                gameController,
                 this,
                 StandardEffectUpdateEvents.ENTITY_INCOMING_DAMAGE
         ));
@@ -251,9 +251,9 @@ public class EntityController implements StateController<EntityState> {
         mutableCombatValue.setAmount(unblockedAmount);
     }
 
-    public void applyHeal(EncounterController encounterController, MutableCombatValue mutableCombatValue) {
+    public void applyHeal(GameController gameController, MutableCombatValue mutableCombatValue) {
         notifyEffectsForCombatValue(
-                encounterController,
+                gameController,
                 this,
                 mutableCombatValue,
                 MutableCombatValueEvents.ENTITY_INCOMING_HEAL_FLAT,
@@ -263,15 +263,15 @@ public class EntityController implements StateController<EntityState> {
         this.state.setHealthCurrent(this.state.getHealthCurrent() + mutableCombatValue.getAmount());
 
         iterateEffects(effectController -> effectController.onUpdate(
-                encounterController,
+                gameController,
                 this,
                 StandardEffectUpdateEvents.ENTITY_INCOMING_HEAL
         ));
     }
 
-    public void applyArmor(EncounterController encounterController, MutableCombatValue mutableCombatValue) {
+    public void applyArmor(GameController gameController, MutableCombatValue mutableCombatValue) {
         notifyEffectsForCombatValue(
-                encounterController,
+                gameController,
                 this,
                 mutableCombatValue,
                 MutableCombatValueEvents.ENTITY_INCOMING_ARMOR_FLAT,
@@ -281,57 +281,57 @@ public class EntityController implements StateController<EntityState> {
         this.state.setArmorCurrent(this.state.getArmorCurrent() + mutableCombatValue.getAmount());
 
         iterateEffects(effectController -> effectController.onUpdate(
-                encounterController,
+                gameController,
                 this,
                 StandardEffectUpdateEvents.ENTITY_INCOMING_ARMOR
         ));
     }
 
-    public MutableCombatValue buildOutgoingAttackValue(EncounterController encounterController, int amount) {
+    public MutableCombatValue buildOutgoingAttackValue(GameController gameController, int amount) {
         return buildMutableCombatValue(
-                encounterController,
+                gameController,
                 amount,
                 MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_FLAT,
                 MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_PERCENT
         );
     }
 
-    public MutableCombatValue buildOutgoingHealingValue(EncounterController encounterController, int amount) {
+    public MutableCombatValue buildOutgoingHealingValue(GameController gameController, int amount) {
         return buildMutableCombatValue(
-                encounterController,
+                gameController,
                 amount,
                 MutableCombatValueEvents.ENTITY_OUTGOING_HEAL_FLAT,
                 MutableCombatValueEvents.ENTITY_OUTGOING_HEAL_PERCENT
         );
     }
 
-    public MutableCombatValue buildOutgoingArmorValue(EncounterController encounterController, int amount) {
+    public MutableCombatValue buildOutgoingArmorValue(GameController gameController, int amount) {
         return buildMutableCombatValue(
-                encounterController,
+                gameController,
                 amount,
                 MutableCombatValueEvents.ENTITY_OUTGOING_ARMOR_FLAT,
                 MutableCombatValueEvents.ENTITY_OUTGOING_ARMOR_PERCENT
         );
     }
 
-    public MutableCombatValue buildMutableCombatValue(EncounterController encounterController, int amount, MutableCombatValueEvent... updateEvents) {
+    public MutableCombatValue buildMutableCombatValue(GameController gameController, int amount, MutableCombatValueEvent... updateEvents) {
         MutableCombatValue mutableCombatValue = new MutableCombatValue();
         mutableCombatValue.setAmount(amount);
 
-        notifyEffectsForCombatValue(encounterController, this, mutableCombatValue, updateEvents);
+        notifyEffectsForCombatValue(gameController, this, mutableCombatValue, updateEvents);
 
         return mutableCombatValue;
     }
 
     private void notifyEffectsForCombatValue(
-            EncounterController encounterController,
+            GameController gameController,
             EntityController target,
             MutableCombatValue mutableCombatValue,
             MutableCombatValueEvent... updateEvents
     ) {
         for (MutableCombatValueEvent updateEvent : updateEvents) {
             iterateEffects(effectController -> effectController.preprocessCombatValue(
-                    encounterController,
+                    gameController,
                     target,
                     mutableCombatValue,
                     updateEvent
