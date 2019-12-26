@@ -50,13 +50,17 @@ public class GameController implements StateController<GameState> {
         return currentEncounter;
     }
 
+    protected void setCurrentEncounter(EncounterController encounterController) {
+        this.state.setCurrentEncounter(encounterController.getState());
+        this.currentEncounter = encounterController;
+    }
+
     public PlaythroughSummary simulateGame(Function<GameController, EncounterState> encounterSupplier) {
         checkInitialized();
 
         List<EncounterSummary> encounterSummaryList = new ArrayList<>();
         while (isGameInProgress()) {
-            state.setCurrentEncounter(encounterSupplier.apply(this));
-            currentEncounter = new EncounterController(state.getCurrentEncounter());
+            setCurrentEncounter(new EncounterController(encounterSupplier.apply(this)));
 
             currentEncounter.onEncounterStart(this);
             EncounterSummary encounterSummary = currentEncounter.simulateEncounter(this);

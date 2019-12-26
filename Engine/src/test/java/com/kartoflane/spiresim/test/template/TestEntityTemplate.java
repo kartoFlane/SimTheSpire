@@ -1,15 +1,15 @@
-package com.kartoflane.spiresim.template;
+package com.kartoflane.spiresim.test.template;
 
 import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.card.CardState;
 import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.template.card.CardTemplate;
-import com.kartoflane.spiresim.template.entity.PlayerEntityTemplate;
+import com.kartoflane.spiresim.template.entity.EntityTemplate;
 
 import java.util.Collections;
 import java.util.List;
 
-public class TestEntityTemplate extends PlayerEntityTemplate<EntityState> {
+public class TestEntityTemplate extends EntityTemplate<EntityState> {
     private static TestEntityTemplate INSTANCE;
 
 

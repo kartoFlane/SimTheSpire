@@ -6,7 +6,8 @@ import com.kartoflane.spiresim.state.EncounterState;
 import com.kartoflane.spiresim.state.GameState;
 import com.kartoflane.spiresim.state.StateFactory;
 import com.kartoflane.spiresim.state.entity.EntityState;
-import com.kartoflane.spiresim.template.TestEntityTemplate;
+import com.kartoflane.spiresim.test.controller.TestGameController;
+import com.kartoflane.spiresim.test.template.TestEntityTemplate;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,16 +20,15 @@ public class EntityStateTest {
     private GameController gameController;
     private EntityState state;
     private EntityController controller;
-    private EncounterController encounterController;
 
 
     @Before
     public void prepareMockEntities() {
-        gameController = new GameController(new GameState());
+        gameController = new TestGameController(new GameState());
         state = StateFactory.build(gameController, TestEntityTemplate.getInstance());
         gameController.getState().initialize(state);
         controller = new EntityController(state, new EnemyAIController());
-        encounterController = new EncounterController(new EncounterState(Collections.emptyList()));
+        gameController.setCurrentEncounter(new EncounterController(new EncounterState(Collections.emptyList())));
     }
 
     @Test
