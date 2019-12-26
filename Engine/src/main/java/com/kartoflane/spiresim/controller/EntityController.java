@@ -89,9 +89,9 @@ public class EntityController implements StateController<EntityState> {
     }
 
     public void shuffleDiscardPileIntoDrawPile(GameController gameController) {
+        Collections.shuffle(this.state.getDiscardPileList(), gameController.getState().getRandom());
         this.state.getDrawPileList().addAll(this.state.getDiscardPileList());
         this.state.getDiscardPileList().clear();
-        Collections.shuffle(this.state.getDrawPileList(), gameController.getState().getRandom());
     }
 
     public List<CardState> getPlayableCards() {
@@ -166,6 +166,39 @@ public class EntityController implements StateController<EntityState> {
         this.state.getUsedPowersList().clear();
 
         Collections.shuffle(drawPile, gameState.getRandom());
+    }
+
+    public void addCardToDeck(CardState cardState) {
+        addCardToPileBottom(cardState, CardPileType.DRAW);
+    }
+
+    public void addCardToPileTop(CardState cardState, CardPileType pileType) {
+        checkValidCardAddition(cardState);
+
+        this.state.getCardPile(pileType).add(0, cardState);
+        cardStateToControllerMap.put(cardState, new CardController<>(cardState));
+    }
+
+    public void addCardToPileShuffle(GameController gameController, CardState cardState, CardPileType pileType) {
+        checkValidCardAddition(cardState);
+
+        List<CardState> pile = this.state.getCardPile(pileType);
+        int index = gameController.getState().getRandom().randomIndex(pile);
+        pile.add(index, cardState);
+        cardStateToControllerMap.put(cardState, new CardController<>(cardState));
+    }
+
+    public void addCardToPileBottom(CardState cardState, CardPileType pileType) {
+        checkValidCardAddition(cardState);
+
+        this.state.getCardPile(pileType).add(cardState);
+        cardStateToControllerMap.put(cardState, new CardController<>(cardState));
+    }
+
+    private void checkValidCardAddition(CardState cardState) {
+        if (state.getAllCards().contains(cardState)) {
+            throw new IllegalArgumentException("Deck already contains the specified CardState!");
+        }
     }
 
     public void applyEffect(GameController gameController, EffectState effectState) {
