@@ -1,17 +1,17 @@
 package com.kartoflane.spiresim.content.template.entity.enemy;
 
+import com.kartoflane.spiresim.content.state.entity.base.SimpleEntityState;
 import com.kartoflane.spiresim.content.template.card.enemy.DarkStrikeCardTemplate;
 import com.kartoflane.spiresim.content.template.card.enemy.IncantationCardTemplate;
 import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.card.CardState;
-import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.template.card.CardTemplate;
-import com.kartoflane.spiresim.template.entity.EnemyEntityTemplate;
+import com.kartoflane.spiresim.content.template.entity.base.EnemyEntityTemplate;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class CultistEntityTemplate extends EnemyEntityTemplate<EntityState> {
+public class CultistEntityTemplate extends EnemyEntityTemplate<SimpleEntityState> {
 
     private static CultistEntityTemplate INSTANCE;
 
@@ -25,8 +25,8 @@ public class CultistEntityTemplate extends EnemyEntityTemplate<EntityState> {
     }
 
     @Override
-    public Class<EntityState> getStateType() {
-        return EntityState.class;
+    public Class<SimpleEntityState> getStateType() {
+        return SimpleEntityState.class;
     }
 
     @Override

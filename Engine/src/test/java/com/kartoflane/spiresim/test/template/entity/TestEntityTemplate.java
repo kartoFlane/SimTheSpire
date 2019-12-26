@@ -1,15 +1,15 @@
-package com.kartoflane.spiresim.test.template;
+package com.kartoflane.spiresim.test.template.entity;
 
 import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.card.CardState;
-import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.template.card.CardTemplate;
 import com.kartoflane.spiresim.template.entity.EntityTemplate;
+import com.kartoflane.spiresim.test.entity.entity.TestEntityState;
 
 import java.util.Collections;
 import java.util.List;
 
-public class TestEntityTemplate extends EntityTemplate<EntityState> {
+public class TestEntityTemplate extends EntityTemplate<TestEntityState> {
     private static TestEntityTemplate INSTANCE;
 
 
@@ -41,7 +41,7 @@ public class TestEntityTemplate extends EntityTemplate<EntityState> {
     }
 
     @Override
-    public Class<EntityState> getStateType() {
-        return EntityState.class;
+    public Class<TestEntityState> getStateType() {
+        return TestEntityState.class;
     }
 }

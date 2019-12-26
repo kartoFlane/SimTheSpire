@@ -1,9 +1,9 @@
 package com.kartoflane.spiresim.state.entity;
 
 import com.kartoflane.spiresim.controller.GameController;
-import com.kartoflane.spiresim.state.card.CardState;
 import com.kartoflane.spiresim.state.StateFactory;
 import com.kartoflane.spiresim.state.TemplatableState;
+import com.kartoflane.spiresim.state.card.CardState;
 import com.kartoflane.spiresim.state.effect.EffectState;
 import com.kartoflane.spiresim.template.entity.EntityTemplate;
 
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * State class representing a single entity that can participate in combat - a player or an enemy.
  */
-public class EntityState extends TemplatableState {
+public abstract class EntityState extends TemplatableState {
 
     private String name;
     private int healthMax;
@@ -26,7 +26,7 @@ public class EntityState extends TemplatableState {
     private Map<CardPileType, List<CardState>> cardPiles = new HashMap<>();
 
 
-    public EntityState(GameController gameController, EntityTemplate<? extends EntityState> template) {
+    protected EntityState(GameController gameController, EntityTemplate<? extends EntityState> template) {
         super(template);
 
         for (CardPileType cardPileType : CardPileType.values()) {

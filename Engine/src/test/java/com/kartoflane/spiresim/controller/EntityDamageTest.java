@@ -3,7 +3,7 @@ package com.kartoflane.spiresim.controller;
 import com.kartoflane.spiresim.combat.MutableCombatValue;
 import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.test.controller.TestGameController;
-import com.kartoflane.spiresim.test.template.TestEntityTemplate;
+import com.kartoflane.spiresim.test.template.entity.TestEntityTemplate;
 import org.junit.Before;
 import org.junit.Test;
 

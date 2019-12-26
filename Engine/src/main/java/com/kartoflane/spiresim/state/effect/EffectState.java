@@ -13,7 +13,7 @@ public abstract class EffectState extends TemplatableState {
     private String name;
 
 
-    public EffectState(GameController gameController, EffectTemplate<? extends EffectState> template) {
+    protected EffectState(GameController gameController, EffectTemplate<? extends EffectState> template) {
         super(template);
 
         this.setName(template.getName());
