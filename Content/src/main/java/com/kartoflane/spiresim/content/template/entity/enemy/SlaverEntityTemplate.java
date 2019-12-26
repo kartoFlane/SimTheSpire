@@ -2,7 +2,7 @@ package com.kartoflane.spiresim.content.template.entity.enemy;
 
 import com.kartoflane.spiresim.content.template.card.player.warrior.StrikeCardTemplate;
 import com.kartoflane.spiresim.controller.GameController;
-import com.kartoflane.spiresim.state.CardState;
+import com.kartoflane.spiresim.state.card.CardState;
 import com.kartoflane.spiresim.state.entity.EntityState;
 import com.kartoflane.spiresim.template.card.CardTemplate;
 import com.kartoflane.spiresim.content.template.card.player.warrior.DefendCardTemplate;

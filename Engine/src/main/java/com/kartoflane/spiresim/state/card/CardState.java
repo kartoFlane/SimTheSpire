@@ -1,7 +1,8 @@
-package com.kartoflane.spiresim.state;
+package com.kartoflane.spiresim.state.card;
 
 import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
+import com.kartoflane.spiresim.state.TemplatableState;
 import com.kartoflane.spiresim.template.card.CardTemplate;
 import com.kartoflane.spiresim.template.card.CardType;
 

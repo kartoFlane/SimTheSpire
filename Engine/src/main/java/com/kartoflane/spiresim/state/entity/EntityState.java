@@ -1,7 +1,7 @@
 package com.kartoflane.spiresim.state.entity;
 
 import com.kartoflane.spiresim.controller.GameController;
-import com.kartoflane.spiresim.state.CardState;
+import com.kartoflane.spiresim.state.card.CardState;
 import com.kartoflane.spiresim.state.StateFactory;
 import com.kartoflane.spiresim.state.TemplatableState;
 import com.kartoflane.spiresim.state.effect.EffectState;

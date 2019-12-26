@@ -4,7 +4,7 @@ import com.kartoflane.spiresim.combat.MutableCombatValue;
 import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
 import com.kartoflane.spiresim.combat.MutableCombatValueEvents;
 import com.kartoflane.spiresim.controller.ai.AIController;
-import com.kartoflane.spiresim.state.CardState;
+import com.kartoflane.spiresim.state.card.CardState;
 import com.kartoflane.spiresim.state.GameState;
 import com.kartoflane.spiresim.state.effect.EffectState;
 import com.kartoflane.spiresim.state.entity.CardPileType;

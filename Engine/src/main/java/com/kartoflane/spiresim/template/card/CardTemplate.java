@@ -3,7 +3,7 @@ package com.kartoflane.spiresim.template.card;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.controller.targeting.TargetingType;
-import com.kartoflane.spiresim.state.CardState;
+import com.kartoflane.spiresim.state.card.CardState;
 import com.kartoflane.spiresim.state.entity.CardPileType;
 import com.kartoflane.spiresim.template.StateTemplate;
 

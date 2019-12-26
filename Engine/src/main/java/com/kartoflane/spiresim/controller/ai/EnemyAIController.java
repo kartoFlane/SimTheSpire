@@ -4,7 +4,7 @@ import com.kartoflane.spiresim.controller.CardController;
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.controller.targeting.TargetingResult;
-import com.kartoflane.spiresim.state.CardState;
+import com.kartoflane.spiresim.state.card.CardState;
 
 import java.util.Collections;
 import java.util.List;
