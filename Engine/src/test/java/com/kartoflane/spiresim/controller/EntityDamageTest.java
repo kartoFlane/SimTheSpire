@@ -16,7 +16,7 @@ import java.util.Collections;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class EntityStateTest {
+public class EntityDamageTest {
     private GameController gameController;
     private EntityState state;
     private EntityController controller;
@@ -95,4 +95,33 @@ public class EntityStateTest {
         assertEquals(Math.max(0, startArmor - dealtDamage), state.getArmorCurrent());
     }
 
+    @Test
+    public void healedEntityWithMissingHealthShouldGainHealth() {
+        // Prepare
+        final int missingHealth = 10;
+        final int healing = 5;
+        final int expectedHealth = state.getHealthMax() - missingHealth + healing;
+        state.setHealthCurrent(state.getHealthMax() - missingHealth);
+
+        assertTrue(healing < missingHealth);
+
+        // Execute
+        controller.applyHeal(gameController, new MutableCombatValue().withAmount(healing));
+
+        // Check
+        assertEquals(expectedHealth, state.getHealthCurrent());
+    }
+
+    @Test
+    public void healedEntityWithFullHealthShouldNotGainHealth() {
+        // Prepare
+        final int healing = 5;
+        final int expectedHealth = state.getHealthMax();
+
+        // Execute
+        controller.applyHeal(gameController, new MutableCombatValue().withAmount(healing));
+
+        // Check
+        assertEquals(expectedHealth, state.getHealthCurrent());
+    }
 }
