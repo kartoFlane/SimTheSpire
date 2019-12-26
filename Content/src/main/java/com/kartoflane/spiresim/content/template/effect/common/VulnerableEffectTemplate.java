@@ -51,7 +51,7 @@ public class VulnerableEffectTemplate extends TimedEffectTemplate<VulnerableEffe
             MutableCombatValue mutableCombatValue,
             MutableCombatValueEvent updateEvent
     ) {
-        if (updateEvent.isEqual(MutableCombatValueEvents.ENTITY_INCOMING_DAMAGE_PERCENT)) {
+        if (updateEvent.isEqual(MutableCombatValueEvents.ENTITY_INCOMING_DAMAGE_ATTACK_PERCENT)) {
             mutableCombatValue.setAmount_Multiply(effectState.getModifier());
         }
     }

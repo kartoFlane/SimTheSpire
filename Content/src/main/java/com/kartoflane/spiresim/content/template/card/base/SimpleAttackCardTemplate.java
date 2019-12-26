@@ -39,7 +39,7 @@ public abstract class SimpleAttackCardTemplate<S extends SimpleAttackCardState> 
     @Override
     public final CardPileType onPlay(GameController gameController, EntityController caster, List<EntityController> targets, S state) {
         EntityController target = targets.get(0);
-        target.applyDamage(gameController, caster.buildOutgoingAttackValue(gameController, state.getAttackValue()));
+        target.applyDamage(gameController, caster.buildOutgoingAttackDamageValue(gameController, state.getAttackValue()));
 
         onPlay(gameController, caster, target, state);
 

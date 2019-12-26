@@ -51,7 +51,7 @@ public class WeakEffectTemplate extends TimedEffectTemplate<WeakEffectState> {
             MutableCombatValue mutableCombatValue,
             MutableCombatValueEvent updateEvent
     ) {
-        if (updateEvent.isEqual(MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_PERCENT)) {
+        if (updateEvent.isEqual(MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_ATTACK_PERCENT)) {
             mutableCombatValue.setAmount_Multiply(effectState.getModifier());
         }
     }

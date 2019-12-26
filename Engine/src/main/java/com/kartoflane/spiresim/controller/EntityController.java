@@ -4,8 +4,8 @@ import com.kartoflane.spiresim.combat.MutableCombatValue;
 import com.kartoflane.spiresim.combat.MutableCombatValueEvent;
 import com.kartoflane.spiresim.combat.MutableCombatValueEvents;
 import com.kartoflane.spiresim.controller.ai.AIController;
-import com.kartoflane.spiresim.state.card.CardState;
 import com.kartoflane.spiresim.state.GameState;
+import com.kartoflane.spiresim.state.card.CardState;
 import com.kartoflane.spiresim.state.effect.EffectState;
 import com.kartoflane.spiresim.state.entity.CardPileType;
 import com.kartoflane.spiresim.state.entity.EntityState;
@@ -229,8 +229,8 @@ public class EntityController implements StateController<EntityState> {
                 gameController,
                 this,
                 mutableCombatValue,
-                MutableCombatValueEvents.ENTITY_INCOMING_DAMAGE_FLAT,
-                MutableCombatValueEvents.ENTITY_INCOMING_DAMAGE_PERCENT
+                MutableCombatValueEvents.ENTITY_INCOMING_DAMAGE_ATTACK_FLAT,
+                MutableCombatValueEvents.ENTITY_INCOMING_DAMAGE_ATTACK_PERCENT
         );
 
         calculateDamageAfterBlock(mutableCombatValue);
@@ -287,12 +287,21 @@ public class EntityController implements StateController<EntityState> {
         ));
     }
 
-    public MutableCombatValue buildOutgoingAttackValue(GameController gameController, int amount) {
+    public MutableCombatValue buildOutgoingAttackDamageValue(GameController gameController, int amount) {
         return buildMutableCombatValue(
                 gameController,
                 amount,
-                MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_FLAT,
-                MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_PERCENT
+                MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_ATTACK_FLAT,
+                MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_ATTACK_PERCENT
+        );
+    }
+
+    public MutableCombatValue buildOutgoingSkillDamageValue(GameController gameController, int amount) {
+        return buildMutableCombatValue(
+                gameController,
+                amount,
+                MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_SKILL_FLAT,
+                MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_SKILL_PERCENT
         );
     }
 

@@ -46,7 +46,7 @@ public class StrengthEffectTemplate extends StackingEffectTemplate<StrengthEffec
             MutableCombatValue mutableCombatValue,
             MutableCombatValueEvent updateEvent
     ) {
-        if (updateEvent.isEqual(MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_FLAT)) {
+        if (updateEvent.isEqual(MutableCombatValueEvents.ENTITY_OUTGOING_DAMAGE_ATTACK_FLAT)) {
             mutableCombatValue.setAmount_Add(effectState.getStacks());
         }
     }
