@@ -43,7 +43,7 @@ public class IncantationCardTemplate extends PowerCardTemplate<IncantationCardSt
     }
 
     @Override
-    public void onPlay(GameController gameController, EntityController caster, IncantationCardState cardState) {
+    public void onPlayPower(GameController gameController, EntityController caster, IncantationCardState cardState) {
         RitualEffectState effectState = StateFactory.build(gameController, RitualEffectTemplate.getInstance());
         effectState.setStacks(cardState.getStartingStacks());
         caster.applyEffect(gameController, effectState);

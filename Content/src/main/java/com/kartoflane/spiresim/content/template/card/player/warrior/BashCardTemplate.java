@@ -8,6 +8,7 @@ import com.kartoflane.spiresim.content.template.effect.common.VulnerableEffectTe
 import com.kartoflane.spiresim.controller.EntityController;
 import com.kartoflane.spiresim.controller.GameController;
 import com.kartoflane.spiresim.state.StateFactory;
+import com.kartoflane.spiresim.state.entity.CardPileType;
 
 @DeriveState
 public class BashCardTemplate extends SimpleAttackCardTemplate<BashCardState> {
@@ -48,9 +49,11 @@ public class BashCardTemplate extends SimpleAttackCardTemplate<BashCardState> {
     }
 
     @Override
-    public void onPlay(GameController gameController, EntityController caster, EntityController target, BashCardState cardState) {
+    public CardPileType onPlay(GameController gameController, EntityController caster, EntityController target, BashCardState cardState) {
         VulnerableEffectState effectState = StateFactory.build(gameController, VulnerableEffectTemplate.getInstance());
         effectState.setStacks(cardState.getStartingStacks());
         target.applyEffect(gameController, effectState);
+
+        return CardPileType.DISCARD;
     }
 }

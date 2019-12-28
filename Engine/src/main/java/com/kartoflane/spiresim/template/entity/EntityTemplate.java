@@ -16,5 +16,5 @@ public abstract class EntityTemplate<S extends EntityState> implements StateTemp
 
     public abstract int getEnergy(GameController gameController);
 
-    public abstract List<CardTemplate<? extends CardState>> getStartingDeck();
+    public abstract List<? extends CardTemplate<? extends CardState>> getStartingDeck();
 }
