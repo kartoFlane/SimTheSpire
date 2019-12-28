@@ -2,7 +2,7 @@ package com.kartoflane.spiresim.controller;
 
 import com.kartoflane.spiresim.controller.ai.EnemyAIController;
 import com.kartoflane.spiresim.report.EncounterSummary;
-import com.kartoflane.spiresim.state.EncounterState;
+import com.kartoflane.spiresim.state.encounter.EncounterState;
 import com.kartoflane.spiresim.state.entity.EntityState;
 
 import java.util.ArrayList;

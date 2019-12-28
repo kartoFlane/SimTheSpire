@@ -2,15 +2,11 @@ package com.kartoflane.spiresim.test.controller;
 
 import com.kartoflane.spiresim.controller.EncounterController;
 import com.kartoflane.spiresim.controller.GameController;
-import com.kartoflane.spiresim.state.EncounterState;
 import com.kartoflane.spiresim.state.GameState;
 import com.kartoflane.spiresim.state.StateFactory;
-import com.kartoflane.spiresim.state.entity.EntityState;
+import com.kartoflane.spiresim.state.encounter.EncounterState;
 import com.kartoflane.spiresim.template.entity.EntityTemplate;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.kartoflane.spiresim.test.template.encounter.TestEncounterTemplate;
 
 public class TestGameController extends GameController {
     public TestGameController(GameState state) {
@@ -25,11 +21,8 @@ public class TestGameController extends GameController {
         TestGameController gameController = new TestGameController(new GameState());
         gameController.initialize(StateFactory.build(gameController, entityTemplate));
 
-        List<EntityState> enemyStates = Arrays.stream(enemyTemplates)
-                .map(enemyTemplate -> StateFactory.build(gameController, enemyTemplate))
-                .collect(Collectors.toList());
-
-        gameController.setCurrentEncounter(new EncounterController(new EncounterState(enemyStates)));
+        EncounterState encounterState = StateFactory.build(gameController, TestEncounterTemplate.getInstance());
+        gameController.setCurrentEncounter(new EncounterController(encounterState));
 
         return gameController;
     }

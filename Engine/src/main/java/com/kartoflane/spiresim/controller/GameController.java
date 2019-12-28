@@ -3,7 +3,7 @@ package com.kartoflane.spiresim.controller;
 import com.kartoflane.spiresim.controller.ai.PlayerAIController;
 import com.kartoflane.spiresim.report.EncounterSummary;
 import com.kartoflane.spiresim.report.PlaythroughSummary;
-import com.kartoflane.spiresim.state.EncounterState;
+import com.kartoflane.spiresim.state.encounter.EncounterState;
 import com.kartoflane.spiresim.state.GameState;
 import com.kartoflane.spiresim.state.entity.EntityState;
 

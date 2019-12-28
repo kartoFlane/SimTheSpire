@@ -1,17 +1,19 @@
 package com.kartoflane.spiresim.controller;
 
-import com.kartoflane.spiresim.content.template.entity.enemy.CultistEntityTemplate;
+import com.kartoflane.spiresim.content.template.encounter.act1.CultistEncounterTemplate;
+import com.kartoflane.spiresim.content.template.encounter.act1.JawWormEncounterTemplate;
+import com.kartoflane.spiresim.content.template.encounter.act1.Louses2EncounterTemplate;
 import com.kartoflane.spiresim.content.template.entity.player.WarriorEntityTemplate;
 import com.kartoflane.spiresim.report.EncounterSummary;
 import com.kartoflane.spiresim.report.PlaythroughSummary;
-import com.kartoflane.spiresim.state.EncounterState;
 import com.kartoflane.spiresim.state.GameState;
 import com.kartoflane.spiresim.state.SimulationState;
 import com.kartoflane.spiresim.state.StateFactory;
+import com.kartoflane.spiresim.state.encounter.EncounterState;
 import com.kartoflane.spiresim.state.entity.EntityState;
+import com.kartoflane.spiresim.template.encounter.EncounterTemplate;
 import com.kartoflane.spiresim.util.RandomExt;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,11 +94,14 @@ public class SimulationController implements StateController<SimulationState> {
     }
 
     private EncounterState buildNewEncounter(GameController gameController) {
-        List<EntityState> enemyEntities = Arrays.asList(
-                StateFactory.build(gameController, CultistEntityTemplate.getInstance())
-        );
+        EncounterTemplate<EncounterState> randomEncounterTemplate = gameController.getState().getRandom()
+                .randomElement(
+                        CultistEncounterTemplate.getInstance(),
+                        JawWormEncounterTemplate.getInstance(),
+                        Louses2EncounterTemplate.getInstance()
+                );
 
-        return new EncounterState(enemyEntities);
+        return StateFactory.build(gameController, randomEncounterTemplate);
     }
 
     private double computeMedian(List<Integer> sortedSamplesList) {

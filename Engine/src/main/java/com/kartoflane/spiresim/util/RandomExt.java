@@ -31,4 +31,13 @@ public class RandomExt extends java.util.Random {
     public int randomIndex(List<?> collection) {
         return nextInt(collection.size());
     }
+
+    @SafeVarargs
+    public final <T> T randomElement(T... objects) {
+        return objects[randomIndex(objects)];
+    }
+
+    public <T> T randomElement(List<T> objects) {
+        return objects.get(randomIndex(objects));
+    }
 }
