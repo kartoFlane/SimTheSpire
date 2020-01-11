@@ -6,6 +6,7 @@ import com.kartoflane.spiresim.content.template.encounter.act1.Louses2EncounterT
 import com.kartoflane.spiresim.content.template.entity.player.WarriorEntityTemplate;
 import com.kartoflane.spiresim.report.EncounterSummary;
 import com.kartoflane.spiresim.report.PlaythroughSummary;
+import com.kartoflane.spiresim.report.SampleStatistics;
 import com.kartoflane.spiresim.state.GameState;
 import com.kartoflane.spiresim.state.SimulationState;
 import com.kartoflane.spiresim.state.StateFactory;
@@ -15,7 +16,6 @@ import com.kartoflane.spiresim.template.TemplateManager;
 import com.kartoflane.spiresim.template.encounter.EncounterTemplate;
 import com.kartoflane.spiresim.util.RandomExt;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class SimulationController implements StateController<SimulationState> {
@@ -45,46 +45,31 @@ public class SimulationController implements StateController<SimulationState> {
 
         System.out.println("\n\n==============================================\n");
 
-        int encountersTotal = state.getPlaythroughSummaryList().stream()
-                .mapToInt(playthroughSummary -> playthroughSummary.getEncounterSummaries().size())
-                .sum();
-        System.out.printf("Total encounters: %s%n", encountersTotal);
-        System.out.printf("Min encounters: %s%n", state.getPlaythroughSummaryList().stream()
-                .mapToInt(playthroughSummary -> playthroughSummary.getEncounterSummaries().size())
-                .min().orElse(0));
-        System.out.printf("Max encounters: %s%n", state.getPlaythroughSummaryList().stream()
-                .mapToInt(playthroughSummary -> playthroughSummary.getEncounterSummaries().size())
-                .max().orElse(0));
-        System.out.printf("Average encounters: %.2f%n", state.getPlaythroughSummaryList().stream()
-                .mapToInt(playthroughSummary -> playthroughSummary.getEncounterSummaries().size())
-                .average().orElse(0));
-        System.out.printf("Median encounters: %s%n", computeMedian(
+        SampleStatistics encountersStatistics = SampleStatistics.ofIntegers(
                 state.getPlaythroughSummaryList().stream()
                         .map(playthroughSummary -> playthroughSummary.getEncounterSummaries().size())
-                        .sorted()
                         .collect(Collectors.toList())
-        ));
-
-        System.out.println();
-        System.out.printf("Min turns: %s%n", state.getPlaythroughSummaryList().stream()
-                .flatMap(playthroughSummary -> playthroughSummary.getEncounterSummaries().stream())
-                .mapToInt(EncounterSummary::getTurns)
-                .min().orElse(0));
-        System.out.printf("Max turns: %s%n", state.getPlaythroughSummaryList().stream()
-                .flatMap(playthroughSummary -> playthroughSummary.getEncounterSummaries().stream())
-                .mapToInt(EncounterSummary::getTurns)
-                .max().orElse(0));
-        System.out.printf("Average turns: %.2f%n", state.getPlaythroughSummaryList().stream()
-                .flatMap(playthroughSummary -> playthroughSummary.getEncounterSummaries().stream())
-                .mapToInt(EncounterSummary::getTurns)
-                .average().orElse(0));
-        System.out.printf("Median turns: %.2f%n", computeMedian(
+        );
+        SampleStatistics turnStatistics = SampleStatistics.ofIntegers(
                 state.getPlaythroughSummaryList().stream()
                         .flatMap(playthroughSummary -> playthroughSummary.getEncounterSummaries().stream())
                         .map(EncounterSummary::getTurns)
-                        .sorted()
                         .collect(Collectors.toList())
-        ));
+        );
+
+        System.out.printf("Total encounters: %s%n", encountersStatistics.getCount());
+        System.out.printf("Min encounters: %.0f%n", encountersStatistics.getMin());
+        System.out.printf("Max encounters: %.0f%n", encountersStatistics.getMax());
+        System.out.printf("Average encounters: %.2f%n", encountersStatistics.getAverage());
+        System.out.printf("Median encounters: %.2f%n", encountersStatistics.getMedian());
+        System.out.printf("Std. deviation: %.2f%n", encountersStatistics.getStandardDeviation());
+
+        System.out.println();
+        System.out.printf("Min turns: %.0f%n", turnStatistics.getMin());
+        System.out.printf("Max turns: %.0f%n", turnStatistics.getMax());
+        System.out.printf("Average turns: %.2f%n", turnStatistics.getAverage());
+        System.out.printf("Median turns: %.2f%n", turnStatistics.getMedian());
+        System.out.printf("Std. deviation: %.2f%n", turnStatistics.getStandardDeviation());
     }
 
     private GameController buildNewGame(TemplateManager templateManager, RandomExt random) {
@@ -104,17 +89,5 @@ public class SimulationController implements StateController<SimulationState> {
                 );
 
         return StateFactory.build(gameController, randomEncounterTemplate);
-    }
-
-    private double computeMedian(List<Integer> sortedSamplesList) {
-        final int halfIndex = sortedSamplesList.size() / 2;
-
-        if (sortedSamplesList.size() % 2 == 1) {
-            return sortedSamplesList.get(halfIndex);
-        } else {
-            int lower = sortedSamplesList.get(halfIndex - 1);
-            int upper = sortedSamplesList.get(halfIndex);
-            return (lower + upper) / 2.0;
-        }
     }
 }
