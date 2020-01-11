@@ -1,5 +1,6 @@
 package com.kartoflane.spiresim.util;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class RandomExt extends java.util.Random {
@@ -39,5 +40,42 @@ public class RandomExt extends java.util.Random {
 
     public <T> T randomElement(List<T> objects) {
         return objects.get(randomIndex(objects));
+    }
+
+    public int rollSameDice(int diceCount, int sideCount) {
+        int[] input = new int[diceCount];
+        Arrays.fill(input, sideCount);
+        return rollDice(input);
+    }
+
+    public int rollDice(int... sideCounts) {
+        int total = 0;
+        for (int sideCount : sideCounts) {
+            total += 1 + this.nextInt(0, sideCount);
+        }
+
+        return total;
+    }
+
+    public int rollSameExplodingDice(int diceCount, int sideCount) {
+        int[] input = new int[diceCount];
+        Arrays.fill(input, sideCount);
+        return rollExplodingDice(input);
+    }
+
+    /**
+     * Exploding Dice: roll again if you achieve the highest possible roll, and add to the total.
+     */
+    public int rollExplodingDice(int... sideCounts) {
+        int total = 0;
+        for (int sideCount : sideCounts) {
+            int rollResult = 0;
+            do {
+                rollResult = 1 + this.nextInt(0, sideCount);
+                total += rollResult;
+            } while (rollResult == sideCount);
+        }
+
+        return total;
     }
 }

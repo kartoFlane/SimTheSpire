@@ -14,17 +14,6 @@ import java.util.List;
 @DeriveState
 public class DefendCardTemplate extends CardTemplate<DefendCardState> {
 
-    private static DefendCardTemplate INSTANCE;
-
-
-    public static DefendCardTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new DefendCardTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public Class<DefendCardState> getStateType() {
         return DefendCardState.class;

@@ -13,17 +13,6 @@ import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 @DeriveState
 public class VulnerableEffectTemplate extends TimedEffectTemplate<VulnerableEffectState> {
 
-    private static VulnerableEffectTemplate INSTANCE;
-
-
-    public static VulnerableEffectTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new VulnerableEffectTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public Class<VulnerableEffectState> getStateType() {
         return VulnerableEffectState.class;

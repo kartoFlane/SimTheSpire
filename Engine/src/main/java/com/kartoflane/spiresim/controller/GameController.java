@@ -3,9 +3,11 @@ package com.kartoflane.spiresim.controller;
 import com.kartoflane.spiresim.controller.ai.PlayerAIController;
 import com.kartoflane.spiresim.report.EncounterSummary;
 import com.kartoflane.spiresim.report.PlaythroughSummary;
-import com.kartoflane.spiresim.state.encounter.EncounterState;
 import com.kartoflane.spiresim.state.GameState;
+import com.kartoflane.spiresim.state.TemplatableState;
+import com.kartoflane.spiresim.state.encounter.EncounterState;
 import com.kartoflane.spiresim.state.entity.EntityState;
+import com.kartoflane.spiresim.template.StateTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class GameController implements StateController<GameState> {
     }
 
     public boolean isInitialized() {
-        return this.playerController != null;
+        return playerController != null;
     }
 
     private void checkInitialized() {
@@ -43,7 +45,7 @@ public class GameController implements StateController<GameState> {
     }
 
     public EntityController getPlayerController() {
-        return this.playerController;
+        return playerController;
     }
 
     public EncounterController getCurrentEncounter() {
@@ -80,5 +82,9 @@ public class GameController implements StateController<GameState> {
 
     public boolean isGameInProgress() {
         return this.playerController.isAlive();
+    }
+
+    public <T extends StateTemplate<S>, S extends TemplatableState> T getTemplateInstance(Class<T> templateClass) {
+        return this.state.getTemplateManager().getInstance(templateClass);
     }
 }

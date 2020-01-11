@@ -14,17 +14,6 @@ import java.util.List;
 
 public class JawWormEntityTemplate extends EnemyEntityTemplate<SimpleEntityState> {
 
-    private static JawWormEntityTemplate INSTANCE;
-
-
-    public static JawWormEntityTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new JawWormEntityTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public Class<SimpleEntityState> getStateType() {
         return SimpleEntityState.class;
@@ -41,11 +30,11 @@ public class JawWormEntityTemplate extends EnemyEntityTemplate<SimpleEntityState
     }
 
     @Override
-    public List<? extends CardTemplate<? extends CardState>> getStartingDeck() {
+    public List<? extends CardTemplate<? extends CardState>> getStartingDeck(GameController gameController) {
         return Arrays.asList(
-                ThrashCardTemplate.getInstance(),
-                BellowCardTemplate.getInstance(),
-                ChompCardTemplate.getInstance()
+                gameController.getTemplateInstance(ThrashCardTemplate.class),
+                gameController.getTemplateInstance(BellowCardTemplate.class),
+                gameController.getTemplateInstance(ChompCardTemplate.class)
         );
     }
 }

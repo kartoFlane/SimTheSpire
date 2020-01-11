@@ -14,17 +14,6 @@ import com.kartoflane.spiresim.template.card.CardType;
 @DeriveState
 public class BellowCardTemplate extends TargetNoneCardTemplate<BellowCardState> {
 
-    private static BellowCardTemplate INSTANCE;
-
-
-    public static BellowCardTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new BellowCardTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public CardType getCardType() {
         return CardType.SKILL;
@@ -54,7 +43,7 @@ public class BellowCardTemplate extends TargetNoneCardTemplate<BellowCardState> 
     }
 
     public CardPileType onPlay(GameController gameController, EntityController caster, BellowCardState state) {
-        StrengthEffectState effectState = StateFactory.build(gameController, StrengthEffectTemplate.getInstance());
+        StrengthEffectState effectState = StateFactory.build(gameController, gameController.getTemplateInstance(StrengthEffectTemplate.class));
         effectState.setStacks(state.getStartingStacks());
         caster.applyEffect(gameController, effectState);
 

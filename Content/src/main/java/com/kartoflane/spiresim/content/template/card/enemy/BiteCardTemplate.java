@@ -6,17 +6,6 @@ import com.kartoflane.spiresim.controller.GameController;
 
 public class BiteCardTemplate extends SimpleAttackCardTemplate<SimpleAttackCardState> {
 
-    private static BiteCardTemplate INSTANCE;
-
-
-    public static BiteCardTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new BiteCardTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public String getName() {
         return "Bite";

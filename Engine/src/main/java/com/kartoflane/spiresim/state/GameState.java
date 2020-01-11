@@ -2,6 +2,7 @@ package com.kartoflane.spiresim.state;
 
 import com.kartoflane.spiresim.state.encounter.EncounterState;
 import com.kartoflane.spiresim.state.entity.EntityState;
+import com.kartoflane.spiresim.template.TemplateManager;
 import com.kartoflane.spiresim.util.RandomExt;
 
 public class GameState {
@@ -9,13 +10,23 @@ public class GameState {
     private RandomExt random;
     private EntityState playerState;
     private EncounterState currentEncounter;
+    private TemplateManager templateManager;
 
 
     public GameState() {
-        this(new RandomExt());
+        this(new TemplateManager(), new RandomExt());
+    }
+
+    public GameState(TemplateManager templateManager) {
+        this(templateManager, new RandomExt());
     }
 
     public GameState(RandomExt random) {
+        this(new TemplateManager(), random);
+    }
+
+    public GameState(TemplateManager templateManager, RandomExt random) {
+        this.templateManager = templateManager;
         this.random = random;
     }
 
@@ -26,12 +37,16 @@ public class GameState {
         this.playerState = playerState;
     }
 
+    public TemplateManager getTemplateManager() {
+        return templateManager;
+    }
+
     public RandomExt getRandom() {
         return random;
     }
 
     public EntityState getPlayerState() {
-        return this.playerState;
+        return playerState;
     }
 
     public EncounterState getCurrentEncounter() {

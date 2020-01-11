@@ -14,16 +14,6 @@ import com.kartoflane.spiresim.template.effect.StandardEffectUpdateEvents;
 
 @DeriveState
 public class RitualEffectTemplate extends StackingEffectTemplate<RitualEffectState> {
-    private static RitualEffectTemplate INSTANCE;
-
-
-    public static RitualEffectTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new RitualEffectTemplate();
-        }
-
-        return INSTANCE;
-    }
 
     @Override
     public Class<RitualEffectState> getStateType() {
@@ -43,7 +33,7 @@ public class RitualEffectTemplate extends StackingEffectTemplate<RitualEffectSta
     @Override
     public void onUpdate(GameController gameController, EntityController target, RitualEffectState effectState, EffectUpdateEvent updateEvent) {
         if (updateEvent.isEqual(StandardEffectUpdateEvents.TURN_START)) {
-            StrengthEffectState state = StateFactory.build(gameController, StrengthEffectTemplate.getInstance());
+            StrengthEffectState state = StateFactory.build(gameController, gameController.getTemplateInstance(StrengthEffectTemplate.class));
             state.setStacks(effectState.getStacks());
             target.applyEffect(gameController, state);
         }

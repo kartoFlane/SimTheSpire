@@ -12,16 +12,6 @@ import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 
 @DeriveState
 public class StrengthEffectTemplate extends StackingEffectTemplate<StrengthEffectState> {
-    private static StrengthEffectTemplate INSTANCE;
-
-
-    public static StrengthEffectTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new StrengthEffectTemplate();
-        }
-
-        return INSTANCE;
-    }
 
     @Override
     public Class<StrengthEffectState> getStateType() {

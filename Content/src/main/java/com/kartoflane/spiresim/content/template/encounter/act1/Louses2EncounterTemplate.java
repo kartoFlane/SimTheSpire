@@ -11,21 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Louses2EncounterTemplate extends EncounterTemplate<EncounterState> {
-    private static Louses2EncounterTemplate INSTANCE;
-
-    private EntityTemplate<?>[] enemyTypes = {
-            RedLouseEntityTemplate.getInstance(),
-            GreenLouseEntityTemplate.getInstance()
-    };
-
-
-    public static Louses2EncounterTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new Louses2EncounterTemplate();
-        }
-
-        return INSTANCE;
-    }
 
     @Override
     public Class<? extends EncounterState> getStateType() {
@@ -34,6 +19,10 @@ public class Louses2EncounterTemplate extends EncounterTemplate<EncounterState> 
 
     @Override
     public List<EntityTemplate<?>> getStartingEnemies(GameController gameController) {
+        EntityTemplate<?>[] enemyTypes = {
+                gameController.getTemplateInstance(RedLouseEntityTemplate.class),
+                gameController.getTemplateInstance(GreenLouseEntityTemplate.class)
+        };
         final int startingEnemyCount = 2;
 
         List<EntityTemplate<?>> startingEnemies = new ArrayList<>(startingEnemyCount);

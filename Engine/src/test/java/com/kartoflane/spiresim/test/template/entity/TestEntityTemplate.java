@@ -36,7 +36,7 @@ public class TestEntityTemplate extends EntityTemplate<TestEntityState> {
     }
 
     @Override
-    public List<CardTemplate<? extends CardState>> getStartingDeck() {
+    public List<CardTemplate<? extends CardState>> getStartingDeck(GameController gameController) {
         return Collections.emptyList();
     }
 

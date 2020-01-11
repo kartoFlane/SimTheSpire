@@ -10,16 +10,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class CultistEncounterTemplate extends EncounterTemplate<EncounterState> {
-    private static CultistEncounterTemplate INSTANCE;
-
-
-    public static CultistEncounterTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new CultistEncounterTemplate();
-        }
-
-        return INSTANCE;
-    }
 
     @Override
     public Class<? extends EncounterState> getStateType() {
@@ -28,6 +18,6 @@ public class CultistEncounterTemplate extends EncounterTemplate<EncounterState> 
 
     @Override
     public List<EntityTemplate<?>> getStartingEnemies(GameController gameController) {
-        return Collections.singletonList(CultistEntityTemplate.getInstance());
+        return Collections.singletonList(gameController.getTemplateInstance(CultistEntityTemplate.class));
     }
 }

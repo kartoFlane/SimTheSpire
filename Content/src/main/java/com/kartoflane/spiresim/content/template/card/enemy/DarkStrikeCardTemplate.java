@@ -6,17 +6,6 @@ import com.kartoflane.spiresim.controller.GameController;
 
 public class DarkStrikeCardTemplate extends SimpleAttackCardTemplate<SimpleAttackCardState> {
 
-    private static DarkStrikeCardTemplate INSTANCE;
-
-
-    public static DarkStrikeCardTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new DarkStrikeCardTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public Class<SimpleAttackCardState> getStateType() {
         return SimpleAttackCardState.class;

@@ -6,17 +6,6 @@ import com.kartoflane.spiresim.controller.GameController;
 
 public class ChompCardTemplate extends SimpleAttackCardTemplate<SimpleAttackCardState> {
 
-    private static ChompCardTemplate INSTANCE;
-
-
-    public static ChompCardTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ChompCardTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public String getName() {
         return "Chomp";

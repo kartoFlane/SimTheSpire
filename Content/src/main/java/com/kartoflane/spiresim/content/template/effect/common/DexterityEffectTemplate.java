@@ -12,16 +12,6 @@ import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 
 @DeriveState
 public class DexterityEffectTemplate extends StackingEffectTemplate<DexterityEffectState> {
-    private static DexterityEffectTemplate INSTANCE;
-
-
-    public static DexterityEffectTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new DexterityEffectTemplate();
-        }
-
-        return INSTANCE;
-    }
 
     @Override
     public Class<DexterityEffectState> getStateType() {

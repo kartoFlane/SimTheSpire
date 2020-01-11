@@ -13,17 +13,6 @@ import java.util.List;
 
 public class SlaverEntityTemplate extends EnemyEntityTemplate<SimpleEntityState> {
 
-    private static SlaverEntityTemplate INSTANCE;
-
-
-    public static SlaverEntityTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new SlaverEntityTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public Class<SimpleEntityState> getStateType() {
         return SimpleEntityState.class;
@@ -40,11 +29,11 @@ public class SlaverEntityTemplate extends EnemyEntityTemplate<SimpleEntityState>
     }
 
     @Override
-    public List<CardTemplate<? extends CardState>> getStartingDeck() {
+    public List<CardTemplate<? extends CardState>> getStartingDeck(GameController gameController) {
         return Arrays.asList(
-                StrikeCardTemplate.getInstance(),
-                StrikeCardTemplate.getInstance(),
-                DefendCardTemplate.getInstance()
+                gameController.getTemplateInstance(StrikeCardTemplate.class),
+                gameController.getTemplateInstance(StrikeCardTemplate.class),
+                gameController.getTemplateInstance(DefendCardTemplate.class)
         );
     }
 }

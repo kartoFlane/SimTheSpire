@@ -10,16 +10,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class JawWormEncounterTemplate extends EncounterTemplate<EncounterState> {
-    private static JawWormEncounterTemplate INSTANCE;
-
-
-    public static JawWormEncounterTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new JawWormEncounterTemplate();
-        }
-
-        return INSTANCE;
-    }
 
     @Override
     public Class<? extends EncounterState> getStateType() {
@@ -28,6 +18,6 @@ public class JawWormEncounterTemplate extends EncounterTemplate<EncounterState> 
 
     @Override
     public List<EntityTemplate<?>> getStartingEnemies(GameController gameController) {
-        return Collections.singletonList(JawWormEntityTemplate.getInstance());
+        return Collections.singletonList(gameController.getTemplateInstance(JawWormEntityTemplate.class));
     }
 }

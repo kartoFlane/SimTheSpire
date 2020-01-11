@@ -13,18 +13,6 @@ import java.util.List;
 
 public class GreenLouseEntityTemplate extends EnemyEntityTemplate<SimpleEntityState> {
 
-    private static GreenLouseEntityTemplate INSTANCE;
-
-
-    public static GreenLouseEntityTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new GreenLouseEntityTemplate();
-        }
-
-        return INSTANCE;
-    }
-
-
     @Override
     public Class<SimpleEntityState> getStateType() {
         return SimpleEntityState.class;
@@ -41,12 +29,12 @@ public class GreenLouseEntityTemplate extends EnemyEntityTemplate<SimpleEntitySt
     }
 
     @Override
-    public List<? extends CardTemplate<? extends CardState>> getStartingDeck() {
+    public List<? extends CardTemplate<? extends CardState>> getStartingDeck(GameController gameController) {
         return Arrays.asList(
-                SpitWebCardTemplate.getInstance(),
-                BiteCardTemplate.getInstance(),
-                BiteCardTemplate.getInstance(),
-                BiteCardTemplate.getInstance()
+                gameController.getTemplateInstance(SpitWebCardTemplate.class),
+                gameController.getTemplateInstance(BiteCardTemplate.class),
+                gameController.getTemplateInstance(BiteCardTemplate.class),
+                gameController.getTemplateInstance(BiteCardTemplate.class)
         );
     }
 }

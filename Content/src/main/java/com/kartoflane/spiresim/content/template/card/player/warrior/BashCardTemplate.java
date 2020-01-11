@@ -13,17 +13,6 @@ import com.kartoflane.spiresim.state.entity.CardPileType;
 @DeriveState
 public class BashCardTemplate extends SimpleAttackCardTemplate<BashCardState> {
 
-    private static BashCardTemplate INSTANCE;
-
-
-    public static BashCardTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new BashCardTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public Class<BashCardState> getStateType() {
         return BashCardState.class;
@@ -50,7 +39,7 @@ public class BashCardTemplate extends SimpleAttackCardTemplate<BashCardState> {
 
     @Override
     public CardPileType onPlay(GameController gameController, EntityController caster, EntityController target, BashCardState cardState) {
-        VulnerableEffectState effectState = StateFactory.build(gameController, VulnerableEffectTemplate.getInstance());
+        VulnerableEffectState effectState = StateFactory.build(gameController, gameController.getTemplateInstance(VulnerableEffectTemplate.class));
         effectState.setStacks(cardState.getStartingStacks());
         target.applyEffect(gameController, effectState);
 

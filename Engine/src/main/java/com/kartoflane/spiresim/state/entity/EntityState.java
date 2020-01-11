@@ -42,7 +42,7 @@ public abstract class EntityState extends TemplatableState {
         this.setEnergyCurrent(this.getEnergyMax());
 
         this.cardPiles.get(CardPileType.DRAW).addAll(
-                template.getStartingDeck().stream()
+                template.getStartingDeck(gameController).stream()
                         .map(cardTemplate -> StateFactory.build(gameController, cardTemplate))
                         .collect(Collectors.toList())
         );

@@ -14,17 +14,6 @@ import com.kartoflane.spiresim.template.card.CardType;
 @DeriveState
 public class SpitWebCardTemplate extends TargetSingleCardTemplate<SpitWebCardState> {
 
-    private static SpitWebCardTemplate INSTANCE;
-
-
-    public static SpitWebCardTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new SpitWebCardTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public CardType getCardType() {
         return CardType.ATTACK;
@@ -51,7 +40,7 @@ public class SpitWebCardTemplate extends TargetSingleCardTemplate<SpitWebCardSta
 
     @Override
     public CardPileType onPlay(GameController gameController, EntityController caster, EntityController target, SpitWebCardState cardState) {
-        WeakEffectState effectState = StateFactory.build(gameController, WeakEffectTemplate.getInstance());
+        WeakEffectState effectState = StateFactory.build(gameController, gameController.getTemplateInstance(WeakEffectTemplate.class));
         effectState.setStacks(cardState.getStartingStacks());
         target.applyEffect(gameController, effectState);
 

@@ -11,6 +11,7 @@ import com.kartoflane.spiresim.state.SimulationState;
 import com.kartoflane.spiresim.state.StateFactory;
 import com.kartoflane.spiresim.state.encounter.EncounterState;
 import com.kartoflane.spiresim.state.entity.EntityState;
+import com.kartoflane.spiresim.template.TemplateManager;
 import com.kartoflane.spiresim.template.encounter.EncounterTemplate;
 import com.kartoflane.spiresim.util.RandomExt;
 
@@ -31,10 +32,11 @@ public class SimulationController implements StateController<SimulationState> {
     }
 
     public void start() {
+        TemplateManager templateManager = new TemplateManager();
         RandomExt random = new RandomExt();
 
         for (int i = 0; i < 100; ++i) {
-            GameController gameController = buildNewGame(random);
+            GameController gameController = buildNewGame(templateManager, random);
 
             PlaythroughSummary summary = gameController.simulateGame(this::buildNewEncounter);
 
@@ -85,9 +87,9 @@ public class SimulationController implements StateController<SimulationState> {
         ));
     }
 
-    private GameController buildNewGame(RandomExt random) {
-        GameController gameController = new GameController(new GameState(random));
-        EntityState playerEntity = StateFactory.build(gameController, WarriorEntityTemplate.getInstance());
+    private GameController buildNewGame(TemplateManager templateManager, RandomExt random) {
+        GameController gameController = new GameController(new GameState(templateManager, random));
+        EntityState playerEntity = StateFactory.build(gameController, gameController.getTemplateInstance(WarriorEntityTemplate.class));
         gameController.initialize(playerEntity);
 
         return gameController;
@@ -96,9 +98,9 @@ public class SimulationController implements StateController<SimulationState> {
     private EncounterState buildNewEncounter(GameController gameController) {
         EncounterTemplate<EncounterState> randomEncounterTemplate = gameController.getState().getRandom()
                 .randomElement(
-                        CultistEncounterTemplate.getInstance(),
-                        JawWormEncounterTemplate.getInstance(),
-                        Louses2EncounterTemplate.getInstance()
+                        gameController.getTemplateInstance(CultistEncounterTemplate.class),
+                        gameController.getTemplateInstance(JawWormEncounterTemplate.class),
+                        gameController.getTemplateInstance(Louses2EncounterTemplate.class)
                 );
 
         return StateFactory.build(gameController, randomEncounterTemplate);

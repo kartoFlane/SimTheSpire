@@ -14,17 +14,6 @@ import java.util.List;
 
 public class WarriorEntityTemplate extends PlayerEntityTemplate<SimpleEntityState> {
 
-    private static WarriorEntityTemplate INSTANCE;
-
-
-    public static WarriorEntityTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new WarriorEntityTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public Class<SimpleEntityState> getStateType() {
         return SimpleEntityState.class;
@@ -41,18 +30,18 @@ public class WarriorEntityTemplate extends PlayerEntityTemplate<SimpleEntityStat
     }
 
     @Override
-    public List<CardTemplate<? extends CardState>> getStartingDeck() {
+    public List<CardTemplate<? extends CardState>> getStartingDeck(GameController gameController) {
         return Arrays.asList(
-                StrikeCardTemplate.getInstance(),
-                StrikeCardTemplate.getInstance(),
-                StrikeCardTemplate.getInstance(),
-                StrikeCardTemplate.getInstance(),
-                StrikeCardTemplate.getInstance(),
-                DefendCardTemplate.getInstance(),
-                DefendCardTemplate.getInstance(),
-                DefendCardTemplate.getInstance(),
-                DefendCardTemplate.getInstance(),
-                BashCardTemplate.getInstance()
+                gameController.getTemplateInstance(StrikeCardTemplate.class),
+                gameController.getTemplateInstance(StrikeCardTemplate.class),
+                gameController.getTemplateInstance(StrikeCardTemplate.class),
+                gameController.getTemplateInstance(StrikeCardTemplate.class),
+                gameController.getTemplateInstance(StrikeCardTemplate.class),
+                gameController.getTemplateInstance(DefendCardTemplate.class),
+                gameController.getTemplateInstance(DefendCardTemplate.class),
+                gameController.getTemplateInstance(DefendCardTemplate.class),
+                gameController.getTemplateInstance(DefendCardTemplate.class),
+                gameController.getTemplateInstance(BashCardTemplate.class)
         );
     }
 }

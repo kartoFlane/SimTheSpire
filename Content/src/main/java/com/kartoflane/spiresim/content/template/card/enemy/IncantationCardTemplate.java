@@ -12,17 +12,6 @@ import com.kartoflane.spiresim.state.StateFactory;
 @DeriveState
 public class IncantationCardTemplate extends PowerCardTemplate<IncantationCardState> {
 
-    private static IncantationCardTemplate INSTANCE;
-
-
-    public static IncantationCardTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new IncantationCardTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public Class<IncantationCardState> getStateType() {
         return IncantationCardState.class;
@@ -44,7 +33,7 @@ public class IncantationCardTemplate extends PowerCardTemplate<IncantationCardSt
 
     @Override
     public void onPlayPower(GameController gameController, EntityController caster, IncantationCardState cardState) {
-        RitualEffectState effectState = StateFactory.build(gameController, RitualEffectTemplate.getInstance());
+        RitualEffectState effectState = StateFactory.build(gameController, gameController.getTemplateInstance(RitualEffectTemplate.class));
         effectState.setStacks(cardState.getStartingStacks());
         caster.applyEffect(gameController, effectState);
     }

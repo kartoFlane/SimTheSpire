@@ -5,17 +5,6 @@ import com.kartoflane.spiresim.controller.GameController;
 
 public class ThrashCardTemplate extends SimpleAttackAndDefendCardTemplate {
 
-    private static ThrashCardTemplate INSTANCE;
-
-
-    public static ThrashCardTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ThrashCardTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public String getName() {
         return "Thrash";

@@ -13,17 +13,6 @@ import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 @DeriveState
 public class WeakEffectTemplate extends TimedEffectTemplate<WeakEffectState> {
 
-    private static WeakEffectTemplate INSTANCE;
-
-
-    public static WeakEffectTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new WeakEffectTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public Class<WeakEffectState> getStateType() {
         return WeakEffectState.class;

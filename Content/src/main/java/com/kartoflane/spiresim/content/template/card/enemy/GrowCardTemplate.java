@@ -14,17 +14,6 @@ import com.kartoflane.spiresim.template.card.CardType;
 @DeriveState
 public class GrowCardTemplate extends TargetNoneCardTemplate<GrowCardState> {
 
-    private static GrowCardTemplate INSTANCE;
-
-
-    public static GrowCardTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new GrowCardTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public CardType getCardType() {
         return CardType.SKILL;
@@ -50,7 +39,7 @@ public class GrowCardTemplate extends TargetNoneCardTemplate<GrowCardState> {
     }
 
     public CardPileType onPlay(GameController gameController, EntityController caster, GrowCardState state) {
-        StrengthEffectState effectState = StateFactory.build(gameController, StrengthEffectTemplate.getInstance());
+        StrengthEffectState effectState = StateFactory.build(gameController, gameController.getTemplateInstance(StrengthEffectTemplate.class));
         effectState.setStacks(state.getStartingStacks());
         caster.applyEffect(gameController, effectState);
 

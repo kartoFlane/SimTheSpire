@@ -14,17 +14,6 @@ import com.kartoflane.spiresim.template.effect.EffectIdentifier;
 @DeriveState
 public class FrailEffectTemplate extends TimedEffectTemplate<FrailEffectState> {
 
-    private static FrailEffectTemplate INSTANCE;
-
-
-    public static FrailEffectTemplate getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new FrailEffectTemplate();
-        }
-
-        return INSTANCE;
-    }
-
     @Override
     public Class<FrailEffectState> getStateType() {
         return FrailEffectState.class;
